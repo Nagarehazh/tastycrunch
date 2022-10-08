@@ -200,6 +200,19 @@ const HorizontalNav = styled.div`
     }
 `;
 
+const SearchForm = styled.form`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    height: 80px;
+    background-color: white;
+    color: white;
+    padding: 20px;
+    font-size: 1.6rem;
+`
+
+
 const SeacrhButton = styled.button`
         margin-left: 10px;
         margin-bottom: 5px;
@@ -208,7 +221,7 @@ const SeacrhButton = styled.button`
 `
 
 const Search = styled.input`
-width: 200px;
+width: 100%;
 border: none;
 border-bottom: 1px solid black;
 padding: 10px;
@@ -342,7 +355,8 @@ export {
   SelectType,
   OptionType,
   TextArea,
-  RecipeUrlImg
+  RecipeUrlImg,
+  SearchForm
 
   
 };

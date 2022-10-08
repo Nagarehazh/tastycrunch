@@ -19,6 +19,8 @@ import {
   Label,
   ContainerLabel
 } from './RecipesStyles'
+import { useSelector } from 'react-redux'
+import { setSearch } from '../../redux/searchRedux'
 // import { useGetAllRecipesQuery } from '../../redux/serverCall'
 
 
@@ -26,12 +28,15 @@ import {
 const Recipes = () => {
   // const { data: dataRecipes } = useGetAllRecipesQuery()
   //pagination
+  const { payload } = useSelector(setSearch)
+  console.log(payload.search.search)
+  const [filtered, setFiltered] = React.useState(RECIPES_ARRAY)
   const [sort, setSort] = React.useState('')
   const [currentPage, setCurrentPage] = React.useState(1)
   const [recipesPerPage] = React.useState(15)
   const indexOfLastRecipe = currentPage * recipesPerPage
   const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage
-  const currentRecipes = RECIPES_ARRAY.slice(indexOfFirstRecipe, indexOfLastRecipe)
+  const currentRecipes = filtered.slice(indexOfFirstRecipe, indexOfLastRecipe)
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
   const pageNumbers = []
   for (let i = 1; i <= Math.ceil(RECIPES_ARRAY.length / recipesPerPage); i++) {
@@ -51,14 +56,21 @@ const Recipes = () => {
   }
 
   React.useEffect(() => {
-    if(sort === 'Z-A'){
+    if (sort === 'Z-A') {
       RECIPES_ARRAY.sort((a, b) => a.name.charAt(0).localeCompare(b.name.charAt(0)))
-    } else if(sort === 'A-Z'){
+    } else if (sort === 'A-Z') {
       RECIPES_ARRAY.sort((a, b) => b.name.charAt(0).localeCompare(a.name.charAt(0)))
     } else {
       RECIPES_ARRAY.sort((a, b) => a.name.charAt(0).localeCompare(b.name.charAt(0)))
     }
   }, [sort])
+
+  React.useEffect(() => {
+    const filterArray = RECIPES_ARRAY.filter((recipe) => recipe.name.toLocaleLowerCase().includes(payload.search.search.toLocaleLowerCase()))
+
+    setFiltered(filterArray)
+
+  }, [payload])
 
   return (
     <Container>
@@ -68,18 +80,18 @@ const Recipes = () => {
             <PaginationButton>
               <PaginationArrowLeft onClick={handlePrevPage}>{`<`}</PaginationArrowLeft>
             </PaginationButton>
-            {pageNumbers.map((number) => (
-                <ContainerLabel>
-              <PaginationButton key={number} onClick={() => paginate(number)}>
-                <PaginationNumber>{number}</PaginationNumber>
-              </PaginationButton>
-              <Label
-                style={{
-                  color: currentPage === number ? '#F2C94C' : "white",
-                  fontWeight: currentPage === number ? 'bold' : 'normal',
-                }}
+            {pageNumbers.map((number, index) => (
+              <ContainerLabel key={index}>
+                <PaginationButton key={number} onClick={() => paginate(number)}>
+                  <PaginationNumber>{number}</PaginationNumber>
+                </PaginationButton>
+                <Label
+                  style={{
+                    color: currentPage === number ? '#F2C94C' : "white",
+                    fontWeight: currentPage === number ? 'bold' : 'normal',
+                  }}
                 >—</Label>
-                </ContainerLabel>
+              </ContainerLabel>
             ))}
             <PaginationButton>
               <PaginationArrowRight onClick={handleNextPage}>{`>`}</PaginationArrowRight>
@@ -101,7 +113,6 @@ const Recipes = () => {
         {currentRecipes.map((recipe) => (
           <Recipe key={recipe.id} recipe={recipe} />
         ))}
-        
       </RecipesContainer>
     </Container>
   )

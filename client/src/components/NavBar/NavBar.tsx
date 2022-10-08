@@ -23,9 +23,12 @@ import {
     SelectType,
     OptionType,
     TextArea,
-    RecipeUrlImg
+    RecipeUrlImg,
+    SearchForm
 } from './NavBarStyles';
 import { useGetDietsTypesQuery } from '../../redux/serverCall';
+import { useDispatch } from 'react-redux';
+import { setSearch } from '../../redux/searchRedux';
 import { Modal } from '..'
 
 
@@ -36,6 +39,7 @@ interface DietTypes {
 
 
 const NavBar = () => {
+    const dispatch = useDispatch()
     const { data: dataDiet } = useGetDietsTypesQuery();
     const [nameRecipe, setNameRecipe] = React.useState('');
     const [descriptionRecipe, setDescriptionRecipe] = React.useState('');
@@ -43,6 +47,7 @@ const NavBar = () => {
     const [type, setType] = React.useState('')
     const [instructions, setInstructions] = React.useState('')
     const [recipeUrlImg, setRecipeUrlImg] = React.useState('')
+    const [searching, setSearching] = React.useState('')
     const [modal, setModal] = React.useState(false);
 
     const onSubmitForm = (e: any) => {
@@ -52,6 +57,12 @@ const NavBar = () => {
     const handleAddRecipe = () => {
         setModal(!modal)
     }
+
+    const handleSearch = (e:any) => {
+        e.preventDefault()
+        dispatch(setSearch(searching))
+    }
+
 
     return (
         <NavBarContainer>
@@ -161,10 +172,16 @@ const NavBar = () => {
 
             <HorizontalNav>
                 <TitleApp>TastyCrunch.</TitleApp>
-                <div>
-                    <Search />
+                <SearchForm onSubmit={handleSearch}>
+                    <Search 
+                        type="text"
+                        placeholder="Search a recipe"
+                        value={searching}
+                        onChange={(e) => setSearching(e.target.value)}
+
+                    />
                     <SeacrhButton><img src={searchImg} alt="search" /></SeacrhButton>
-                </div>
+                </SearchForm>
             </HorizontalNav>
         </NavBarContainer>
     )
