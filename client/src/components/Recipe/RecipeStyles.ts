@@ -4,6 +4,8 @@ const CardDetailConatainer = styled.div`
     padding: 1rem;
    cursor: pointer;
    height: 300px;
+
+   margin-bottom: 1rem;
    
    &:hover {
     transform: scale(1.05);
@@ -19,12 +21,42 @@ const CardDetailConatainer = styled.div`
     }
 `;
 
+const CardDetailImgTagsContainer = styled.div`
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+`;
+
+
 const CardDetailImage = styled.img`
     width: 100%;
     height: 50%;
     object-fit: cover;
     border-radius: 7px 7px 0 0;
 `;
+
+const CardDietTags = styled.div`
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0.5rem 0;
+    top: 0;
+    left: 0;
+
+    span {
+        margin: 0 0.5rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 5px;
+        background-color: #f76402;
+        color: white;
+        margin: 0.5rem;
+        font-size: 1.8rem;
+    }
+`;
+
+
 
 const CardDetailContent = styled.div`
     display: flex;
@@ -61,5 +93,7 @@ export {
     CardDetailImage,
     CardDetailContent,
     CardDetailTitle,
-    CardDetailDescription
+    CardDetailDescription,
+    CardDietTags,
+    CardDetailImgTagsContainer
 }

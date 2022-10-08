@@ -5,8 +5,9 @@ import {
   CardDetailImage,
   CardDetailContent,
   CardDetailTitle,
-  CardDetailDescription
-
+  CardDetailDescription,
+  CardDietTags,
+  CardDetailImgTagsContainer
 } from './RecipeStyles'
 
 interface RecipeProps {
@@ -27,7 +28,16 @@ const Recipe = (props: RecipeProps) => {
 
   return (
     <CardDetailConatainer>
+      <CardDetailImgTagsContainer>
       <CardDetailImage src={recipe.image} />
+      {recipe.diets && recipe.diets.length > 0 && (
+        <CardDietTags>
+          {recipe.diets.map((diet) => (
+            <span key={diet}>{diet}</span>
+          ))}
+        </CardDietTags>
+      )}
+      </CardDetailImgTagsContainer>
       <CardDetailContent>
         <CardDetailTitle>{recipe.name}</CardDetailTitle>
         <CardDetailDescription>{recipe.description}</CardDetailDescription>
