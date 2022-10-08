@@ -88,7 +88,7 @@ const RECIPES_ARRAY = [
     },
     {
         id: 3,
-        name: "Vegan Pizza",
+        name: "Aegan Pizza",
         image: "https://spoonacular.com/recipeImages/716429-312x231.jpg",
         description: "This vegan pizza is made with a simple homemade pizza dough, a creamy cashew cheese, and your favorite pizza toppings. It's easy to make and tastes just like the real thing!",
         stepByStep: "Preheat the oven to 425 degrees F. Line a baking sheet with parchment paper. In a large bowl, combine the flour, salt, and sugar. Add the olive oil and water and mix until a dough forms. Knead the dough for 5 minutes, then divide into 2 equal pieces. Roll each piece into a ball and place on the prepared baking sheet. Use your hands to flatten the dough into a 12-inch circle. Bake for 10 minutes, then remove from the oven and top with the cashew cheese, pizza sauce, and toppings. Bake for 10-15 minutes, or until the cheese is melted and the crust is golden brown. Slice and serve.",
@@ -115,7 +115,7 @@ const RECIPES_ARRAY = [
     },
     {
         id: 6,
-        name: "Vegan Pizza",
+        name: "BVegan Pizza",
         image: "https://spoonacular.com/recipeImages/716429-312x231.jpg",
         description: "This vegan pizza is made with a simple homemade pizza dough, a creamy cashew cheese, and your favorite pizza toppings. It's easy to make and tastes just like the real thing!",
         stepByStep: "Preheat the oven to 425 degrees F. Line a baking sheet with parchment paper. In a large bowl, combine the flour, salt, and sugar. Add the olive oil and water and mix until a dough forms. Knead the dough for 5 minutes, then divide into 2 equal pieces. Roll each piece into a ball and place on the prepared baking sheet. Use your hands to flatten the dough into a 12-inch circle. Bake for 10 minutes, then remove from the oven and top with the cashew cheese, pizza sauce, and toppings. Bake for 10-15 minutes, or until the cheese is melted and the crust is golden brown. Slice and serve.",
@@ -168,7 +168,7 @@ const RECIPES_ARRAY = [
     },
     {
         id: 12,
-        name: "Vegan Pizza",
+        name: "Cegan Pizza",
         image: "https://spoonacular.com/recipeImages/716429-312x231.jpg",
         description: "This vegan pizza is made with a simple homemade pizza dough, a creamy cashew cheese, and your favorite pizza toppings. It's easy to make and tastes just like the real thing!",
         stepByStep: "Preheat the oven to 425 degrees F. Line a baking sheet with parchment paper. In a large bowl, combine the flour, salt, and sugar. Add the olive oil and water and mix until a dough forms. Knead the dough for 5 minutes, then divide into 2 equal pieces. Roll each piece into a ball and place on the prepared baking sheet. Use your hands to flatten the dough into a 12-inch circle. Bake for 10 minutes, then remove from the oven and top with the cashew cheese, pizza sauce, and toppings. Bake for 10-15 minutes, or until the cheese is melted and the crust is golden brown. Slice and serve.",
@@ -194,7 +194,7 @@ const RECIPES_ARRAY = [
         diets: [DIETS.VEGAN, DIETS.VEGETARIAN, DIETS.GLUTEN_FREE],
     },
      {   id: 15,
-        name: "Vegan Pizza",
+        name: "Degan Pizza",
         image: "https://spoonacular.com/recipeImages/716429-312x231.jpg",
         description: "This vegan pizza is made with a simple homemade pizza dough, a creamy cashew cheese, and your favorite pizza toppings. It's easy to make and tastes just like the real thing!",
         stepByStep: "Preheat the oven to 425 degrees F. Line a baking sheet with parchment paper. In a large bowl, combine the flour, salt, and sugar. Add the olive oil and water and mix until a dough forms. Knead the dough for 5 minutes, then divide into 2 equal pieces. Roll each piece into a ball and place on the prepared baking sheet. Use your hands to flatten the dough into a 12-inch circle. Bake for 10 minutes, then remove from the oven and top with the cashew cheese, pizza sauce, and toppings. Bake for 10-15 minutes, or until the cheese is melted and the crust is golden brown. Slice and serve.",

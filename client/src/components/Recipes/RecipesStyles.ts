@@ -19,15 +19,13 @@ const WrapperPagination = styled.div`
     margin-top: 2rem;
     `;
 
-    const PaginationContainer = styled.div`
+const PaginationContainer = styled.div`
     display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 0.5rem;
+    margin: 2rem 0.5rem 0 0;
     gap: 0.5rem;
     `;
 
-    const PaginationButton = styled.button`
+const PaginationButton = styled.button`
     display: flex;
     padding: 1.2rem;
     justify-content: center;
@@ -47,9 +45,11 @@ const WrapperPagination = styled.div`
         color: white;
         transform: scale(1.1);
     }
+    
+   
     `;
 
-    const PaginationNumber = styled.span`
+const PaginationNumber = styled.span`
     display: flex;
     margin: 0 0.5rem;
     padding: 1.2rem;
@@ -69,10 +69,12 @@ const WrapperPagination = styled.div`
         color: white;
         transform: scale(1.1);
     }
+
+ 
     `;
 
 
-    const PaginationArrowLeft = styled.span`
+const PaginationArrowLeft = styled.span`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -85,13 +87,14 @@ const WrapperPagination = styled.div`
     font-size: 1.5rem;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
+    padding: 1.2rem;
     &:hover {
         transform: scale(1.1);
     }
 
     `;
 
-    const PaginationArrowRight = styled.span`
+const PaginationArrowRight = styled.span`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -103,16 +106,17 @@ const WrapperPagination = styled.div`
     color: white;
     font-size: 1.5rem;
     cursor: pointer;
+    padding: 1.2rem;
     transition: all 0.2s ease-in-out;
     &:hover {
         transform: scale(1.1);
     }
     `;
 
-    
 
 
-    const WrapperFilter = styled.div`
+
+const WrapperFilter = styled.div`
     display: flex;
     justify-content: flex-end;
     margin: 2rem 3rem 0 0;
@@ -148,7 +152,19 @@ const RecipesContainer = styled.div`
     padding: 20px;
 `
 
-export { 
+const ContainerLabel = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    `
+
+const Label = styled.label`
+    font-weight: bold;
+    font-size: 4rem;
+`;
+
+export {
     RecipesContainer,
     Container,
     WrapperFilter,
@@ -162,6 +178,8 @@ export {
     PaginationNumber,
     PaginationArrowLeft,
     PaginationArrowRight,
-    MainWrapper
+    MainWrapper,
+    Label,
+    ContainerLabel
 
- }
+}
