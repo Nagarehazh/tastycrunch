@@ -25,8 +25,9 @@ interface RecipeProps {
 
 
 const Recipe = (props: RecipeProps) => {
-  const { recipe } = props
+  const { recipe } = props;
 
+ 
   return (
     <CardDetailConatainer>
       <CardDetailImgTagsContainer>

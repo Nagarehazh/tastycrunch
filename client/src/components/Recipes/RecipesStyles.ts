@@ -147,7 +147,7 @@ const Option = styled.option``;
 
 const RecipesContainer = styled.div`
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-gap: 20px;
     padding: 20px;
 `
