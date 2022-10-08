@@ -1,8 +1,14 @@
-import React from 'react'
+import {
+    NavBar,
+    Recipes
+} from '../../components'
 
 const Home = () => {
   return (
-    <h1>Hello World</h1>
+    <div>
+        <NavBar/>
+        <Recipes/>
+    </div>
   )
 }
 

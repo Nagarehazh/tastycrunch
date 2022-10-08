@@ -13,10 +13,10 @@ enum DIETS {
 }
 
 const DIETS_ARRAY = [
-    {
+    {   
         name: DIETS.VEGAN,
     },
-    {
+    {   
         name: DIETS.VEGETARIAN,
     },
     {
@@ -30,9 +30,6 @@ const DIETS_ARRAY = [
     },
     {
         name: DIETS.OVO_VEGETARIAN,
-    },
-    {
-        name: DIETS.PALEO,
     },
     {
         name: DIETS.PRIMAL,
