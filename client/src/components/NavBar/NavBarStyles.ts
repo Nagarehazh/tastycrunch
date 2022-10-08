@@ -58,6 +58,18 @@ const AppBar = styled.div`
     background-color: #fff;
     color: #000;
     font-size: 1.5rem;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    &::-webkit-scrollbar {
+      width: 10px;
+      background-color: #cd97fc;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #b55cfb;
+      border-radius: 10px;
+    }
+
 `;
 
 const ToolBar = styled.nav`
@@ -66,16 +78,56 @@ const ToolBar = styled.nav`
     flex-direction:column;
     justify-content: space-between;
     width: 100%;
-    height: 100%;
+    height: 150%;
     background-color: #21034f;
     color: #000;
     font-size: 1.5rem;
 `;
 
+const CreateContainer = styled.div`
+display: flex;
+align-items: center;
+width: 100%;
+height: 85%;
+padding: 20px;
+background-color: #21034f;
+color: white;
+
+
+font-size: 1.6rem;
+
+    h2 {
+      font-size: 1.4rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+`;
+
+const CreateIcon = styled.button`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    background-size: 50%;
+    color: black;
+    border-radius: 50%;
+    margin-right: 10px;
+    font-size: 2.5rem;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    &:hover {
+      transition: all 0.2s ease-in-out;
+      transform: scale(1.1);
+    }
+`;
+
+
 const DietContainer = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
     width: 100%;
     height: 85%;
     background-color: #21034f;
@@ -87,6 +139,7 @@ const DietContainer = styled.div`
         font-size: 1.4rem;
         font-weight: bold;
         letter-spacing: 1px;
+        margin-bottom: 20px;
     }
 `;
 
@@ -110,6 +163,7 @@ const IconWithName = styled.div`
     gap: 10px;
     transition: all 0.3s ease-in-out;
     cursor: pointer;
+    margin-bottom: 20px;
     &:hover {
       transform: scale(1.1);
       transition: all 0.3s ease-in-out;
@@ -177,7 +231,94 @@ color: #21034F;
 margin-left: 260px;
 `;
 
+const ContainerModal = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 999;
+    h1 {
+        font-size: 4.2rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+    }
 
+    p {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+
+`;
+
+const Form = styled.form`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+`;
+
+const Input = styled.input`
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1.6rem;
+`;
+
+const ButtonModal = styled.button`
+margin-top: 2rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #e6e6e6;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+        background-color: #21034F;
+        color: white;
+        transform: scale(1.1);
+    }
+`;
+
+const SelectType = styled.select`
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1.6rem;
+`;
+
+const OptionType = styled.option`
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1.6rem;
+`;
+
+const TextArea = styled.textarea`
+    width: 100%;
+    height: 120px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1.6rem;
+`;
+
+const RecipeUrlImg = styled.input`
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1.6rem;
+`;
 
 export {
   NavBarContainer,
@@ -191,6 +332,19 @@ export {
   HorizontalNav,
   Search,
   TitleApp,
-  SeacrhButton
-}
+  SeacrhButton,
+  CreateContainer,
+  CreateIcon,
+  ContainerModal,
+  Form,
+  Input,
+  ButtonModal,
+  SelectType,
+  OptionType,
+  TextArea,
+  RecipeUrlImg
+
+  
+};
+
 

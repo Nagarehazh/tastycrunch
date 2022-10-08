@@ -33,6 +33,8 @@ export const getAllRecipesByDiet = async (req: Request, res: Response) => {
                 }
             }
         });
+    
+
         res.status(200).json(recipes);
     } catch (error: any) {
         res.status(500).json({ message: error.message });

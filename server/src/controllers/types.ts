@@ -13,6 +13,12 @@ enum DIETS {
 }
 
 const DIETS_ARRAY = [
+    { 
+        name: DIETS.GLUTEN_FREE,
+    },
+    {
+        name: DIETS.KETOGENIC,
+    },
     {   
         name: DIETS.VEGAN,
     },
@@ -37,7 +43,7 @@ const DIETS_ARRAY = [
     {
         name: DIETS.LOW_FODMAP,
     },
-    {
+    {   
         name: DIETS.WHOLE30,
     }
 ]

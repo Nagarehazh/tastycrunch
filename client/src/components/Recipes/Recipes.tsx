@@ -1,7 +1,6 @@
 import React from 'react'
 import { RECIPES_ARRAY } from '../../constants/dietTypes'
 import { Recipe } from '..'
-
 import {
   RecipesContainer,
   Container,
@@ -18,8 +17,13 @@ import {
   PaginationArrowRight,
   MainWrapper
 } from './RecipesStyles'
+// import { useGetAllRecipesQuery } from '../../redux/serverCall'
+
+
 
 const Recipes = () => {
+  // const { data: dataRecipes } = useGetAllRecipesQuery()
+
   return (
     <Container>
       <MainWrapper>
@@ -54,7 +58,7 @@ const Recipes = () => {
       </WrapperFilter>
       </MainWrapper>
       <RecipesContainer>
-        {RECIPES_ARRAY.map((recipe, index) => (
+        {RECIPES_ARRAY !== undefined && (RECIPES_ARRAY as any).map((recipe: any, index: number) => (
           <Recipe key={index} recipe={recipe} />
         ))}
       </RecipesContainer>

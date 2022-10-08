@@ -1,6 +1,6 @@
-import { DIETS_ARRAY } from '../../constants/dietTypes';
+import React from 'react';
+import images from '../../assets/diets'
 import searchImg from '../../assets/images/search.png'
-
 import {
     NavBarContainer,
     NavBarLogo,
@@ -13,11 +13,46 @@ import {
     HorizontalNav,
     Search,
     TitleApp,
-    SeacrhButton
-
+    SeacrhButton,
+    CreateContainer,
+    CreateIcon,
+    ContainerModal,
+    Form,
+    Input,
+    ButtonModal,
+    SelectType,
+    OptionType,
+    TextArea,
+    RecipeUrlImg
 } from './NavBarStyles';
+import { useGetDietsTypesQuery } from '../../redux/serverCall';
+import { Modal } from '..'
+
+
+interface DietTypes {
+    img: string;
+    name: string;
+}
+
 
 const NavBar = () => {
+    const { data: dataDiet } = useGetDietsTypesQuery();
+    const [nameRecipe, setNameRecipe] = React.useState('');
+    const [descriptionRecipe, setDescriptionRecipe] = React.useState('');
+    const [healthScore, setHealthScore] = React.useState('');
+    const [type, setType] = React.useState('')
+    const [instructions, setInstructions] = React.useState('')
+    const [recipeUrlImg, setRecipeUrlImg] = React.useState('')
+    const [modal, setModal] = React.useState(false);
+
+    const onSubmitForm = (e: any) => {
+        e.preventDefault();
+    }
+
+    const handleAddRecipe = () => {
+        setModal(!modal)
+    }
+
     return (
         <NavBarContainer>
             <AppBar>
@@ -48,17 +83,80 @@ const NavBar = () => {
                         </svg>
                     </NavBarLogo>
                     <Hr />
+                    <CreateContainer>
+                        <CreateIcon onClick={handleAddRecipe}>+</CreateIcon>
+                        <h2>Create Recipe</h2>
+                    </CreateContainer>
+                    <Hr />
                     <DietContainer>
-                        <h2>Diets</h2>
-                        {DIETS_ARRAY.map((diet, index) => (
-                            <IconWithName key={index}>
-                                <DietIcon src={diet.img} />
-                                <h3>{diet.name}</h3>
-                            </IconWithName>
-                        ))}
+                        <>
+                            <h2>Diets</h2>
+                            {dataDiet && ((dataDiet as any)).map((diet: DietTypes, index = 1) => (
+                                <IconWithName key={index}>
+                                    <DietIcon src={(images as any)[diet.name]} />
+                                    <h3>{diet.name}</h3>
+                                </IconWithName>
+                            ))}
+                        </>
                     </DietContainer>
-                    <h5 style={{ color: 'white', marginBottom: "20px" }}>Designed by © Harley Zapata</h5>
+                    <h5 style={{ color: 'white', marginBottom: "20px", backgroundColor: "#21034f", width: "100%", textAlign: "center" }}>Designed by © Harley Zapata</h5>
                 </ToolBar>
+                <Modal
+                    modal={modal}
+                    setModal={setModal}
+
+                >
+                    <ContainerModal>
+                        <Form onSubmit={onSubmitForm}>
+                            <Input
+                                type="text"
+                                placeholder="Recipe Name"
+                                value={nameRecipe}
+                                onChange={(e) => setNameRecipe(e.target.value)}
+                                required
+                            />
+                            <Input
+                                type="text"
+                                placeholder="Description"
+                                value={descriptionRecipe}
+                                onChange={(e) => setDescriptionRecipe(e.target.value)}
+                                required
+                            />
+                            <Input
+                                type="number"
+                                placeholder="Health Score"
+                                value={healthScore}
+                                onChange={(e) => setHealthScore(e.target.value)}
+                                required
+                            />
+                            <SelectType
+                                value={type}
+                                onChange={(e) => setType(e.target.value)}
+                                required
+                            >   <>
+                                    <OptionType value="">Diet Type</OptionType>
+                                    {dataDiet && ((dataDiet as any)).map((diet: DietTypes, index = 1) => (
+                                        <OptionType key={index} value={diet.name}>{diet.name}</OptionType>
+                                    ))}
+                                </>
+                            </SelectType>
+                            <TextArea
+                                placeholder="Instructions"
+                                value={instructions}
+                                onChange={(e) => setInstructions(e.target.value)}
+                                required
+                            />
+                            <RecipeUrlImg
+                                type="text"
+                                placeholder="Recipe Image Url"
+                                value={recipeUrlImg}
+                                onChange={(e) => setRecipeUrlImg(e.target.value)}
+                                required
+                            />
+                            <ButtonModal>Create</ButtonModal>
+                        </Form>
+                    </ContainerModal>
+                </Modal>
             </AppBar>
 
             <HorizontalNav>

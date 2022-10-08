@@ -54,7 +54,7 @@ export const sequelizeConnection = async () => {
 (async function sequelizeSync(){
     try {
       sequelize
-        .sync()
+        .sync({ force: true })
         .then(() => {
           console.log('Postgres sync has been established successfully.')
         })

@@ -13,6 +13,15 @@ interface TypesDataBaseRecipe {
     diets: string[];
 }
 
+interface TypesDataBaseRecipeAllGet {
+    id: string;
+    name: string;
+    dishTypes: string;
+    image: string;
+    healthScore: number;
+    diets: string[];
+}
+
 
 export const getRecipes = async (req: Request, res: Response) => {
     const { name } = req.query;
@@ -33,6 +42,7 @@ export const getRecipes = async (req: Request, res: Response) => {
                             healthScore: recipe.healthScore,
                             stepByStep: recipe.analyzedInstructions[0].steps[0].step,
                             image: recipe.image,
+                            dishTypes: recipe.dishTypes,
                             diets: recipe.diets,
                         });
                     });
@@ -54,6 +64,9 @@ export const getRecipes = async (req: Request, res: Response) => {
 
             allRecipes.push(spoonacularApi, myDataBaseRecipes);
 
+
+
+
             if (allRecipes.length === 0) {
                 return res.status(404).json({ message: 'No recipes found' });
             }
@@ -72,7 +85,7 @@ export const getRecipes = async (req: Request, res: Response) => {
 export const getAllRecipes = async (_req: Request, res: Response) => {
     try {
         const spoonacularApi: any[] = [];
-        const myDataBaseRecipes: TypesDataBaseRecipe[] = [];
+        const myDataBaseRecipes: TypesDataBaseRecipeAllGet[] = [];
         const allRecipes = [];
 
         await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${process
@@ -82,10 +95,9 @@ export const getAllRecipes = async (_req: Request, res: Response) => {
                     spoonacularApi.push({
                         id: recipe.id,
                         name: recipe.title,
-                        description: recipe.summary,
                         healthScore: recipe.healthScore,
-                        stepByStep: recipe.analyzedInstructions[0].steps[0].step,
                         image: recipe.image,
+                        dishTypes: recipe.description,
                         diets: recipe.diets
                     })
                 })
@@ -98,9 +110,8 @@ export const getAllRecipes = async (_req: Request, res: Response) => {
                 myDataBaseRecipes.push({
                     id: recipe.id,
                     name: recipe.name,
-                    description: recipe.description,
+                    dishTypes: recipe.description,
                     healthScore: recipe.healthScore,
-                    stepByStep: recipe.stepByStep,
                     image: recipe.image,
                     diets: recipe.diet
                 })
