@@ -27,7 +27,7 @@ export const getRecipes = async (req: Request, res: Response) => {
     const { name } = req.query;
     const spoonacularApi: any[] = [];
     const myDataBaseRecipes: TypesDataBaseRecipe[] = [];
-    const allRecipes = [];
+    let allRecipes = [];
 
     if (name) {
         try {
@@ -62,9 +62,7 @@ export const getRecipes = async (req: Request, res: Response) => {
                 })
             }
 
-            allRecipes.push(spoonacularApi, myDataBaseRecipes);
-
-
+            allRecipes = spoonacularApi.concat(myDataBaseRecipes);
 
 
             if (allRecipes.length === 0) {
@@ -86,7 +84,7 @@ export const getAllRecipes = async (_req: Request, res: Response) => {
     try {
         const spoonacularApi: any[] = [];
         const myDataBaseRecipes: TypesDataBaseRecipeAllGet[] = [];
-        const allRecipes = [];
+        let allRecipes = [];
 
         await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${process
             .env.SPOONACULAR_API_KEY}&addRecipeInformation=true&number=100`)
@@ -118,8 +116,7 @@ export const getAllRecipes = async (_req: Request, res: Response) => {
             })
         }
 
-        allRecipes.push(spoonacularApi, myDataBaseRecipes);
-
+        allRecipes = spoonacularApi.concat(myDataBaseRecipes);
         res.status(200).json(allRecipes);
 
 

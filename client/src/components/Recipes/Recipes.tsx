@@ -1,5 +1,4 @@
 import React from 'react'
-import { RECIPES_ARRAY } from '../../constants/dietTypes'
 import { Recipe } from '..'
 import {
   RecipesContainer,
@@ -21,27 +20,37 @@ import {
 } from './RecipesStyles'
 import { useSelector } from 'react-redux'
 import { setSearch } from '../../redux/searchRedux'
-// import { useGetAllRecipesQuery } from '../../redux/serverCall'
+
+interface RecipesProps {
+  recipes: any
+}
 
 
+const Recipes = (props: RecipesProps) => {
+  const { recipes } = props;
 
-const Recipes = () => {
-  // const { data: dataRecipes } = useGetAllRecipesQuery()
-  //pagination
   const { payload } = useSelector(setSearch)
-  const [filtered, setFiltered] = React.useState(RECIPES_ARRAY)
+  const [filtered, setFiltered] = React.useState(recipes)
   const [sort, setSort] = React.useState('')
   const [healthScore, setHealthScore] = React.useState('')
   const [currentPage, setCurrentPage] = React.useState(1)
   const [recipesPerPage] = React.useState(9)
   const indexOfLastRecipe = currentPage * recipesPerPage
   const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage
-  const currentRecipes = filtered.slice(indexOfFirstRecipe, indexOfLastRecipe)
+
+  const [actualRecipes, setActualRecipes] = React.useState(filtered && (filtered as any).slice(indexOfFirstRecipe, indexOfLastRecipe))
+
+
+
+
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
   const pageNumbers = []
-  for (let i = 1; i <= Math.ceil(RECIPES_ARRAY.length / recipesPerPage); i++) {
+  for (let i = 1; i <= Math.ceil((recipes !== undefined && (recipes as any).length) / recipesPerPage); i++) {
     pageNumbers.push(i)
   }
+
+
+
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -56,36 +65,49 @@ const Recipes = () => {
   }
 
   React.useEffect(() => {
-    const filterArray = RECIPES_ARRAY.filter((recipe) => recipe.name.toLocaleLowerCase().includes(payload.search.search.toLocaleLowerCase()))
+    const currentRecipes = filtered && (filtered as any).slice(indexOfFirstRecipe, indexOfLastRecipe)
+    setActualRecipes(currentRecipes)
+    
+  }, [currentPage, recipesPerPage, filtered, indexOfFirstRecipe, indexOfLastRecipe])
 
-    setFiltered(filterArray)
+  React.useEffect(() => {
+    if ((payload.search.search !== undefined && payload.search.search !== null) && (payload.search.search !== '')) {
+      const filterArray = recipes && (recipes as any).filter((recipe: { name: string }) => recipe.name.toLocaleLowerCase().includes(payload.search.search.toLocaleLowerCase()))
+      setFiltered(filterArray)
+    }
 
   }, [payload])
 
   React.useEffect(() => {
-    if (sort === 'az'){
-    currentRecipes.sort((a, b) => (a.name > b.name) ? 1 : -1)
-    setFiltered(currentRecipes)
+    if (sort === 'desc') {
+      recipes && (recipes as any).sort((a: { name: number }, b: { name: number }) => (a.name > b.name) ? 1 : -1)
+      setCurrentPage(1)
+      return setActualRecipes(recipes)
+    }
 
-  } else {
-    currentRecipes.sort((a, b) => (a.name > b.name) ? -1 : 1)
-    setFiltered(currentRecipes)
-  }
+    if (sort === 'asc') {
+      recipes && (recipes as any).sort((a: { name: number }, b: { name: number }) => (a.name > b.name) ? -1 : 1)
+      setCurrentPage(1)
+      return setActualRecipes(recipes)
+    }
+  
+  }, [sort, recipes])
 
-  }, [sort])
 
-React.useEffect(() => {
-  if (healthScore === 'highest'){
-  currentRecipes.sort((a, b) => (a.healthScore > b.healthScore) ? -1 : 1)
-  setFiltered(currentRecipes)
 
-} else {
-  currentRecipes.sort((a, b) => (a.healthScore > b.healthScore) ? 1 : -1)
-  setFiltered(currentRecipes)
-}
-
-}, [healthScore])
-
+  React.useEffect(() => {
+    if (healthScore === 'highest') {
+      recipes && (recipes as any).sort((a: { healthScore: number }, b: { healthScore: number }) => (a.healthScore > b.healthScore) ? -1 : 1)
+      setCurrentPage(1)
+      return setActualRecipes(recipes)
+    }
+    if (healthScore === 'lowest') {
+      recipes && (recipes as any).sort((a: { healthScore: number }, b: { healthScore: number }) => (a.healthScore > b.healthScore) ? 1 : -1)
+      setCurrentPage(1)
+      return setActualRecipes(recipes)
+    }
+  
+  }, [healthScore, recipes])
 
 
   return (
@@ -118,7 +140,7 @@ React.useEffect(() => {
           <FilterContainer>
             <Filter>Health Score</Filter>
             <Select onChange={(e) => setHealthScore(e.target.value)}>
-              <Option value="">Select</Option>
+              <Option value="all">Select</Option>
               <Option value="highest">Highest</Option>
               <Option value="lowest">Lowest</Option>
             </Select>
@@ -126,16 +148,16 @@ React.useEffect(() => {
           <FilterContainer>
             <Filter>Sort</Filter>
             <Select onChange={(e) => setSort(e.target.value)}>
-              <Option value="">Select</Option>
-              <Option value="az">A-Z</Option>
-              <Option value="za">Z-A</Option>
+              <Option value="all">Select</Option>
+              <Option value="desc">A-Z</Option>
+              <Option value="asc">Z-A</Option>
             </Select>
           </FilterContainer>
         </WrapperFilter>
       </MainWrapper>
       <RecipesContainer>
-        {currentRecipes.map((recipe) => (
-          <Recipe key={recipe.id} recipe={recipe} />
+        {actualRecipes !== undefined && actualRecipes && (actualRecipes as any).map((recipe: any, index: any) => (
+          <Recipe key={index} recipe={recipe} />
         ))}
       </RecipesContainer>
     </Container>

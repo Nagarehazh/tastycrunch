@@ -16,7 +16,7 @@ interface RecipeProps {
     name: string;
     healthScore: number;
     image: string;
-    // dishTypes: string[];
+    dishTypes: string[];
     description: string;
     diets: string[];
 
@@ -27,25 +27,27 @@ interface RecipeProps {
 const Recipe = (props: RecipeProps) => {
   const { recipe } = props;
 
+
  
   return (
     <CardDetailConatainer>
       <CardDetailImgTagsContainer>
-      {recipe.diets && recipe.diets.length > 0 && (
-        <>
-      <CardDetailImage src={recipe.image} />
-        <CardDietTags>
-          {recipe.diets.map((diet) => (
-            <span key={diet}>{diet}</span>
-          ))}
-        </CardDietTags>
-        </>
-      )}
+        {recipe && (
+          <>
+            <CardDetailImage src={recipe.image} alt={recipe.name} />
+            <CardDietTags>
+              {recipe.diets && (recipe.diets as any).map((diet: any, index: any) => (
+                <span key={index}>{diet}</span>
+              ))}
+            </CardDietTags>
+          </>
+        )}
       </CardDetailImgTagsContainer>
       <CardDetailContent>
         <CardDetailTitle>{recipe.name}</CardDetailTitle>
         {/* <CardDetailDescription>{recipe.dishTypes}</CardDetailDescription> */}
         <CardDetailDescription>{recipe.description}</CardDetailDescription>
+        <CardDetailDescription>{recipe.healthScore}</CardDetailDescription>
       </CardDetailContent>
     </CardDetailConatainer>
   )

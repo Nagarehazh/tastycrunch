@@ -150,6 +150,13 @@ const RecipesContainer = styled.div`
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 20px;
     padding: 20px;
+    @media ${({ theme }) => theme.breakpoints.md} {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    @media ${({ theme }) => theme.breakpoints.sm} {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    
 `
 
 const ContainerLabel = styled.div`

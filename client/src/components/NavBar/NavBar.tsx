@@ -146,7 +146,7 @@ const NavBar = () => {
                                 required
                             >   <>
                                     <OptionType value="">Diet Type</OptionType>
-                                    {dataDiet && ((dataDiet as any)).map((diet: DietTypes, index = 1) => (
+                                    {dataDiet && ((dataDiet as any)).map((diet: DietTypes, index: any ) => (
                                         <OptionType key={index} value={diet.name}>{diet.name}</OptionType>
                                     ))}
                                 </>
