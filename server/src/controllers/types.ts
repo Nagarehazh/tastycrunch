@@ -1,15 +1,13 @@
 enum DIETS {
-    GLUTEN_FREE = "gluten_free",
+    GLUTEN_FREE = "gluten free",
     KETOGENIC = "ketogenic",
-    VEGETARIAN = "vegetarian",
-    LACTO_VEGETARIAN = "lacto-vegetarian",
-    OVO_VEGETARIAN = "ovo-vegetarian",
+    LACTO_OVO_VEGETARIAN = "lacto ovo vegetarian",
     VEGAN = "vegan",
-    PESCETARIAN = "pescetarian",
-    PALEO = "paleo",
+    PESCETARIAN = "pescatarian",
+    PALEO = "paleolithic",
     PRIMAL = "primal",
-    LOW_FODMAP = "low_fodmap",
-    WHOLE30 = "whole30",    
+    LOW_FODMAP = "fodmap friendly",
+    WHOLE30 = "whole 30",    
 }
 
 const DIETS_ARRAY = [
@@ -22,9 +20,6 @@ const DIETS_ARRAY = [
     {   
         name: DIETS.VEGAN,
     },
-    {   
-        name: DIETS.VEGETARIAN,
-    },
     {
         name: DIETS.PALEO,
     },
@@ -32,10 +27,7 @@ const DIETS_ARRAY = [
         name: DIETS.PESCETARIAN,
     },
     {
-        name: DIETS.LACTO_VEGETARIAN,
-    },
-    {
-        name: DIETS.OVO_VEGETARIAN,
+        name: DIETS.LACTO_OVO_VEGETARIAN,
     },
     {
         name: DIETS.PRIMAL,

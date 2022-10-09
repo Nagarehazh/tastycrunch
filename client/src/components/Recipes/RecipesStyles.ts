@@ -171,6 +171,28 @@ const Label = styled.label`
     font-size: 4rem;
 `;
 
+const ButtonViewAll = styled.button`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10rem;
+    height: 3rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #21034F;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    &:hover {
+        background-color: #21034F;
+        color: white;
+        transform: scale(1.1);
+    }
+    `;
+
+
 export {
     RecipesContainer,
     Container,
@@ -187,6 +209,7 @@ export {
     PaginationArrowRight,
     MainWrapper,
     Label,
-    ContainerLabel
+    ContainerLabel,
+    ButtonViewAll
 
 }

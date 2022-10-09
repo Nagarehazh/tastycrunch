@@ -29,6 +29,7 @@ import {
 import { useGetDietsTypesQuery } from '../../redux/serverCall';
 import { useDispatch } from 'react-redux';
 import { setSearch } from '../../redux/searchRedux';
+import { setDiet } from '../../redux/dietRedux';
 import { Modal } from '..'
 
 
@@ -61,8 +62,12 @@ const NavBar = () => {
     const handleSearch = (e:any) => {
         e.preventDefault()
         dispatch(setSearch(searching))
+        setSearching('')
     }
 
+    const handleSelectDiet = (dietName: string) =>{
+        dispatch(setDiet(dietName))
+    }
 
     return (
         <NavBarContainer>
@@ -103,7 +108,9 @@ const NavBar = () => {
                         <>
                             <h2>Diets</h2>
                             {dataDiet && ((dataDiet as any)).map((diet: DietTypes, index = 1) => (
-                                <IconWithName key={index}>
+                                <IconWithName key={index} 
+                                    onClick={() => handleSelectDiet(diet.name)}
+                                >
                                     <DietIcon src={(images as any)[diet.name]} />
                                     <h3>{diet.name}</h3>
                                 </IconWithName>

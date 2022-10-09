@@ -2,8 +2,7 @@
 import vegan from './1.png';
 import vegetarian from './2.png';
 import paleo from './3.png';
-import pescetarian from './4.png';
-import lacto from './5.png';
+import pescatarian from './4.png';
 import ovo from './6.png';
 import primal from './7.png';
 import fodmap from './8.png';
@@ -14,13 +13,12 @@ import keto from './11.png';
 export default {
     vegan,
     vegetarian,
-    paleo,
-    pescetarian,
-    "lacto-vegetarian": lacto,
-    "ovo-vegetarian": ovo,
+    "paleolithic": paleo,
+    pescatarian,
+    "lacto ovo vegetarian": ovo,
     primal,
-    "low_fodmap": fodmap,
-    "whole30": whole,
-    "gluten_free": gluten,
+    "fodmap friendly": fodmap,
+    "whole 30": whole,
+    "gluten free": gluten,
     "ketogenic": keto,
 };

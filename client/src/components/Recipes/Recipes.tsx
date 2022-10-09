@@ -16,23 +16,29 @@ import {
   PaginationArrowRight,
   MainWrapper,
   Label,
-  ContainerLabel
+  ContainerLabel,
+  ButtonViewAll
 } from './RecipesStyles'
 import { useSelector } from 'react-redux'
 import { setSearch } from '../../redux/searchRedux'
+import { useDispatch } from 'react-redux'
 
 interface RecipesProps {
   recipes: any
+  dietclasification: any
 }
 
 
 const Recipes = (props: RecipesProps) => {
-  const { recipes } = props;
+  const { recipes, dietclasification } = props;
+  const dispatch = useDispatch()
 
-  const { payload } = useSelector(setSearch)
+  const [dietType, setDietType] = React.useState(false)
+
+  let { payload } = useSelector(setSearch)
   const [filtered, setFiltered] = React.useState(recipes)
-  const [sort, setSort] = React.useState('')
-  const [healthScore, setHealthScore] = React.useState('')
+  const [, setSort] = React.useState('')
+  const [, setHealthScore] = React.useState('')
   const [currentPage, setCurrentPage] = React.useState(1)
   const [recipesPerPage] = React.useState(9)
   const indexOfLastRecipe = currentPage * recipesPerPage
@@ -64,11 +70,40 @@ const Recipes = (props: RecipesProps) => {
     }
   }
 
+  const handleViewAll = () => {
+    setDietType(!dietType)
+    setActualRecipes(recipes)
+  }
+
+  const handleSort = (e: any) => {
+    setSort(e)
+    if (e === 'desc') {
+      setCurrentPage(1)
+      setActualRecipes(recipes && (recipes as any).sort((a: { name: number }, b: { name: number }) => (a.name > b.name) ? 1 : -1))
+    } else if (e === 'asc') {
+      setCurrentPage(1)
+      setActualRecipes(recipes && (recipes as any).sort((a: { name: number }, b: { name: number }) => (a.name > b.name) ? -1 : 1))
+    }
+  }
+
+  const handleHealthScore = (e: any) => {
+    setHealthScore(e)
+    if (e === 'highest') {
+      setCurrentPage(1)
+      setActualRecipes(recipes && (recipes as any).sort((a: { healthScore: number }, b: { healthScore: number }) => (a.healthScore > b.healthScore) ? -1 : 1))
+    } else if (e === 'lowest') {
+      setCurrentPage(1)
+      setActualRecipes(recipes && (recipes as any).sort((a: { healthScore: number }, b: { healthScore: number }) => (a.healthScore > b.healthScore) ? 1 : -1))
+    } 
+  }
+
+
   React.useEffect(() => {
     const currentRecipes = filtered && (filtered as any).slice(indexOfFirstRecipe, indexOfLastRecipe)
     setActualRecipes(currentRecipes)
-    
+
   }, [currentPage, recipesPerPage, filtered, indexOfFirstRecipe, indexOfLastRecipe])
+
 
   React.useEffect(() => {
     if ((payload.search.search !== undefined && payload.search.search !== null) && (payload.search.search !== '')) {
@@ -78,68 +113,61 @@ const Recipes = (props: RecipesProps) => {
 
   }, [payload])
 
-  React.useEffect(() => {
-    if (sort === 'desc') {
-      recipes && (recipes as any).sort((a: { name: number }, b: { name: number }) => (a.name > b.name) ? 1 : -1)
-      setCurrentPage(1)
-      return setActualRecipes(recipes)
-    }
-
-    if (sort === 'asc') {
-      recipes && (recipes as any).sort((a: { name: number }, b: { name: number }) => (a.name > b.name) ? -1 : 1)
-      setCurrentPage(1)
-      return setActualRecipes(recipes)
-    }
-  
-  }, [sort, recipes])
-
-
 
   React.useEffect(() => {
-    if (healthScore === 'highest') {
-      recipes && (recipes as any).sort((a: { healthScore: number }, b: { healthScore: number }) => (a.healthScore > b.healthScore) ? -1 : 1)
+    if (dietclasification.diet.diets !== undefined && dietclasification.diet.diets !== null && dietclasification.diet.diets !== ' ') {
+
+
+      const filterClasification = recipes && (recipes as any).filter((recipe: { diets: string[] }) => recipe.diets.includes(dietclasification.diet.diets))
+      
       setCurrentPage(1)
-      return setActualRecipes(recipes)
+      setDietType(true)
+      dispatch(setSearch(""))
+      return setActualRecipes(filterClasification)
     }
-    if (healthScore === 'lowest') {
-      recipes && (recipes as any).sort((a: { healthScore: number }, b: { healthScore: number }) => (a.healthScore > b.healthScore) ? 1 : -1)
-      setCurrentPage(1)
-      return setActualRecipes(recipes)
-    }
-  
-  }, [healthScore, recipes])
+  }, [dietclasification])
+
 
 
   return (
     <Container>
       <MainWrapper>
         <WrapperPagination>
-          <PaginationContainer>
-            <PaginationButton>
-              <PaginationArrowLeft onClick={handlePrevPage}>{`<`}</PaginationArrowLeft>
-            </PaginationButton>
-            {pageNumbers.map((number, index) => (
-              <ContainerLabel key={index}>
-                <PaginationButton key={number} onClick={() => paginate(number)}>
-                  <PaginationNumber>{number}</PaginationNumber>
+          {!!dietType
+            ? (
+              <PaginationContainer>
+                <h2>{actualRecipes.length} results</h2>
+                <ButtonViewAll onClick={handleViewAll}>View All</ButtonViewAll>
+              </PaginationContainer>
+            )
+            : (
+              <PaginationContainer>
+                <PaginationButton>
+                  <PaginationArrowLeft onClick={handlePrevPage}>{`<`}</PaginationArrowLeft>
                 </PaginationButton>
-                <Label
-                  style={{
-                    color: currentPage === number ? '#F2C94C' : "white",
-                    fontWeight: currentPage === number ? 'bold' : 'normal',
-                  }}
-                >—</Label>
-              </ContainerLabel>
-            ))}
-            <PaginationButton>
-              <PaginationArrowRight onClick={handleNextPage}>{`>`}</PaginationArrowRight>
-            </PaginationButton>
-          </PaginationContainer>
+                {pageNumbers.map((number, index) => (
+                  <ContainerLabel key={index}>
+                    <PaginationButton key={number} onClick={() => paginate(number)}>
+                      <PaginationNumber>{number}</PaginationNumber>
+                    </PaginationButton>
+                    <Label
+                      style={{
+                        color: currentPage === number ? '#F2C94C' : "white",
+                        fontWeight: currentPage === number ? 'bold' : 'normal',
+                      }}
+                    >—</Label>
+                  </ContainerLabel>
+                ))}
+                <PaginationButton>
+                  <PaginationArrowRight onClick={handleNextPage}>{`>`}</PaginationArrowRight>
+                </PaginationButton>
+              </PaginationContainer>
+            )}
         </WrapperPagination>
         <WrapperFilter>
           <FilterContainer>
             <Filter>Health Score</Filter>
-            <Select onChange={(e) => setHealthScore(e.target.value)}>
+            <Select onChange={(e) => handleHealthScore(e.target.value)}>
               <Option value="all">Select</Option>
               <Option value="highest">Highest</Option>
               <Option value="lowest">Lowest</Option>
@@ -147,7 +175,7 @@ const Recipes = (props: RecipesProps) => {
           </FilterContainer>
           <FilterContainer>
             <Filter>Sort</Filter>
-            <Select onChange={(e) => setSort(e.target.value)}>
+            <Select onChange={(e) => handleSort(e.target.value)}>
               <Option value="all">Select</Option>
               <Option value="desc">A-Z</Option>
               <Option value="asc">Z-A</Option>

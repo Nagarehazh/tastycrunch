@@ -156,9 +156,12 @@ const DietIcon = styled.img`
     background-color: white;
 `;
 
-const IconWithName = styled.div`
+const IconWithName = styled.button`
     display: flex;
     align-items: center;
+    background-color: transparent;
+    border: none;
+    color: white;
     width: 100%;
     gap: 10px;
     transition: all 0.3s ease-in-out;
