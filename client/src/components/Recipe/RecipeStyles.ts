@@ -31,9 +31,23 @@ const CardDetailImgTagsContainer = styled.div`
     z-index: -1;
 `;
 
+const Overlay = styled.div`
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:hover {
+        background-color: rgba(0, 0, 0, 0);
+
+`;
 
 const CardDetailImage = styled.img`
     width: 100%;
+    height: 100%;
     object-fit: cover;
     border-radius: 7px 7px 0 0;
     z-index: -1;
@@ -45,9 +59,9 @@ const CardDietTags = styled.div`
     flex-wrap: wrap;
     margin: 0.5rem 0;
     top: 0;
-    z-index: -1;
+    z-index: 1;
     left: 0;
-
+    
     span {
         margin: 0 0.5rem;
         padding: 0.2rem 0.5rem;
@@ -56,6 +70,7 @@ const CardDietTags = styled.div`
         color: white;
         margin: 0.5rem;
         font-size: 1.8rem;
+        box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.6);
     }
 `;
 
@@ -78,16 +93,18 @@ const CardDetailContent = styled.div`
 `;
 
 const CardDetailTitle = styled.h3`
+text-align: center;
     font-size: 1.6rem;
     margin-bottom: 1rem;
 `;
 
-const CardDetailDescription = styled.p`
+
+const CardDetailHealthScore = styled.p`
     font-size: 1.2rem;
-    color: #777;
+    text-align: center;
+    color: black;
     overflow: hidden;
 `;
-
 
 
 
@@ -97,7 +114,8 @@ export {
     CardDetailImage,
     CardDetailContent,
     CardDetailTitle,
-    CardDetailDescription,
     CardDietTags,
-    CardDetailImgTagsContainer
+    CardDetailImgTagsContainer, 
+    Overlay,
+    CardDetailHealthScore
 }

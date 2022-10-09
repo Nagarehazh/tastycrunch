@@ -5,9 +5,10 @@ import {
   CardDetailImage,
   CardDetailContent,
   CardDetailTitle,
-  CardDetailDescription,
   CardDietTags,
-  CardDetailImgTagsContainer
+  CardDetailImgTagsContainer,
+  Overlay,
+  CardDetailHealthScore
 } from './RecipeStyles'
 
 interface RecipeProps {
@@ -33,21 +34,19 @@ const Recipe = (props: RecipeProps) => {
     <CardDetailConatainer>
       <CardDetailImgTagsContainer>
         {recipe && (
-          <>
+          <Overlay>
             <CardDetailImage src={recipe.image} alt={recipe.name} />
             <CardDietTags>
               {recipe.diets && (recipe.diets as any).map((diet: any, index: any) => (
                 <span key={index}>{diet}</span>
               ))}
             </CardDietTags>
-          </>
+          </Overlay>
         )}
       </CardDetailImgTagsContainer>
       <CardDetailContent>
         <CardDetailTitle>{recipe.name}</CardDetailTitle>
-        {/* <CardDetailDescription>{recipe.dishTypes}</CardDetailDescription> */}
-        <CardDetailDescription>{recipe.description}</CardDetailDescription>
-        <CardDetailDescription>{recipe.healthScore}</CardDetailDescription>
+        <CardDetailHealthScore>Health Score: {recipe.healthScore}</CardDetailHealthScore>
       </CardDetailContent>
     </CardDetailConatainer>
   )
