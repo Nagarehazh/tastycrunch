@@ -1,4 +1,5 @@
 import React from 'react'
+import defaultImg from '../../assets/images/defaultImage.jpg'
 
 import {
   CardDetailConatainer,
@@ -27,15 +28,13 @@ interface RecipeProps {
 
 const Recipe = (props: RecipeProps) => {
   const { recipe } = props;
-
-
  
-  return (
+ return (
     <CardDetailConatainer>
       <CardDetailImgTagsContainer>
         {recipe && (
           <Overlay>
-            <CardDetailImage src={recipe.image} alt={recipe.name} />
+            <CardDetailImage src={recipe.image || defaultImg} alt={recipe.name} />
             <CardDietTags>
               {recipe.diets && (recipe.diets as any).map((diet: any, index: any) => (
                 <span key={index}>{diet}</span>

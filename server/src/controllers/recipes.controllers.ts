@@ -16,12 +16,42 @@ interface TypesDataBaseRecipe {
 interface TypesDataBaseRecipeAllGet {
     id: string;
     name: string;
-    dishTypes: string;
     image: string;
     healthScore: number;
     diets: string[];
 }
 
+
+export const getOwnRecipes = async (_req: Request, res: Response) => {
+    try {
+
+        const recipesDb = await Recipe.findAll({
+            include: {
+                model: Diet,
+                attributes: ['name'],
+                through: {
+                    attributes: []
+                }
+            }
+        })
+
+        let response = await recipesDb?.map((recipe: any) => {
+            return {
+                id: recipe.id,
+                name: recipe.name,
+                description: recipe.description,
+                healthScore: recipe.healthScore,
+                stepByStep: recipe.stepByStep,
+                image: recipe.image,
+                diets: recipe.diets?.map((diet: any) => diet.name)
+            }
+        })
+
+        res.status(200).json(response);
+    } catch (error: any) {
+        res.status(404).json({ message: error.message });
+    }
+}
 
 export const getRecipes = async (req: Request, res: Response) => {
     const { name } = req.query;
@@ -58,7 +88,7 @@ export const getRecipes = async (req: Request, res: Response) => {
                     healthScore: (recipesDb as any).healthScore,
                     stepByStep: (recipesDb as any).stepByStep,
                     image: (recipesDb as any).image,
-                    diets: (recipesDb as any).diet,
+                    diets: (recipesDb as any).diets?.map((diet: any) => diet.name)
                 })
             }
 
@@ -101,17 +131,25 @@ export const getAllRecipes = async (_req: Request, res: Response) => {
                 })
             })
 
-        const recipesDb = await Recipe.findAll();
+        const recipesDb = await Recipe.findAll({
+            include: {
+                model: Diet,
+                attributes: ['name'],
+                through: {
+                    attributes: []
+                }
+
+            }
+        })
 
         if (recipesDb) {
             recipesDb.forEach((recipe: any) => {
                 myDataBaseRecipes.push({
                     id: recipe.id,
                     name: recipe.name,
-                    dishTypes: recipe.description,
                     healthScore: recipe.healthScore,
                     image: recipe.image,
-                    diets: recipe.diet
+                    diets: recipe.diet.map((diet: any) => diet.name)
                 })
             })
         }
@@ -152,26 +190,55 @@ export const getRecipeById = async (req: Request, res: Response) => {
 }
 
 
+
 export const postRecipe = async (req: Request, res: Response) => {
-    const { name, description, healthScore, stepByStep, image, dietArray } = req.body;
+    const { name, description, healthScore, stepByStep, image, diets } = req.body;
     try {
         const recipe = await Recipe.create({
             name,
             description,
             healthScore,
             stepByStep,
-            image,
-            diets: [{ name: dietArray }]
-        }, {
-            include: Diet
+            image
         });
 
-        res.status(200).json(recipe);        
-        
+        const diet = await Diet.findAll({
+            where: {
+                name: diets
+            }
+        })
+
+        await (recipe as any).addDiet(diet);
+
+        res.status(200).json(recipe);
     } catch (error: any) {
-        res.status(500).json({ message: error.message });
+        res.status(404).json({ message: error.message });
     }
 }
+// const { name, description, healthScore, stepByStep, image, diets } = req.body;
+// try {
+//     const recipe = await Recipe.create({
+//         name,
+//         description,
+//         healthScore,
+//         stepByStep,
+//         image,
+
+//     });
+
+//     const dbDiet = await Diet.findAll({
+//         where: {
+//             name: diets
+//         }
+//     });
+
+//     (recipe as any).addDiet(dbDiet)
+//     res.status(200).json(recipe);
+
+// } catch (error: any) {
+//     res.status(500).json({ message: error.message });
+// }
+// }
 
 export const putRecipe = async (req: Request, res: Response) => {
     const { id } = req.params;

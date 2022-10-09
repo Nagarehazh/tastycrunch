@@ -24,4 +24,5 @@ export const Recipe = sequelize.define('recipe', {
     image: {
         type: DataType.STRING,
     },
+   
 })

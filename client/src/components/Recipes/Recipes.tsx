@@ -26,16 +26,22 @@ import { useDispatch } from 'react-redux'
 interface RecipesProps {
   recipes: any
   dietclasification: any
+  myrecipes: any
 }
 
 
 const Recipes = (props: RecipesProps) => {
-  const { recipes, dietclasification } = props;
+  const { recipes, dietclasification, myrecipes} = props;
   const dispatch = useDispatch()
+
+  
 
   const [dietType, setDietType] = React.useState(false)
 
   let { payload } = useSelector(setSearch)
+  
+  const [dietPayload, setDietPayload] = React.useState([])
+  
   const [filtered, setFiltered] = React.useState(recipes)
   const [, setSort] = React.useState('')
   const [, setHealthScore] = React.useState('')
@@ -43,10 +49,7 @@ const Recipes = (props: RecipesProps) => {
   const [recipesPerPage] = React.useState(9)
   const indexOfLastRecipe = currentPage * recipesPerPage
   const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage
-
   const [actualRecipes, setActualRecipes] = React.useState(filtered && (filtered as any).slice(indexOfFirstRecipe, indexOfLastRecipe))
-
-
 
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
@@ -54,9 +57,7 @@ const Recipes = (props: RecipesProps) => {
   for (let i = 1; i <= Math.ceil((recipes !== undefined && (recipes as any).length) / recipesPerPage); i++) {
     pageNumbers.push(i)
   }
-
-
-
+  
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -71,8 +72,12 @@ const Recipes = (props: RecipesProps) => {
   }
 
   const handleViewAll = () => {
-    setDietType(!dietType)
-    setActualRecipes(recipes)
+    window.location.reload()
+    // setDietType(!dietType)
+    // setCurrentPage(1)
+    // setFiltered(recipes)
+    // setDietPayload([])
+    // setActualRecipes(recipes)
   }
 
   const handleSort = (e: any) => {
@@ -108,27 +113,45 @@ const Recipes = (props: RecipesProps) => {
   React.useEffect(() => {
     if ((payload.search.search !== undefined && payload.search.search !== null) && (payload.search.search !== '')) {
       const filterArray = recipes && (recipes as any).filter((recipe: { name: string }) => recipe.name.toLocaleLowerCase().includes(payload.search.search.toLocaleLowerCase()))
-      setFiltered(filterArray)
-    }
-
+      setDietType(true)
+      setCurrentPage(1)
+      return setFiltered(filterArray)
+    } 
+  
   }, [payload])
 
 
   React.useEffect(() => {
+        
+    if (myrecipes.ownrecipes.ownrecipes !== undefined && myrecipes.ownrecipes.ownrecipes !== null && myrecipes.ownrecipes.ownrecipes.length > 0) {
+      setDietType(true)
+      setCurrentPage(1)
+      setActualRecipes(myrecipes.ownrecipes.ownrecipes)
+    }
+      
+ }, [myrecipes])
+
+  React.useEffect(() => {
     if (dietclasification.diet.diets !== undefined && dietclasification.diet.diets !== null && dietclasification.diet.diets !== ' ') {
-
-
+      
+      if(dietPayload.length === 0){
+        setDietPayload(dietclasification)
+      console.log("Está aquí-----------------------")
       const filterClasification = recipes && (recipes as any).filter((recipe: { diets: string[] }) => recipe.diets.includes(dietclasification.diet.diets))
       
       setCurrentPage(1)
       setDietType(true)
       dispatch(setSearch(""))
-      return setActualRecipes(filterClasification)
-    }
+      setActualRecipes(filterClasification)
+      setDietPayload([])
+      }
+
+    } 
   }, [dietclasification])
 
 
 
+  
   return (
     <Container>
       <MainWrapper>

@@ -1,6 +1,7 @@
 import React from 'react';
 import images from '../../assets/diets'
 import searchImg from '../../assets/images/search.png'
+import myRecipes from '../../assets/images/myRecipes.png'
 import {
     NavBarContainer,
     NavBarLogo,
@@ -24,13 +25,17 @@ import {
     OptionType,
     TextArea,
     RecipeUrlImg,
-    SearchForm
+    SearchForm,
+    Tag,
+  DeleteIcon,
 } from './NavBarStyles';
-import { useGetDietsTypesQuery } from '../../redux/serverCall';
+import { useGetDietsTypesQuery, useCreateRecipeMutation, useGetMyRecipesQuery } from '../../redux/serverCall';
 import { useDispatch } from 'react-redux';
 import { setSearch } from '../../redux/searchRedux';
+import { setOwnRecipes } from '../../redux/ownrecipesRedux';
 import { setDiet } from '../../redux/dietRedux';
 import { Modal } from '..'
+import { AnyArray } from 'mongoose';
 
 
 interface DietTypes {
@@ -42,17 +47,29 @@ interface DietTypes {
 const NavBar = () => {
     const dispatch = useDispatch()
     const { data: dataDiet } = useGetDietsTypesQuery();
+    const [createRecipe] = useCreateRecipeMutation();
+    const {data: dataMyRecipes } = useGetMyRecipesQuery();
     const [nameRecipe, setNameRecipe] = React.useState('');
     const [descriptionRecipe, setDescriptionRecipe] = React.useState('');
     const [healthScore, setHealthScore] = React.useState('');
-    const [type, setType] = React.useState('')
-    const [instructions, setInstructions] = React.useState('')
-    const [recipeUrlImg, setRecipeUrlImg] = React.useState('')
+    const [type, setType] = React.useState<string[]>([])
+    const [stepByStep, setStepByStep] = React.useState('')
     const [searching, setSearching] = React.useState('')
     const [modal, setModal] = React.useState(false);
+    
+    
 
     const onSubmitForm = (e: any) => {
         e.preventDefault();
+        createRecipe({
+            name: nameRecipe,
+            description: descriptionRecipe,
+            healthScore: healthScore,
+            stepByStep: stepByStep,
+            diets: type,
+        })
+        window.location.reload()
+
     }
 
     const handleAddRecipe = () => {
@@ -69,6 +86,30 @@ const NavBar = () => {
         dispatch(setDiet(dietName))
     }
 
+    const handleGetMyRecipes = () => {
+        dispatch(setOwnRecipes(dataMyRecipes))
+        
+        if (dataMyRecipes && (dataMyRecipes as any).length === 0) {
+            alert('You have no recipes, create one!')
+        } 
+        
+    }
+
+ const handleAddTagDiet = (e: { target: { value: string; }; }) => {
+
+        if (type.includes((e as any).target.value)) {
+            const index = type.indexOf((e as any).target.value)
+            type.splice(index, 1)
+            setType([...type])
+        } else {
+            setType([...type, e.target.value])
+        }
+    }
+
+
+
+
+    
     return (
         <NavBarContainer>
             <AppBar>
@@ -102,6 +143,10 @@ const NavBar = () => {
                     <CreateContainer>
                         <CreateIcon onClick={handleAddRecipe}>+</CreateIcon>
                         <h2>Create Recipe</h2>
+                    </CreateContainer>
+                    <CreateContainer>
+                    <CreateIcon onClick={handleGetMyRecipes}><DietIcon src={myRecipes}/></CreateIcon>
+                        <h2>My Recipes</h2>
                     </CreateContainer>
                     <Hr />
                     <DietContainer>
@@ -143,16 +188,24 @@ const NavBar = () => {
                             <Input
                                 type="number"
                                 placeholder="Health Score"
+                                max={100}
+                                min={0}
                                 value={healthScore}
                                 onChange={(e) => setHealthScore(e.target.value)}
                                 required
                             />
+                            <label 
+                                htmlFor='dietselect'
+                                style={{ color: 'white', marginBottom: "20px", width: "100%", textAlign: "center" }}
+                                >Select all the Diet type that match:</label>
                             <SelectType
+                                multiple
                                 value={type}
-                                onChange={(e) => setType(e.target.value)}
-                                required
-                            >   <>
-                                    <OptionType value="">Diet Type</OptionType>
+                                onChange={handleAddTagDiet}
+                                name="dietselect"
+                            >
+                               <>   
+                                    {/* <OptionType value="">Diet Type</OptionType> */}
                                     {dataDiet && ((dataDiet as any)).map((diet: DietTypes, index: any ) => (
                                         <OptionType key={index} value={diet.name}>{diet.name}</OptionType>
                                     ))}
@@ -160,15 +213,8 @@ const NavBar = () => {
                             </SelectType>
                             <TextArea
                                 placeholder="Instructions"
-                                value={instructions}
-                                onChange={(e) => setInstructions(e.target.value)}
-                                required
-                            />
-                            <RecipeUrlImg
-                                type="text"
-                                placeholder="Recipe Image Url"
-                                value={recipeUrlImg}
-                                onChange={(e) => setRecipeUrlImg(e.target.value)}
+                                value={stepByStep}
+                                onChange={(e) => setStepByStep(e.target.value)}
                                 required
                             />
                             <ButtonModal>Create</ButtonModal>

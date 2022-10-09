@@ -53,7 +53,7 @@ const AppBar = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    width: 240px;
+    width: 280px;
     height: 100%;
     background-color: #fff;
     color: #000;
@@ -244,7 +244,7 @@ font-size: 2.5rem;
 font-weight: bold;
 letter-spacing: 1px;
 color: #21034F;
-margin-left: 260px;
+margin-left: 290px;
 `;
 
 const ContainerModal = styled.div`
@@ -272,6 +272,7 @@ const Form = styled.form`
     width: 100%;
     max-width: 700px;
     margin: 0 auto;
+    
 `;
 
 const Input = styled.input`
@@ -281,6 +282,11 @@ const Input = styled.input`
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 1.6rem;
+    background-color: transparent;
+    color: white;
+    ::placeholder {
+        color: #D3D5D6;
+    }
 `;
 
 const ButtonModal = styled.button`
@@ -288,7 +294,8 @@ margin-top: 2rem;
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
-    background-color: #e6e6e6;
+    background-color: #21034F;
+    color: white;
     font-size: 1.5rem;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
@@ -306,6 +313,9 @@ const SelectType = styled.select`
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 1.6rem;
+    color: white;
+    background-color: transparent;
+
 `;
 
 const OptionType = styled.option`
@@ -336,6 +346,24 @@ const RecipeUrlImg = styled.input`
     font-size: 1.6rem;
 `;
 
+const Tag = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+`;
+
+const DeleteIcon = styled.button`
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+        transform: scale(1.1);
+        transition: all 0.3s ease-in-out;
+    }
+`;
+
 export {
   NavBarContainer,
   NavBarLogo,
@@ -359,7 +387,9 @@ export {
   OptionType,
   TextArea,
   RecipeUrlImg,
-  SearchForm
+  SearchForm,
+  Tag,
+  DeleteIcon,
 
   
 };

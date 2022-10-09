@@ -10,8 +10,7 @@ export const Diet = sequelize.define('diet', {
     },
     name: {
         type: DataType.STRING,
-        allowNull: false,
-    },
+        },
 })
 
 

@@ -4,7 +4,7 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-left: 260px;
+    margin-left: 290px;
     `;
 
 const MainWrapper = styled.div`
