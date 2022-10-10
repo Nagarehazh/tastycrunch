@@ -46,6 +46,41 @@ svg {
   }
 `;
 
+const AppBarDrawer = styled.div`
+    display: flex;
+    position: fixed;
+    right: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 218px;
+    height: 100%;
+    background-color: #fff;
+    color: #000;
+    font-size: 1.5rem;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    z-index: 100;
+    animation: slideIn 0.5s ease-in-out;
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+        }
+        to {
+            transform: translateX(0);
+        }
+    }
+    &::-webkit-scrollbar {
+      width: 10px;
+      background-color: #cd97fc;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #b55cfb;
+      border-radius: 10px;
+    }
+
+   `;
 
 const AppBar = styled.div`
     display: flex;
@@ -53,7 +88,7 @@ const AppBar = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    width: 280px;
+    width: 218px;
     height: 100%;
     background-color: #fff;
     color: #000;
@@ -70,6 +105,9 @@ const AppBar = styled.div`
       border-radius: 10px;
     }
 
+    @media ${({ theme }) => theme.breakpoints.md} {
+      display: none;
+  }
 `;
 
 const ToolBar = styled.nav`
@@ -150,8 +188,8 @@ const Hr = styled.hr`
 `;
 
 const DietIcon = styled.img`
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     background-color: white;
 `;
@@ -170,6 +208,13 @@ const IconWithName = styled.button`
     &:hover {
       transform: scale(1.1);
       transition: all 0.3s ease-in-out;
+    }
+
+    h3 {
+      font-size: 1.4rem;
+    }
+
+      
     `;
 
 const HorizontalNav = styled.div`
@@ -244,7 +289,16 @@ font-size: 2.5rem;
 font-weight: bold;
 letter-spacing: 1px;
 color: #21034F;
-margin-left: 290px;
+margin-left: 228px;
+@media ${({ theme }) => theme.breakpoints.md} {
+    margin-left: 0;
+  }
+
+  @media ${({ theme }) => theme.breakpoints.sm} {
+    font-size: 2rem;
+    margin-left: 0.5rem;
+  }
+
 `;
 
 const ContainerModal = styled.div`
@@ -315,7 +369,15 @@ const SelectType = styled.select`
     font-size: 1.6rem;
     color: white;
     background-color: transparent;
-
+    &::-webkit-scrollbar {
+        width: 10px;
+        background-color: #B55CFB;
+      }
+  
+      &::-webkit-scrollbar-thumb {
+        background-color: #21034F;
+        border-radius: 10px;
+      }
 `;
 
 const OptionType = styled.option`
@@ -337,25 +399,31 @@ const TextArea = styled.textarea`
     font-size: 1.6rem;
 `;
 
-const RecipeUrlImg = styled.input`
-    width: 100%;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1.6rem;
-`;
-
-const Tag = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 20px;
-`;
-
-const DeleteIcon = styled.button`
+const MenuButton = styled.button`
+    display: none;
     background-color: transparent;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.6rem;
     border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+        transform: scale(1.1);
+        background-color: trasparent;
+    }
+    
+    @media ${({ theme }) => theme.breakpoints.md} {
+        display: flex;
+`;
+
+const MenuIcon = styled.img`
+    width: 30px;
+    height: 30px;
+    margin-bottom: 5px;
+    background-color: white;
+    border-radius: 50%;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     &:hover {
@@ -363,6 +431,10 @@ const DeleteIcon = styled.button`
         transition: all 0.3s ease-in-out;
     }
 `;
+
+
+
+
 
 export {
   NavBarContainer,
@@ -386,11 +458,11 @@ export {
   SelectType,
   OptionType,
   TextArea,
-  RecipeUrlImg,
   SearchForm,
-  Tag,
-  DeleteIcon,
-
+  MenuButton,
+  MenuIcon,
+  AppBarDrawer
+  
   
 };
 

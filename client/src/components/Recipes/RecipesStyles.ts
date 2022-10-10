@@ -4,25 +4,40 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-left: 290px;
+    margin-left: 228px;
+    @media ${({ theme }) => theme.breakpoints.md} {
+        margin-left: 0;
+        }
     `;
 
 const MainWrapper = styled.div`
     display: flex;
     width: 100%;
     padding-left: 30px;
+
+    @media ${({ theme }) => theme.breakpoints.lg} {
+        flex-direction: column;
+    }
     `
 
 const WrapperPagination = styled.div`
     display: flex;
     margin: 1rem 0;
     margin-top: 2rem;
+    @media ${({ theme }) => theme.breakpoints.sm} {
+        margin: 0;
+    }
+
     `;
 
 const PaginationContainer = styled.div`
     display: flex;
     margin: 2rem 0.5rem 0 0;
     gap: 0.5rem;
+    @media ${({ theme }) => theme.breakpoints.sm} {
+        gap: 0.1rem;
+    }
+    
     `;
 
 const PaginationButton = styled.button`
