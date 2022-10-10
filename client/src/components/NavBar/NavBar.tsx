@@ -62,19 +62,25 @@ const NavBar = () => {
 
     const onSubmitForm = (e: any) => {
         e.preventDefault();
-        if (nameRecipe === '' || descriptionRecipe === '' || healthScore === '' || type.length === 0 || stepByStep === '') {
-            alert('Complete all the fields')
-        } else if (Number(healthScore) < 0 || Number(healthScore) > 100) {
-            alert('Health score must be between 0 and 100')
+        if (nameRecipe.match(/^[a-zA-Z ]*$/)) {
+
+
+            if (nameRecipe === '' || descriptionRecipe === '' || healthScore === '' || type.length === 0 || stepByStep === '') {
+                alert('Complete all the fields')
+            } else if (Number(healthScore) < 0 || Number(healthScore) > 100) {
+                alert('Health score must be between 0 and 100')
+            } else {
+                createRecipe({
+                    name: nameRecipe,
+                    description: descriptionRecipe,
+                    healthScore: healthScore,
+                    stepByStep: stepByStep,
+                    diets: type,
+                })
+                window.location.reload()
+            }
         } else {
-            createRecipe({
-                name: nameRecipe,
-                description: descriptionRecipe,
-                healthScore: healthScore,
-                stepByStep: stepByStep,
-                diets: type,
-            })
-            window.location.reload()
+            alert('Name recipe only text')
         }
     }
 
