@@ -10,9 +10,6 @@ export const serverCall = createApi({
         getAllRecipes: builder.query<void, void>({
             query: () => '/recipes/all',
         }),
-        getMyRecipes: builder.query<void, void>({
-            query: () => '/recipes/myrecipes',
-        }),
         createRecipe: builder.mutation({
             query: (body) => ({
                 url: '/recipes',
@@ -27,7 +24,7 @@ export const {
     useGetDietsTypesQuery,
     useGetAllRecipesQuery,
     useCreateRecipeMutation,
-    useGetMyRecipesQuery,
+    
 } = serverCall;
 
 

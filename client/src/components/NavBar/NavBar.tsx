@@ -30,10 +30,9 @@ import {
     MenuIcon,
     AppBarDrawer
 } from './NavBarStyles';
-import { useGetDietsTypesQuery, useCreateRecipeMutation, useGetMyRecipesQuery } from '../../redux/serverCall';
+import { useGetDietsTypesQuery, useCreateRecipeMutation } from '../../redux/serverCall';
 import { useDispatch } from 'react-redux';
 import { setSearch } from '../../redux/searchRedux';
-import { setOwnRecipes } from '../../redux/ownrecipesRedux';
 import { setDiet } from '../../redux/dietRedux';
 import { Modal } from '..'
 
@@ -48,7 +47,6 @@ const NavBar = () => {
     const dispatch = useDispatch()
     const { data: dataDiet } = useGetDietsTypesQuery();
     const [createRecipe] = useCreateRecipeMutation();
-    const { data: dataMyRecipes } = useGetMyRecipesQuery();
     const [nameRecipe, setNameRecipe] = React.useState('');
     const [descriptionRecipe, setDescriptionRecipe] = React.useState('');
     const [healthScore, setHealthScore] = React.useState('');
@@ -57,6 +55,8 @@ const NavBar = () => {
     const [searching, setSearching] = React.useState('')
     const [modal, setModal] = React.useState(false);
     const [drawer, setDrawer] = React.useState(false);
+
+    const [errorHealthScore, setErrorHealthScore] = React.useState("")
 
 
 
@@ -96,15 +96,6 @@ const NavBar = () => {
         dispatch(setDiet(dietName))
     }
 
-    const handleGetMyRecipes = () => {
-        dispatch(setOwnRecipes(dataMyRecipes))
-
-        if (dataMyRecipes && (dataMyRecipes as any).length === 0) {
-            alert('You have no recipes, create one!')
-        }
-
-    }
-
     const handleAddTagDiet = (e: { target: { value: string; }; }) => {
 
         if (type.includes((e as any).target.value)) {
@@ -118,11 +109,9 @@ const NavBar = () => {
 
 
     const handleGetRecipes = () => {
-        //active drawer
         console.log('drawer')
         setDrawer(!drawer)
         console.log(drawer)
-
     }
 
 
@@ -162,10 +151,6 @@ const NavBar = () => {
                         <CreateContainer>
                             <CreateIcon onClick={handleAddRecipe}>+</CreateIcon>
                             <h2>Create Recipe</h2>
-                        </CreateContainer>
-                        <CreateContainer>
-                            <CreateIcon onClick={handleGetMyRecipes}><DietIcon src={myRecipes} /></CreateIcon>
-                            <h2>My Recipes</h2>
                         </CreateContainer>
                         <Hr />
                         <DietContainer>
@@ -207,6 +192,7 @@ const NavBar = () => {
                                     placeholder="Health Score"
                                     value={healthScore}
                                     onChange={(e) => setHealthScore(e.target.value)}
+                                                                            
                                 />
                                 <label
                                     htmlFor='dietselect'
@@ -219,7 +205,6 @@ const NavBar = () => {
                                     name="dietselect"
                                 >
                                     <>
-                                        {/* <OptionType value="">Diet Type</OptionType> */}
                                         {dataDiet && ((dataDiet as any)).map((diet: DietTypes, index: any) => (
                                             <OptionType key={index} value={diet.name}>{diet.name}</OptionType>
                                         ))}
@@ -270,10 +255,6 @@ const NavBar = () => {
                     <CreateContainer>
                         <CreateIcon onClick={handleAddRecipe}>+</CreateIcon>
                         <h2>Create Recipe</h2>
-                    </CreateContainer>
-                    <CreateContainer>
-                        <CreateIcon onClick={handleGetMyRecipes}><DietIcon src={myRecipes} /></CreateIcon>
-                        <h2>My Recipes</h2>
                     </CreateContainer>
                     <Hr />
                     <DietContainer>

@@ -13,14 +13,6 @@ interface TypesDataBaseRecipe {
     diets: string[];
 }
 
-interface TypesDataBaseRecipeAllGet {
-    id: string;
-    name: string;
-    image: string;
-    healthScore: number;
-    diets: string[];
-}
-
 
 export const getOwnRecipes = async (_req: Request, res: Response) => {
     try {
@@ -113,7 +105,6 @@ export const getRecipes = async (req: Request, res: Response) => {
 export const getAllRecipes = async (_req: Request, res: Response) => {
     try {
         const spoonacularApi: any[] = [];
-        const myDataBaseRecipes: TypesDataBaseRecipeAllGet[] = [];
         let allRecipes = [];
 
         await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${process
@@ -142,19 +133,19 @@ export const getAllRecipes = async (_req: Request, res: Response) => {
             }
         })
 
-        if (recipesDb) {
-            recipesDb.forEach((recipe: any) => {
-                myDataBaseRecipes.push({
-                    id: recipe.id,
-                    name: recipe.name,
-                    healthScore: recipe.healthScore,
-                    image: recipe.image,
-                    diets: recipe.diet.map((diet: any) => diet.name)
-                })
-            })
-        }
+        let response = await recipesDb?.map((recipe: any) => {
+            return {
+                id: recipe.id,
+                name: recipe.name,
+                description: recipe.description,
+                healthScore: recipe.healthScore,
+                stepByStep: recipe.stepByStep,
+                image: recipe.image,
+                diets: recipe.diets?.map((diet: any) => diet.name)
+            }
+        })
 
-        allRecipes = spoonacularApi.concat(myDataBaseRecipes);
+        allRecipes = spoonacularApi.concat(response);
         res.status(200).json(allRecipes);
 
 
