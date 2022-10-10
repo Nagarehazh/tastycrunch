@@ -71,6 +71,13 @@ const CardDietTags = styled.div`
         margin: 0.5rem;
         font-size: 1.8rem;
         box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.6);
+
+        @media ${({ theme }) => theme.breakpoints.lg} {
+            font-size: 1.1rem;
+        }
+        @media ${({ theme }) => theme.breakpoints.md} {
+            font-size: 1.8rem;
+        }
     }
 `;
 

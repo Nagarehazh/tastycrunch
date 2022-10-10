@@ -63,8 +63,6 @@ const NavBar = () => {
     const onSubmitForm = (e: any) => {
         e.preventDefault();
         if (nameRecipe.match(/^[a-zA-Z ]*$/)) {
-
-
             if (nameRecipe === '' || descriptionRecipe === '' || healthScore === '' || type.length === 0 || stepByStep === '') {
                 alert('Complete all the fields')
             } else if (Number(healthScore) < 0 || Number(healthScore) > 100) {
