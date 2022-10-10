@@ -162,6 +162,7 @@ const Option = styled.option``;
 
 const RecipesContainer = styled.div`
     display: grid;
+    width: 100%;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 20px;
     padding: 20px;

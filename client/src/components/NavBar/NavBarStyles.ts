@@ -344,7 +344,7 @@ const Input = styled.input`
 `;
 
 const ButtonModal = styled.button`
-margin-top: 2rem;
+    margin-top: 2rem;
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -359,6 +359,18 @@ margin-top: 2rem;
         transform: scale(1.1);
     }
 `;
+
+const ButtonDisabled = styled.button`
+margin-top: 2rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #21034F;
+    color: white;
+    font-size: 1.5rem;
+   
+`;
+
 
 const SelectType = styled.select`
     width: 100%;
@@ -461,8 +473,8 @@ export {
   SearchForm,
   MenuButton,
   MenuIcon,
-  AppBarDrawer
-  
+  AppBarDrawer,
+  ButtonDisabled
   
 };
 

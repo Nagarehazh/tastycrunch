@@ -3,6 +3,7 @@ import styled from "styled-components";
 const CardDetailConatainer = styled.div`
     
    cursor: pointer;
+   width: 100%;
    height: 100%;
    margin-bottom: 1rem;
   

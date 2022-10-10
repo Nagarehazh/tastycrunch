@@ -1,7 +1,6 @@
 import React from 'react';
 import images from '../../assets/diets'
 import searchImg from '../../assets/images/search.png'
-import myRecipes from '../../assets/images/myRecipes.png'
 import menuimg from '../../assets/images/menu.png'
 import {
     NavBarContainer,
@@ -28,7 +27,8 @@ import {
     SearchForm,
     MenuButton,
     MenuIcon,
-    AppBarDrawer
+    AppBarDrawer,
+    ButtonDisabled
 } from './NavBarStyles';
 import { useGetDietsTypesQuery, useCreateRecipeMutation } from '../../redux/serverCall';
 import { useDispatch } from 'react-redux';
@@ -49,38 +49,30 @@ const NavBar = () => {
     const [createRecipe] = useCreateRecipeMutation();
     const [nameRecipe, setNameRecipe] = React.useState('');
     const [descriptionRecipe, setDescriptionRecipe] = React.useState('');
-    const [healthScore, setHealthScore] = React.useState('');
+    const [healthScore, setHealthScore] = React.useState(0);
     const [type, setType] = React.useState<string[]>([])
     const [stepByStep, setStepByStep] = React.useState('')
     const [searching, setSearching] = React.useState('')
     const [modal, setModal] = React.useState(false);
     const [drawer, setDrawer] = React.useState(false);
 
-    const [errorHealthScore, setErrorHealthScore] = React.useState("")
-
-
 
     const onSubmitForm = (e: any) => {
         e.preventDefault();
-        if (nameRecipe.match(/^[a-zA-Z ]*$/)) {
-            if (nameRecipe === '' || descriptionRecipe === '' || healthScore === '' || type.length === 0 || stepByStep === '') {
-                alert('Complete all the fields')
-            } else if (Number(healthScore) < 0 || Number(healthScore) > 100) {
-                alert('Health score must be between 0 and 100')
-            } else {
-                createRecipe({
-                    name: nameRecipe,
-                    description: descriptionRecipe,
-                    healthScore: healthScore,
-                    stepByStep: stepByStep,
-                    diets: type,
-                })
-                window.location.reload()
-            }
-        } else {
-            alert('Name recipe only text')
-        }
+        try {
+        createRecipe({
+            name: nameRecipe,
+            description: descriptionRecipe,
+            healthScore: healthScore,
+            stepByStep: stepByStep,
+            diets: type,
+        })
+    } catch (error) {
+       alert("Recipe Name already exists, please try again with another beautiful name")
     }
+        window.location.reload()
+    }
+
 
     const handleAddRecipe = () => {
         setModal(!modal)
@@ -113,7 +105,6 @@ const NavBar = () => {
         setDrawer(!drawer)
         console.log(drawer)
     }
-
 
 
     return (
@@ -174,50 +165,53 @@ const NavBar = () => {
 
                     >
                         <ContainerModal>
-                            <Form onSubmit={onSubmitForm}>
-                                <Input
-                                    type="text"
-                                    placeholder="Recipe Name"
-                                    value={nameRecipe}
-                                    onChange={(e) => setNameRecipe(e.target.value)}
-                                />
-                                <Input
-                                    type="text"
-                                    placeholder="Description"
-                                    value={descriptionRecipe}
-                                    onChange={(e) => setDescriptionRecipe(e.target.value)}
-                                />
-                                <Input
-                                    type="number"
-                                    placeholder="Health Score"
-                                    value={healthScore}
-                                    onChange={(e) => setHealthScore(e.target.value)}
-                                                                            
-                                />
-                                <label
-                                    htmlFor='dietselect'
-                                    style={{ color: 'white', marginBottom: "20px", width: "100%", textAlign: "center" }}
-                                >Select all the Diet type that match:</label>
-                                <SelectType
-                                    multiple
-                                    value={type}
-                                    onChange={handleAddTagDiet}
-                                    name="dietselect"
-                                >
-                                    <>
-                                        {dataDiet && ((dataDiet as any)).map((diet: DietTypes, index: any) => (
-                                            <OptionType key={index} value={diet.name}>{diet.name}</OptionType>
-                                        ))}
-                                    </>
-                                </SelectType>
-                                <TextArea
-                                    placeholder="Instructions"
-                                    value={stepByStep}
-                                    onChange={(e) => setStepByStep(e.target.value)}
-                                />
-                                <ButtonModal>Create</ButtonModal>
-                            </Form>
-                        </ContainerModal>
+                        <Form onSubmit={onSubmitForm}>
+                            <Input
+                                type="text"
+                                placeholder="Recipe Name"
+                                value={nameRecipe}
+                                onChange={(e) => setNameRecipe(e.target.value)}
+                            />
+                            {nameRecipe.match(/^[a-zA-Z ]*$/) ? null : <p style={{ color: 'red' }}>Only letters</p>}
+                            <Input
+                                type="text"
+                                placeholder="Description"
+                                value={descriptionRecipe}
+                                onChange={(e) => setDescriptionRecipe(e.target.value)}
+                            />
+                            <Input
+                                type="number"
+                                placeholder="Health Score"
+                                value={healthScore}
+                                onChange={(e) => setHealthScore(parseInt(e.target.value))}
+                            />
+                            {(healthScore < 0 || healthScore > 100) && <p style={{ color: "red" }}>Health Score must be between 0 and 100</p>}
+
+                            <label
+                                htmlFor='dietselect'
+                                style={{ color: 'white', marginBottom: "20px", width: "100%", textAlign: "center" }}
+                            >Select all the Diet type that match:</label>
+                            <SelectType
+                                multiple
+                                value={type}
+                                onChange={handleAddTagDiet}
+                                name="dietselect"
+                            >
+                                <>
+                                    {/* <OptionType value="">Diet Type</OptionType> */}
+                                    {dataDiet && ((dataDiet as any)).map((diet: DietTypes, index: any) => (
+                                        <OptionType key={index} value={diet.name}>{diet.name}</OptionType>
+                                    ))}
+                                </>
+                            </SelectType>
+                            <TextArea
+                                placeholder="Instructions"
+                                value={stepByStep}
+                                onChange={(e) => setStepByStep(e.target.value)}
+                            />
+                            {healthScore < 0 || healthScore > 100 || !nameRecipe.match(/^[a-zA-Z ]*$/) || nameRecipe === "" || descriptionRecipe === "" || type.length === 0 || stepByStep === '' ? <ButtonDisabled disabled>Complete all the fields</ButtonDisabled> : <ButtonModal>Create</ButtonModal>}
+                        </Form>
+                    </ContainerModal>
                     </Modal>
                 </AppBarDrawer>
 
@@ -285,6 +279,7 @@ const NavBar = () => {
                                 value={nameRecipe}
                                 onChange={(e) => setNameRecipe(e.target.value)}
                             />
+                            {nameRecipe.match(/^[a-zA-Z ]*$/) ? null : <p style={{ color: 'red' }}>Only letters</p>}
                             <Input
                                 type="text"
                                 placeholder="Description"
@@ -295,8 +290,10 @@ const NavBar = () => {
                                 type="number"
                                 placeholder="Health Score"
                                 value={healthScore}
-                                onChange={(e) => setHealthScore(e.target.value)}
+                                onChange={(e) => setHealthScore(parseInt(e.target.value))}
                             />
+                            {(healthScore < 0 || healthScore > 100) && <p style={{ color: "red" }}>Health Score must be between 0 and 100</p>}
+
                             <label
                                 htmlFor='dietselect'
                                 style={{ color: 'white', marginBottom: "20px", width: "100%", textAlign: "center" }}
@@ -319,7 +316,7 @@ const NavBar = () => {
                                 value={stepByStep}
                                 onChange={(e) => setStepByStep(e.target.value)}
                             />
-                            <ButtonModal>Create</ButtonModal>
+                            {healthScore < 0 || healthScore > 100 || !nameRecipe.match(/^[a-zA-Z ]*$/) || nameRecipe === "" || descriptionRecipe === "" || type.length === 0 || stepByStep === '' ? <ButtonDisabled disabled>Complete all the fields</ButtonDisabled> : <ButtonModal>Create</ButtonModal>}
                         </Form>
                     </ContainerModal>
                 </Modal>
