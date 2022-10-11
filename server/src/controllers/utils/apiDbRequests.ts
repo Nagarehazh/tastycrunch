@@ -141,7 +141,7 @@ const postRecipe = async (name: any, description: any, healthScore: any, stepByS
 
         return recipe;
     } catch (error: any) {
-        return error.message;
+        return { error: error.message };
     }
 }
 

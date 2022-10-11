@@ -59,7 +59,14 @@ const createRecipe = async (req: Request, res: Response) => {
     const { name, description, healthScore, stepByStep, image, diets } = req.body;
     try {
         const recipe = await postRecipe(name, description, healthScore, stepByStep, image, diets);
+        
+        if ((recipe as any).error){
+           return res.status(400).json({ message: (recipe as any).error });
+        } else {
+
         return res.status(200).json(recipe);
+        }
+       
     } catch (error: any) {
         return res.status(500).json({ message: error.message });
     }
