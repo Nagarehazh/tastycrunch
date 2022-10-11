@@ -1,6 +1,6 @@
 import React from 'react'
 import { Recipe } from '..'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {
   RecipesContainer,
   Container,
@@ -33,9 +33,7 @@ interface RecipesProps {
 const Recipes = (props: RecipesProps) => {
   const { recipes, dietclasification } = props;
   const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const location = useLocation()
-
+  
   const recipesFromRedux = [...recipes]
 
   const [dietType, setDietType] = React.useState(false)
@@ -163,6 +161,7 @@ const Recipes = (props: RecipesProps) => {
       const filterArray = recipes && (recipes as any).filter((recipe: { name: string }) => recipe.name.toLocaleLowerCase().includes(payload.search.search.toLocaleLowerCase()))
       setSearchMode(true)
       setCurrentPage(1)
+      setActualRecipes(filterArray)
       return setFiltered(filterArray)
     }
 
@@ -179,7 +178,9 @@ const Recipes = (props: RecipesProps) => {
         setActualRecipes(filtered && (filtered as any).filter((recipe: { diets: string[] }) => recipe.diets?.includes(dietclasification.diet.diets)))
         // setCurrentPage(1)
         setDietType(true)
+        if(searchMode === false){
         dispatch(setSearch(""))
+        }
         setDietPayload([])
       }
 

@@ -1,9 +1,8 @@
-import { Request, Response } from 'express';
 import { Recipe } from '../../models/recipe';
 import axios from 'axios';
 import { Diet } from '../../models/diet';
 
-const getDatabaseRecipes = async (_req: Request, res: Response) => {
+const getDatabaseRecipes = async () => {
     try {
         const dataBaseIncludeDiet = await Recipe.findAll({
             include: {
@@ -29,11 +28,11 @@ const getDatabaseRecipes = async (_req: Request, res: Response) => {
 
         return response;
     } catch (error: any) {
-        return res.status(500).json({ message: error.message });
+        return error.message;
     }
 }
 
-const getApiRecipes = async (_req: Request, res: Response) => {
+const getApiRecipes = async () => {
     try {
         const apiCall = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${process
             .env.SPOONACULAR_API_KEY}&addRecipeInformation=true&number=100`)
@@ -52,12 +51,13 @@ const getApiRecipes = async (_req: Request, res: Response) => {
             })
         return apiCall;
     } catch (error: any) {
-        return res.status(500).json({ message: error.message });
+        return error.message;
     }
 }
 
-const getApiRecipeByName = async (_req: Request, res: Response, name: any) => {
-    if (name) {
+
+const getApiRecipeByName = async (name: any) => {
+    
         try {
             const apiCall = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${process
                 .env.SPOONACULAR_API_KEY}&query=${name}&addRecipeInformation=true&number=100`)
@@ -74,32 +74,36 @@ const getApiRecipeByName = async (_req: Request, res: Response, name: any) => {
                 })
             return apiCall;
         } catch (error: any) {
-            return res.status(500).json({ message: `Recipe with name ${name} not found` });
+            return error.message;
         }
     } 
-}
 
-const getAllDbApiRecipes = async (req: Request, res: Response) => {
+
+const getAllDbApiRecipes = async () => {
     try {
-        const apiRecipes = await getApiRecipes(req, res);
-        const dbRecipes = await getDatabaseRecipes(req, res);
+        const apiRecipes = await getApiRecipes();
+        const dbRecipes = await getDatabaseRecipes();
         const allRecipes = apiRecipes.concat(dbRecipes);
-        return res.status(200).json(allRecipes);
+        return allRecipes;
     } catch (error: any) {
-        return res.status(500).json({ message: error.message });
+        return error.message;
     }
 }
 
-const RecipeById = async (_req: Request, res: Response, id: any) => {
+
+
+const RecipeById = async (id: string) => {
     try {
+        if (id.length === 36) {
         const recipe = await Recipe.findByPk(id);
         if (recipe) {
           return recipe;
         }
-
+    } else {
+        
         const recipeApi = await axios.get(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${process.env.SPOONACULAR_API_KEY}&includeNutrition=false`)
             .then((response) => {
-                return res.status(200).json({
+                return ({
                     name: response.data.title,
                     description: response.data.summary,
                     healthScore: response.data.healthScore,
@@ -109,14 +113,14 @@ const RecipeById = async (_req: Request, res: Response, id: any) => {
                 })
             })
         return recipeApi;
-
+        }
     } catch (error: any) {
-        return res.status(500).json({ message: error.message });
+        return error.message;
     }
 }
 
 
-const postRecipe = async (_req: Request, res: Response, name: any, description: any, healthScore: any, stepByStep: any, image: any, diets: any) => {
+const postRecipe = async (name: any, description: any, healthScore: any, stepByStep: any, image: any, diets: any) => {
     
     try {
         const recipe = await Recipe.create({
@@ -137,7 +141,7 @@ const postRecipe = async (_req: Request, res: Response, name: any, description: 
 
         return recipe;
     } catch (error: any) {
-        return res.status(404).json({ message: error.message });
+        return error.message;
     }
 }
 
