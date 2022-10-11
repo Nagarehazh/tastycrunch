@@ -9,17 +9,17 @@
 // import whole30Img from '../assets/diets/whole.png';
 
 enum DIETS {
-    GLUTEN_FREE = "gluten_free",
+    GLUTEN_FREE = "gluten free",
     KETOGENIC = "ketogenic",
     VEGETARIAN = "vegetarian",
-    LACTO_VEGETARIAN = "lacto-vegetarian",
-    OVO_VEGETARIAN = "ovo-vegetarian",
+    LACTO_VEGETARIAN = "lacto vegetarian",
+    OVO_VEGETARIAN = "ovo vegetarian",
     VEGAN = "vegan",
     PESCETARIAN = "pescetarian",
     PALEO = "paleo",
     PRIMAL = "primal",
-    LOW_FODMAP = "low_fodmap",
-    WHOLE30 = "whole30",    
+    LOW_FODMAP = "low fodmap",
+    WHOLE30 = "whole 30",    
 }
 
 const DIETS_ARRAY = [
@@ -205,4 +205,47 @@ const RECIPES_ARRAY = [
 ]
 
 
-export { DIETS, DIETS_ARRAY, RECIPES_ARRAY }
+const RECIPES_ARRAY_SIN_STEPS = [
+    {
+        id: 1,
+        name: "Vegan Pizza",
+        image: "https://spoonacular.com/recipeImages/716429-312x231.jpg",
+        description: "This vegan pizza is made with a simple homemade pizza dough, a creamy cashew cheese, and your favorite pizza toppings. It's easy to make and tastes just like the real thing!, ",
+        healthScore: 100,
+        diets: [DIETS.VEGAN, DIETS.VEGETARIAN, DIETS.GLUTEN_FREE],
+    },
+    {
+        id: 2,
+        name: "PP1Vegan Pizza",
+        image: "https://spoonacular.com/recipeImages/716429-312x231.jpg",
+        description: "This vegan pizza is made with a simple homemade pizza dough, a creamy cashew cheese, and your favorite pizza toppings. It's easy to make and tastes just like the real thing!",
+        healthScore: 1,
+        diets: [DIETS.VEGAN, DIETS.VEGETARIAN, DIETS.GLUTEN_FREE],
+    },
+    {
+        id: 3,
+        name: "Aegan Pizza",
+        image: "https://spoonacular.com/recipeImages/716429-312x231.jpg",
+        description: "This vegan pizza is made with a simple homemade pizza dough, a creamy cashew cheese, and your favorite pizza toppings. It's easy to make and tastes just like the real thing!",
+        healthScore: 100,
+        diets: [DIETS.VEGAN, DIETS.VEGETARIAN, DIETS.GLUTEN_FREE],
+    },
+    {
+        id: 4,
+        name: "Vegan Pizza",
+        image: "https://spoonacular.com/recipeImages/716429-312x231.jpg",
+        description: "This vegan pizza is made with a simple homemade pizza dough, a creamy cashew cheese, and your favorite pizza toppings. It's easy to make and tastes just like the real thing!",
+        healthScore: 100,
+        diets: [DIETS.VEGAN, DIETS.VEGETARIAN, DIETS.GLUTEN_FREE],
+    },
+    {
+        id: 5,
+        name: "Vegan Pizza",
+        image: "https://spoonacular.com/recipeImages/716429-312x231.jpg",
+        description: "This vegan pizza is made with a simple homemade pizza dough, a creamy cashew cheese, and your favorite pizza toppings. It's easy to make and tastes just like the real thing!",
+        healthScore: 100,
+        diets: [DIETS.VEGAN, DIETS.VEGETARIAN, DIETS.GLUTEN_FREE],
+    }
+]
+
+export { DIETS, DIETS_ARRAY, RECIPES_ARRAY, RECIPES_ARRAY_SIN_STEPS }

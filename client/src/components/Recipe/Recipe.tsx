@@ -17,7 +17,6 @@ interface RecipeProps {
     name: string;
     healthScore: number;
     image: string;
-    dishTypes: string[];
     description: string;
     diets: string[];
 

@@ -3,3 +3,4 @@ export { default as NavBar } from './NavBar/NavBar';
 export { default as Recipes } from './Recipes/Recipes';
 export { default as Recipe } from './Recipe/Recipe';
 export { default as Modal } from './Modal/Modal';
+export { default as RecipeDetail } from './RecipeDetail/RecipeDetail';

@@ -5,11 +5,13 @@ import {
 // import { useGetAllRecipesQuery as getAll } from '../../redux/serverCall'
 import { useSelector } from 'react-redux'
 import { setDiet } from '../../redux/dietRedux'
+import { setSearch } from '../../redux/searchRedux'
 import datajson from '../../constants/data_save.json'
 
 
 const Home = () => {
-  // const {data, isLoading, error} = getAll()
+  let { payload: payloadSearch } = useSelector(setSearch)
+  // const {data, isLoading, error} = getAll(payloadSearch)
   let { payload } = useSelector(setDiet)
   
   // if (isLoading) return <div>Loading...</div>

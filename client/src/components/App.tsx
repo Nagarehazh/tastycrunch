@@ -4,7 +4,8 @@ import { myTheme } from '../theme/default';
 import GlobalStyles from '../styles/globals';
 
 import {
-  Home
+  Home,
+  RecipeDetail,
 } from '.';
 
 
@@ -16,6 +17,7 @@ function App() {
         <main>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/recipe/:id" element={<RecipeDetail />} />
           </Routes>
         </main>
       </ThemeProvider>
