@@ -20,6 +20,19 @@ export const serverCall = createApi({
                 body,
             }),
         }),
+        updateRecipe: builder.mutation({
+            query: (body) => ({
+                url: '/recipes',
+                method: 'PUT',
+                body,
+            }),
+        }),
+        deleteRecipe: builder.mutation({
+            query: (id) => ({
+                url: `/recipes/${id}`,
+                method: 'DELETE',
+            }),
+        }),
     }),
 });
 
@@ -28,7 +41,8 @@ export const {
     useGetAllRecipesQuery,
     useCreateRecipeMutation,
     useGetRecipeByIdQuery,
-    
+    useUpdateRecipeMutation,
+    useDeleteRecipeMutation,
 } = serverCall;
 
 

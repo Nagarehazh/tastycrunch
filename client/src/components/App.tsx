@@ -6,6 +6,7 @@ import GlobalStyles from '../styles/globals';
 import {
   Home,
   RecipeDetail,
+  Landing
 } from '.';
 
 
@@ -16,7 +17,8 @@ function App() {
         <GlobalStyles />
         <main>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Landing />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/recipe/:id" element={<RecipeDetail />} />
           </Routes>
         </main>

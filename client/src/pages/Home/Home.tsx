@@ -1,6 +1,7 @@
 import {
     NavBar,
-    Recipes
+    Recipes,
+    Loading
 } from '../../components'
 import { setSearch } from '../../redux/searchRedux'
 import { useGetAllRecipesQuery as getAll } from '../../redux/serverCall'
@@ -14,7 +15,7 @@ const Home = () => {
   const {data, isLoading, error} = getAll(payloadSearch.search.search)
   let { payload } = useSelector(setDiet)
   
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading) return <Loading/>
 
   if (error) return <div>{(error as any).message}</div>
   

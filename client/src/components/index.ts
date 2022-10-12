@@ -4,3 +4,6 @@ export { default as Recipes } from './Recipes/Recipes';
 export { default as Recipe } from './Recipe/Recipe';
 export { default as Modal } from './Modal/Modal';
 export { default as RecipeDetail } from './RecipeDetail/RecipeDetail';
+export { default as Landing } from '../pages/Landing/Landing';
+export { default as BgAnimation } from './BgAnimation/BgAnimation';
+export { default as Loading } from './Loading/Loading';

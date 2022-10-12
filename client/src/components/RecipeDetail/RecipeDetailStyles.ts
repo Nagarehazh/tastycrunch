@@ -231,6 +231,115 @@ margin-left: 228px;
 
 `;
 
+const ContainerModal = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 999;
+    h1 {
+        font-size: 4.2rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+    }
+
+    p {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+
+`;
+
+const Form = styled.form`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    
+`;
+
+const Input = styled.input`
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1.6rem;
+    background-color: transparent;
+    color: white;
+    ::placeholder {
+        color: #D3D5D6;
+    }
+`;
+
+const ButtonModal = styled.button`
+    margin-top: 2rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #21034F;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+        background-color: #21034F;
+        color: white;
+        transform: scale(1.1);
+    }
+`;
+
+const SelectType = styled.select`
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1.6rem;
+    color: white;
+    background-color: transparent;
+    &::-webkit-scrollbar {
+        width: 10px;
+        background-color: #B55CFB;
+      }
+  
+      &::-webkit-scrollbar-thumb {
+        background-color: #21034F;
+        border-radius: 10px;
+      }
+`;
+
+const OptionType = styled.option`
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1.6rem;
+`;
+
+const TextArea = styled.textarea`
+    width: 100%;
+    height: 120px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1.6rem;
+`;
+
+const ButtonDisabled = styled.button`
+margin-top: 2rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #21034F;
+    color: white;
+    font-size: 1.5rem;
+   
+`;
+
 export {
     MainContainer,
     RecipeContainer,
@@ -248,7 +357,15 @@ export {
     RecipesContainer,
     HorizontalNav,
     TitleApp,
-    GoBackButton
+    GoBackButton,
+    ContainerModal,
+    Form,
+    Input,
+    ButtonModal,
+    SelectType,
+    OptionType,
+    TextArea,
+    ButtonDisabled
 }
 
 

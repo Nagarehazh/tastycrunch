@@ -18,7 +18,8 @@ import {
   MainWrapper,
   Label,
   ContainerLabel,
-  ButtonViewAll
+  ButtonViewAll,
+  
 } from './RecipesStyles'
 import { useSelector } from 'react-redux'
 import { setSearch } from '../../redux/searchRedux'

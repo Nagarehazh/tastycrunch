@@ -226,6 +226,6 @@ export {
     MainWrapper,
     Label,
     ContainerLabel,
-    ButtonViewAll
-
+    ButtonViewAll,
+    
 }
