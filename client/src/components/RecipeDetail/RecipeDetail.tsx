@@ -32,40 +32,23 @@ import datajson from '../../constants/data_save.json'
 
 
 const RecipeDetail = () => {
-    const { id } : any = useParams()
-    
-    const {data, isLoading, error} = useGetRecipeByIdQuery(id)
-    
-    const {data: dataAll} = getAll("", )
+    const { id }: any = useParams()
+    const { data, isLoading, error }: any = useGetRecipeByIdQuery(id)
+    const { data: dataAll } = getAll("",)
 
-    const [recommendation, setRecommendation] = React.useState<any>([])
 
-           console.log(dataAll)
 
-    
     const navigate = useNavigate()
 
-    const [dietType, setDietType] = React.useState('')
-
-    // if(dataAll !== undefined){
-    //     //filter by diet
-    //     const filtered = (dataAll as any).filter((recipe: any) => {
-    //         return recipe.diets.includes(dietType)
-    //     })
-    //     setRecommendation(filtered)
-    // }
-            
-
-
-    const handleSelectDiet = (dietName: string) => {
-
-    }
 
 
     const goBackHandler = () => {
         navigate('/')
     }
 
+    React.useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [id])
 
     return (
         <div>
@@ -74,43 +57,42 @@ const RecipeDetail = () => {
                 <TitleApp>TastyCrunch.</TitleApp>
             </HorizontalNav>
             <MainContainer>
-                {data !== undefined &&  
+                {data !== undefined &&
                     (
                         <RecipeContainer >
                             <RecipeDetailImage src={(data as any).image} />
                             <RecipeDetailContainer>
                                 <RecipeDetailTitle>{(data as any).name}</RecipeDetailTitle>
-                                <RecipeDetailDescription dangerouslySetInnerHTML={{__html: (data as any).description}}></RecipeDetailDescription>
+                                <RecipeDetailDescription dangerouslySetInnerHTML={{ __html: (data as any).description }}></RecipeDetailDescription>
                                 <ContainerScoreDiet>
                                     <RecipeDetailHealthScore>Health Score: {(data as any).healthScore}</RecipeDetailHealthScore>
                                     <DietContainer>
                                         {(data as any).diets.map((diet: any, index: number) => {
                                             return (
                                                 <IconWithName key={index}>
-                                                    <DietIcon src={(images as any)[diet]} onClick={() => handleSelectDiet(diet)} />
-                                                    <h3>{((diet && dietType === "" && setDietType(diet)) || diet)}</h3>
+                                                    <DietIcon src={(images as any)[diet]} />
+                                                    <h3>{diet}</h3>
                                                 </IconWithName>
                                             )
                                         })}
                                     </DietContainer>
                                 </ContainerScoreDiet>
-                                <RecipeDetailStepByStep dangerouslySetInnerHTML={{__html: (data as any).stepByStep}}></RecipeDetailStepByStep>
+                                <RecipeDetailStepByStep dangerouslySetInnerHTML={{ __html: (data as any).stepByStep }}></RecipeDetailStepByStep>
                             </RecipeDetailContainer>
                         </RecipeContainer>
                     )
                 }
-                
+
                 <RecipesRecomendationContainer>
                     <h1>You might also like</h1>
                     <RecipesContainer>
-                        {recommendation.lenght > 0 && recommendation.map((recipe: any, index: any) => {
+                        {dataAll !== undefined && dataAll.slice(0, 11).filter((recipe: any) => recipe.diets.includes((data as any).diets[0])).map((recipe: any, index: number) => {
                             return (
                                 <Link to={`/recipe/${recipe.id}`} key={index}>
-                                    <Recipe recipe={recipe} />
+                                    <Recipe key={index} recipe={recipe} />
                                 </Link>
                             )
-                        }
-                        )}
+                        })}
                     </RecipesContainer>
                 </RecipesRecomendationContainer>
             </MainContainer>

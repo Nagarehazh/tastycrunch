@@ -43,6 +43,7 @@ const RecipeDetailImage = styled.img`
     height: 100%;
     object-fit: cover;
     border-radius: 20px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
 `;
 
 const RecipeDetailContainer = styled.div`
@@ -92,6 +93,7 @@ const DietIcon = styled.img`
     width: 30px;
     height: 30px;
     border-radius: 50%;
+    background-color: white;
     
     
 `;
@@ -100,10 +102,11 @@ const IconWithName = styled.button`
     display: flex;
     align-items: center;
     border: none;
-    color: black;
+    color: white;
     width: 100%;
     gap: 10px;
     border-radius: 10px;
+    background-color: #21034F;
     justify-content: center;
     padding: 10px;
     transition: all 0.3s ease-in-out;

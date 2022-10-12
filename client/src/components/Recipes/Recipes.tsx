@@ -158,7 +158,7 @@ const Recipes = (props: RecipesProps) => {
   React.useEffect(() => {
     if ((payload.search.search !== undefined && payload.search.search !== null) && (payload.search.search !== '')) {
 
-      const filterArray = recipes && (recipes as any).filter((recipe: { name: string }) => recipe.name.toLocaleLowerCase().includes(payload.search.search.toLocaleLowerCase()))
+      const filterArray = recipes !== undefined && (recipes as any).filter((recipe: { name: string }) => recipe.name.toLocaleLowerCase().includes(payload.search.search.toLocaleLowerCase()))
       setSearchMode(true)
       setCurrentPage(1)
       setActualRecipes(filterArray)
