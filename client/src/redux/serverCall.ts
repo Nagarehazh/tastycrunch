@@ -10,7 +10,7 @@ export const serverCall = createApi({
         getAllRecipes: builder.query({
             query: (name) => `/recipes?name=${name}`,
         }),
-        getRecipeById: builder.query<void, void>({
+        getRecipeById: builder.query({
             query: (id: any) => `/recipes/${id}`,
         }),
         createRecipe: builder.mutation({
@@ -22,7 +22,7 @@ export const serverCall = createApi({
         }),
         updateRecipe: builder.mutation({
             query: (body) => ({
-                url: '/recipes',
+                url: `/recipes/${body.id}`,
                 method: 'PUT',
                 body,
             }),

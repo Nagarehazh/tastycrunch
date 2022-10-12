@@ -35,7 +35,8 @@ import {
     SelectType,
     OptionType,
     TextArea,
-    ButtonDisabled
+    ButtonDisabled,
+    EditButton
 } from './RecipeDetailStyles'
 import {
     Recipe,
@@ -53,8 +54,8 @@ interface DietTypes {
 const RecipeDetail = () => {
     const { id }: any = useParams()
     const [deleteRecipe] = useDeleteRecipeMutation()
-    const { data: dataDiet } = useGetDietsTypesQuery();
-    const { data, isLoading, error }: any = useGetRecipeByIdQuery(id)
+    const { data: dataDiet } : any = useGetDietsTypesQuery();
+    const { data, isLoading, error }: any = useGetRecipeByIdQuery(id, )
     const { data: dataAll } = getAll("",)
     const [updateRecipe] = useUpdateRecipeMutation()
     const [nameRecipe, setNameRecipe] = React.useState('');
@@ -62,14 +63,13 @@ const RecipeDetail = () => {
     const [healthScore, setHealthScore] = React.useState(0);
     const [type, setType] = React.useState<string[]>([])
     const [stepByStep, setStepByStep] = React.useState('')
-    const [searching, setSearching] = React.useState('')
     const [modal, setModal] = React.useState(false);
     const [messageDelete, setMessageDelete] = React.useState("");
 
     const navigate = useNavigate()
 
     const goBackHandler = () => {
-        navigate('/')
+        navigate('/home')
     }
 
 
@@ -77,7 +77,7 @@ const RecipeDetail = () => {
         e.preventDefault();
         try {
             updateRecipe({
-                id: data.id,
+                id: id,
                 name: nameRecipe,
                 description: descriptionRecipe,
                 healthScore: healthScore,
@@ -136,9 +136,11 @@ const RecipeDetail = () => {
         <div>
             <HorizontalNav>
                 <GoBackButton onClick={goBackHandler}>Go Back</GoBackButton>
-                <GoBackButton onClick={handleAddRecipe}>Edit Recipe</GoBackButton>
-                {messageDelete ? <p>{messageDelete}</p> : <GoBackButton onClick={handleDeleteRecipe}>Delete Recipe</GoBackButton>}
-                <Modal
+                <EditButton onClick={handleAddRecipe}>Edit Recipe</EditButton>
+                {messageDelete ? <p style={{color:"green"}}>{messageDelete}</p> : <GoBackButton onClick={handleDeleteRecipe}>Delete Recipe</GoBackButton>}
+                <TitleApp>TastyCrunch.</TitleApp>
+            </HorizontalNav>
+            <Modal
                     modal={modal}
                     setModal={setModal}
 
@@ -162,7 +164,7 @@ const RecipeDetail = () => {
                                 type="number"
                                 placeholder="Health Score"
                                 value={healthScore}
-                                onChange={(e) => setHealthScore(parseInt(e.target.value))}
+                                onChange={(e) => (e.target.value !== "" && setHealthScore(0)) || setHealthScore(parseInt(e.target.value))}
                             />
                             {(healthScore < 0 || healthScore > 100) && <p style={{ color: "red" }}>Health Score must be between 0 and 100</p>}
 
@@ -177,7 +179,7 @@ const RecipeDetail = () => {
                                 name="dietselect"
                             >
                                 <>
-                                    {dataDiet && ((dataDiet as any)).map((diet: DietTypes, index: any) => (
+                                    {dataDiet !== undefined && ((dataDiet as any)).map((diet: DietTypes, index: any) => (
                                         <OptionType key={index} value={diet.name}>{diet.name}</OptionType>
                                     ))}
                                 </>
@@ -191,8 +193,6 @@ const RecipeDetail = () => {
                         </Form>
                     </ContainerModal>
                 </Modal>
-                <TitleApp>TastyCrunch.</TitleApp>
-            </HorizontalNav>
             <MainContainer>
                 {data !== undefined &&
                     (
@@ -204,11 +204,11 @@ const RecipeDetail = () => {
                                 <ContainerScoreDiet>
                                     <RecipeDetailHealthScore>Health Score: {(data as any).healthScore}</RecipeDetailHealthScore>
                                     <DietContainer>
-                                        {(data as any).diets.map((diet: any, index: number) => {
+                                        {data !== undefined && (data as any).diets.map((diet: any, index: number) => {
                                             return (
                                                 <IconWithName key={index}>
-                                                    <DietIcon src={(images as any)[diet]} />
-                                                    <h3>{diet}</h3>
+                                                    <DietIcon src={(images as any)[diet.name]} />
+                                                    <h3>{diet.name}</h3>
                                                 </IconWithName>
                                             )
                                         })}
@@ -223,7 +223,7 @@ const RecipeDetail = () => {
                 <RecipesRecomendationContainer>
                     <h1>You might also like</h1>
                     <RecipesContainer>
-                        {dataAll !== undefined && dataAll.slice(0, 11).filter((recipe: any) => recipe.diets.includes((data as any).diets[0])).map((recipe: any, index: number) => {
+                        {dataAll !== undefined && dataAll.slice(0, 11).filter((recipe: any) => recipe.diets.includes((data as any).diets[0].name)).map((recipe: any, index: number) => {
                             return (
                                 <Link to={`/recipe/${recipe.id}`} key={index}>
                                     <Recipe key={index} recipe={recipe} />

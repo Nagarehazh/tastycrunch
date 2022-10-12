@@ -95,10 +95,16 @@ const getAllDbApiRecipes = async () => {
 const RecipeById = async (id: string) => {
     try {
         if (id.length === 36) {
-            const recipe = await Recipe.findByPk(id);
-            if (recipe) {
-                return recipe;
-            }
+            const recipe = await Recipe.findByPk(id, {
+                include: {
+                    model: Diet,
+                    attributes: ['name'],
+                    through: {
+                        attributes: []
+                    }
+                }
+            });
+            return recipe;
         } else {
 
             const recipeApi = await axios.get(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${process.env.SPOONACULAR_API_KEY}&includeNutrition=false`)
@@ -147,7 +153,7 @@ const postRecipe = async (name: any, description: any, healthScore: any, stepByS
 
 const putRecipe = async (id: any, name: any, description: any, healthScore: any, stepByStep: any, image: any, diets: any) => {
     try {
-        const recipe = await Recipe.findByPk(id);
+        const recipe: any = await Recipe.findByPk(id);
         if (recipe) {
             await recipe.update({
                 name,
@@ -161,7 +167,11 @@ const putRecipe = async (id: any, name: any, description: any, healthScore: any,
                     name: diets
                 }
             })
-            await (recipe as any).addDiet(diet);
+            
+
+            
+            await recipe.addDiet(diet);
+            
             return recipe;
         }
 

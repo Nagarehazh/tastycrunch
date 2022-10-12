@@ -222,6 +222,24 @@ const GoBackButton = styled.button`
     }
 `;
 
+const EditButton = styled.button`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background-color: transparent;
+    color: green;
+    font-size: 1.6rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 10px;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+        transform: scale(1.1);
+        transition: all 0.3s ease-in-out;
+    }
+`;
+
 const TitleApp = styled.h1`
 font-size: 2.5rem;
 font-weight: bold;
@@ -234,6 +252,7 @@ margin-left: 228px;
 const ContainerModal = styled.div`
     display: flex;
     flex-direction: column;
+    width: 100%;
     align-items: center;
     z-index: 999;
     h1 {
@@ -290,6 +309,18 @@ const ButtonModal = styled.button`
     }
 `;
 
+const ButtonDisabled = styled.button`
+margin-top: 2rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #21034F;
+    color: white;
+    font-size: 1.5rem;
+   
+`;
+
+
 const SelectType = styled.select`
     width: 100%;
     padding: 1rem;
@@ -329,17 +360,6 @@ const TextArea = styled.textarea`
     font-size: 1.6rem;
 `;
 
-const ButtonDisabled = styled.button`
-margin-top: 2rem;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 5px;
-    background-color: #21034F;
-    color: white;
-    font-size: 1.5rem;
-   
-`;
-
 export {
     MainContainer,
     RecipeContainer,
@@ -365,7 +385,8 @@ export {
     SelectType,
     OptionType,
     TextArea,
-    ButtonDisabled
+    ButtonDisabled,
+    EditButton
 }
 
 

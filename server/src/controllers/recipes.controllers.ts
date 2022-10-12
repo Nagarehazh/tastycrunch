@@ -15,23 +15,22 @@ const getAllRecipes = async (req: Request, res: Response) => {
             const recipesByName = await getApiRecipeByName(name);
 
             if (recipesByName.length) {
-                return res.status(200).json(recipesByName);
-            } else {
-                return res.status(404).json({ message: 'Recipe not found' });
-            }
+                res.status(200).json(recipesByName);
+            } 
+
 
 
 
         } else {
             const recipes = await getAllDbApiRecipes();
-            return res.status(200).json(recipes);
+            res.status(200).json(recipes);
         }
 
-
+        
 
 
     } catch (error: any) {
-        return res.status(500).json({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
 }
 
@@ -86,12 +85,27 @@ const updateRecipe = async (req: Request, res: Response) => {
     }
 }
 
+const deleteRecipe = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        const recipe = await RecipeById(id);
+        if (recipe) {
+            await recipe.destroy();
+            return res.status(200).json({ message: 'Recipe deleted' });
+        } else {
+            return res.status(404).json({ message: 'Recipe not found' });
+        }
+    } catch (error: any) {
+        return res.status(500).json({ message: error.message });
+    }
+}
 
 export {
     getAllRecipes,
     getRecipeById,
     createRecipe,
-    updateRecipe
+    updateRecipe,
+    deleteRecipe
 }
 
 
