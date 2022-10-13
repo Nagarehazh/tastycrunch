@@ -2,6 +2,11 @@
 
 ### Deploy Link: https://tastycrunch.netlify.app/
 
+![ScreenShoot1](https://github.com/Nagarehazh/tastycrunch/blob/master/client/public/assets/screenshot1.png)
+![ScreenShoot1](https://github.com/Nagarehazh/tastycrunch/blob/master/client/public/assets/screenshot2.png)
+![ScreenShoot1](https://github.com/Nagarehazh/tastycrunch/blob/master/client/public/assets/screenshot3.png)
+![ScreenShoot1](https://github.com/Nagarehazh/tastycrunch/blob/master/client/public/assets/screenshot4.png)
+
 ## Project Objectives
 
 - Build an App using React, Redux, Node and Sequelize.
