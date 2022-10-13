@@ -60,6 +60,9 @@ const RecipeDetailTitle = styled.h2`
     font-size: 4rem;
     font-weight: 600;
     color: #000;
+    @media ${({ theme }) => theme.breakpoints.sm} {
+        font-size: 3rem;
+        }
 `;
 
 const RecipeDetailDescription = styled.p`
@@ -70,6 +73,10 @@ const RecipeDetailDescription = styled.p`
     margin: 20px 0;
     letter-spacing: 1px;
     line-height: 1.5;
+    @media ${({ theme }) => theme.breakpoints.sm} {
+        font-size: 1.5rem;
+        padding: 0 20px;
+        }
     `;
 
 const ContainerScoreDiet = styled.div`
@@ -78,6 +85,9 @@ const ContainerScoreDiet = styled.div`
     align-items: center;
     width: 100%;
     height: 100%;
+    @media ${({ theme }) => theme.breakpoints.md} {
+        flex-direction: column;
+        }
 `;
 
 const RecipeDetailHealthScore = styled.p`
@@ -117,6 +127,9 @@ const IconWithName = styled.button`
      
     }
 
+    @media ${({ theme }) => theme.breakpoints.sm} {
+        flex-wrap: wrap;
+    }
       
     `;
 

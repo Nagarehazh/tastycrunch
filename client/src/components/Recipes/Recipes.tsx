@@ -244,7 +244,7 @@ const Recipes = (props: RecipesProps) => {
       </MainWrapper>
       <RecipesContainer>
         {actualRecipes !== undefined && actualRecipes && (actualRecipes as any).map((recipe: any, index: any) => (
-          <Link to={`/recipe/${recipe.id}`} key={index}>
+          <Link to={`/recipes/${recipe.id}`} key={index}>
             <Recipe recipe={recipe} />
           </Link>
         ))}

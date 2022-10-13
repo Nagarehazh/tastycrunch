@@ -23,7 +23,7 @@ const Landing = () => {
                 <ContainerWelcome>
                     <H1>TastyCrunch.</H1>
                     <P>Can you imagine something delicious? Cook it with TastyCrunch.</P>
-                    <Link to="/home">
+                    <Link to="/recipes">
                         <Button>Get Started</Button>
                     </Link>
                 </ContainerWelcome>

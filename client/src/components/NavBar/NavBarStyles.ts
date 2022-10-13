@@ -287,6 +287,7 @@ margin-bottom: 10px;
 const TitleApp = styled.h1`
 font-size: 2.5rem;
 font-weight: bold;
+width: 100%;
 letter-spacing: 1px;
 color: #21034F;
 margin-left: 228px;
@@ -296,7 +297,7 @@ margin-left: 228px;
 
   @media ${({ theme }) => theme.breakpoints.sm} {
     font-size: 2rem;
-    margin-left: 0.5rem;
+    
   }
 
 `;

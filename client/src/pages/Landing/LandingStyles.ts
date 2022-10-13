@@ -55,12 +55,20 @@ const H1 = styled.h1`
 	);
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
+
+    @media ${({ theme }) => theme.breakpoints.sm} {
+        font-size: 5rem;
+    }
 `
 const P = styled.p`
     font-size: 2.5rem;
     color: #fff;
     text-align: center;
     margin-bottom: 1rem;
+    @media ${({ theme }) => theme.breakpoints.sm}  {
+        font-size: 1.5rem;  
+    }
+
 `
 
 const Button = styled.button`

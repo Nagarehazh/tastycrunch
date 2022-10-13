@@ -18,8 +18,8 @@ function App() {
         <main>
           <Routes>
             <Route path="/" element={<Landing />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/recipe/:id" element={<RecipeDetail />} />
+            <Route path="/recipes" element={<Home />} />
+            <Route path="/recipes/:id" element={<RecipeDetail />} />
           </Routes>
         </main>
       </ThemeProvider>

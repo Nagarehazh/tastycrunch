@@ -72,7 +72,7 @@ const RecipeDetail = () => {
 
     const goBackHandler = () => {
         dispatch(setSearch(searching))
-        navigate('/home')
+        navigate('/recipes')
     }
 
     const onSubmitForm = (e: any) => {
@@ -136,7 +136,7 @@ const RecipeDetail = () => {
 
     if (data.error) {
         setTimeout(() => {
-            navigate('/home')
+            navigate('/recipes')
         }, 3000)
     }
 
@@ -146,13 +146,12 @@ const RecipeDetail = () => {
         <div>
             {data.error ? <Loading /> :
                 <>
-
                     <HorizontalNav>
+                        <GoBackButton onClick={goBackHandler}>Go Back</GoBackButton>
                         {id.length === 36 && (
                             <>
                                 {messageDelete ? <p style={{ color: "green" }}>{messageDelete}</p> :
                                     <>
-                                        <GoBackButton onClick={goBackHandler}>Go Back</GoBackButton>
                                         <EditButton onClick={handleAddRecipe}>Edit Recipe</EditButton>
                                         <GoBackButton onClick={handleDeleteRecipe}>Delete Recipe</GoBackButton>
                                     </>
@@ -259,7 +258,7 @@ const RecipeDetail = () => {
                                     : recipe.diets.includes((data as any).diets[0]))
                                     .map((recipe: any, index: number) => {
                                         return (
-                                            <Link to={`/recipe/${recipe.id}`} key={index}>
+                                            <Link to={`/recipes/${recipe.id}`} key={index}>
                                                 <Recipe key={index} recipe={recipe} />
                                             </Link>
                                         )
