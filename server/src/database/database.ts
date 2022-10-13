@@ -21,7 +21,6 @@ export const sequelize = new Sequelize(process.env.DATABASE_URL || `postgres://p
 
 sequelize.addModels([__dirname + "/models"]);
 
-
 export const sequelizeConnection = async () => {
     try {
       sequelize
@@ -32,19 +31,7 @@ export const sequelizeConnection = async () => {
     } catch (error) {
       console.error('Unable to connect to the database:', error)
   }
-}
-
-(async function sequelizeSync(){
-    try {
-      sequelize
-        .sync()
-        .then(() => {
-          console.log('Postgres sync has been established successfully.')
-        })
-    } catch (error) {
-      console.error('Unable to sync to the database:', error)
   }
-})();
 
 
 

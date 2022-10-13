@@ -1,6 +1,10 @@
 import { Recipe } from '../../models/recipe';
+import * as dotenv from "dotenv";
+dotenv.config();
 import axios from 'axios';
 import { Diet } from '../../models/diet';
+
+const key = process.env.SPOONACULAR_API_KEY;
 
 const getDatabaseRecipes = async () => {
     try {
@@ -34,8 +38,7 @@ const getDatabaseRecipes = async () => {
 
 const getApiRecipes = async () => {
     try {
-        const apiCall = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${process
-            .env.SPOONACULAR_API_KEY}&addRecipeInformation=true&number=100`)
+        const apiCall = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${key}&addRecipeInformation=true&number=100`)
             .then((response: any) => {
                 return response.data.results.map((recipe: any) => {
                     return {
@@ -124,41 +127,6 @@ const RecipeById = async (id: string) => {
         return error.message;
     }
 }
-
-// const recipe = await Recipe.findByPk(id, {
-//     include: {
-//         model: Diet,
-//         attributes: ['name'],
-//         through: {
-//             attributes: []
-//         }
-//     }
-// });
-// return recipe;
-// } 
-// if (id.length !== 36){
-
-// const recipeApi = await axios.get(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${process.env.SPOONACULAR_API_KEY}&includeNutrition=false`)
-//     .then((response) => {
-//         return ({
-//             name: response.data.title,
-//             description: response.data.summary,
-//             healthScore: response.data.healthScore,
-//             stepByStep: response.data.instructions,
-//             image: response.data.image,
-//             diets: response.data.diets
-//         })
-//     })
-// return recipeApi;
-// }
-
-// return { error: 'Recipe not found' };
-
-// } catch (error: any) {
-// return error.message;
-// }
-// }
-            
 
 const postRecipe = async (name: any, description: any, healthScore: any, stepByStep: any, image: any, diets: any) => {
 

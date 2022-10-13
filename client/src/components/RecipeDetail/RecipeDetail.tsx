@@ -1,5 +1,4 @@
 import React from 'react'
-import { RECIPES_ARRAY, RECIPES_ARRAY_SIN_STEPS } from '../../constants/dietTypes'
 import images from '../../assets/diets'
 import defaultImg from '../../assets/images/defaultImage.jpg'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -45,8 +44,6 @@ import {
     Loading,
     Modal
 } from '..'
-import datajson from '../../constants/data_save.json'
-
 
 interface DietTypes {
     img: string;
@@ -69,11 +66,10 @@ const RecipeDetail = () => {
     const [modal, setModal] = React.useState(false);
     const [messageDelete, setMessageDelete] = React.useState("");
     const [searching, setSearching] = React.useState('')
-    const [timeToGoBack, setTimeToGoBack] = React.useState(false)
-
+    
     const navigate = useNavigate()
 
-    
+
     const goBackHandler = () => {
         dispatch(setSearch(searching))
         navigate('/home')
@@ -118,7 +114,6 @@ const RecipeDetail = () => {
         deleteRecipe(data.id)
         setMessageDelete("Recipe deleted successfully")
         setTimeout(() => {
-            //navigate to home and reload
             window.location.reload()
         }, 1200)
     }
@@ -141,7 +136,6 @@ const RecipeDetail = () => {
 
     if (data.error) {
         setTimeout(() => {
-            //navigate to home and reload
             navigate('/home')
         }, 3000)
     }
@@ -154,11 +148,11 @@ const RecipeDetail = () => {
                 <>
 
                     <HorizontalNav>
-                        <GoBackButton onClick={goBackHandler}>Go Back</GoBackButton>
                         {id.length === 36 && (
                             <>
                                 {messageDelete ? <p style={{ color: "green" }}>{messageDelete}</p> :
                                     <>
+                                        <GoBackButton onClick={goBackHandler}>Go Back</GoBackButton>
                                         <EditButton onClick={handleAddRecipe}>Edit Recipe</EditButton>
                                         <GoBackButton onClick={handleDeleteRecipe}>Delete Recipe</GoBackButton>
                                     </>
@@ -189,37 +183,36 @@ const RecipeDetail = () => {
                                     onChange={(e) => setDescriptionRecipe(e.target.value)}
                                 />
                                 <Input
-                                type="number"
-                                placeholder="Health Score"
-                                value={healthScore}
-                                onChange={(e) => setHealthScore(e.target.value)}
-                            />
-                            {(parseInt(healthScore) < 0 || parseInt(healthScore) > 100) && <p style={{ color: "red" }}>Health Score must be between 0 and 100</p>}
+                                    type="number"
+                                    placeholder="Health Score"
+                                    value={healthScore}
+                                    onChange={(e) => setHealthScore(e.target.value)}
+                                />
+                                {(parseInt(healthScore) < 0 || parseInt(healthScore) > 100) && <p style={{ color: "red" }}>Health Score must be between 0 and 100</p>}
 
-                            <label
-                                htmlFor='dietselect'
-                                style={{ color: 'white', marginBottom: "20px", width: "100%", textAlign: "center" }}
-                            >Select all the Diet type that match:</label>
-                            <SelectType
-                                multiple
-                                value={type}
-                                onChange={handleAddTagDiet}
-                                name="dietselect"
-                            >
-                                <>
-                                    {/* <OptionType value="">Diet Type</OptionType> */}
-                                    {dataDiet && ((dataDiet as any)).map((diet: DietTypes, index: any) => (
-                                        <OptionType key={index} value={diet.name}>{diet.name}</OptionType>
-                                    ))}
-                                </>
-                            </SelectType>
-                            <TextArea
-                                placeholder="Instructions"
-                                value={stepByStep}
-                                onChange={(e) => setStepByStep(e.target.value)}
-                            />
-                            {parseInt(healthScore) < 0 || parseInt(healthScore) > 100 || !nameRecipe.match(/^[a-zA-Z ]*$/) || nameRecipe === "" || descriptionRecipe === "" || type.length === 0 || stepByStep === '' ? <ButtonDisabled disabled>Complete all the fields</ButtonDisabled> : <ButtonModal>Create</ButtonModal>}
-                        </Form>
+                                <label
+                                    htmlFor='dietselect'
+                                    style={{ color: 'white', marginBottom: "20px", width: "100%", textAlign: "center" }}
+                                >Select all the Diet type that match:</label>
+                                <SelectType
+                                    multiple
+                                    value={type}
+                                    onChange={handleAddTagDiet}
+                                    name="dietselect"
+                                >
+                                    <>
+                                        {dataDiet && ((dataDiet as any)).map((diet: DietTypes, index: any) => (
+                                            <OptionType key={index} value={diet.name}>{diet.name}</OptionType>
+                                        ))}
+                                    </>
+                                </SelectType>
+                                <TextArea
+                                    placeholder="Instructions"
+                                    value={stepByStep}
+                                    onChange={(e) => setStepByStep(e.target.value)}
+                                />
+                                {parseInt(healthScore) < 0 || parseInt(healthScore) > 100 || !nameRecipe.match(/^[a-zA-Z ]*$/) || nameRecipe === "" || descriptionRecipe === "" || type.length === 0 || stepByStep === '' ? <ButtonDisabled disabled>Complete all the fields</ButtonDisabled> : <ButtonModal>Create</ButtonModal>}
+                            </Form>
                         </ContainerModal>
                     </Modal>
                     <MainContainer>

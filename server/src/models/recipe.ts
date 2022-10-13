@@ -13,14 +13,14 @@ export const Recipe = sequelize.define('recipe', {
         allowNull: false,
     },
     description: {
-        type: DataType.STRING,
+        type: DataType.TEXT,
         allowNull: false,
     },
     healthScore: {
         type: DataType.INTEGER,
     },
     stepByStep: {
-        type: DataType.STRING,
+        type: DataType.TEXT,
     },
     image: {
         type: DataType.STRING,

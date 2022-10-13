@@ -171,14 +171,10 @@ const Recipes = (props: RecipesProps) => {
 
 
   React.useEffect(() => {
-
-    //if route is different from home, then set filtered to recipes from redux
-
     if (dietclasification.diet.diets !== undefined && dietclasification.diet.diets !== null && dietclasification.diet.diets !== ' ') {
       if (dietPayload.length === 0) {
         setDietPayload(dietclasification)
         setActualRecipes(filtered && (filtered as any).filter((recipe: { diets: string[] }) => recipe.diets?.includes(dietclasification.diet.diets)))
-        // setCurrentPage(1)
         setDietType(true)
         if(searchMode === false){
         dispatch(setSearch(""))

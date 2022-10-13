@@ -1,9 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-
+import { sequelize } from './database/database';
 import recipeRoutes from './routes/recipes.routes';
 import dietRoutes from './routes/diets.routes';
+
 
 import "./models/recipe";
 import "./models/diet";
@@ -24,6 +25,16 @@ app.use((_req, res, next) => {
 app.use(recipeRoutes);
 app.use(dietRoutes);
 
-
+(async function sequelizeSync(){
+  try {
+    sequelize
+      .sync()
+      .then(() => {
+        console.log('Postgres sync has been established successfully.')
+      })
+  } catch (error) {
+    console.error('Unable to sync to the database:', error)
+}
+})();
 
 export default app;

@@ -1,4 +1,3 @@
-import React from 'react'
 import defaultImg from '../../assets/images/defaultImage.jpg'
 import {
   CardDetailConatainer,
