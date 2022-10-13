@@ -38,19 +38,20 @@ describe('POST /recipes', () => {
         });
         expect(response.status).toBe(200);
     });
-
-    test('Denied Create Recipe with the same name that other one', async () => {
-        const response = await request(app).post('/recipes').send({
-            name: 'test',
-            description: 'test',
-            healthScore: 100,
-            stepByStep: 'test',
-            image: 'test',
-            diets: ['test']
-        });
-        expect(response.status).toBe(400);
-    });
 });
+
+    
+
+    //Search recipe by id
+    describe('GET /recipes/:id', () => {
+        test('Search by UUID should respond with 200', async () => {
+            const response = await request(app).get('/recipes/73ee78bf-169b-4327-a39f-eebd6730835f').send();
+            expect(response.status).toBe(200);
+        });
+    });
+
+
+
 
 
 
