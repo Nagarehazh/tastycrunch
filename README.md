@@ -2,9 +2,9 @@
 
 ### Deploy Link: https://tastycrunch.netlify.app/
 
-![ScreenShoot1](https://github.com/Nagarehazh/tastycrunch/blob/master/client/public/assets/screenshot1.png) <br />
-![ScreenShoot1](https://github.com/Nagarehazh/tastycrunch/blob/master/client/public/assets/screenshot2.png) <br />
-![ScreenShoot1](https://github.com/Nagarehazh/tastycrunch/blob/master/client/public/assets/screenshot3.png) <br />
+![ScreenShoot1](https://github.com/Nagarehazh/tastycrunch/blob/master/client/public/assets/screenshot1.png) <br /><br />
+![ScreenShoot1](https://github.com/Nagarehazh/tastycrunch/blob/master/client/public/assets/screenshot2.png) <br /><br />
+![ScreenShoot1](https://github.com/Nagarehazh/tastycrunch/blob/master/client/public/assets/screenshot3.png) <br /><br />
 ![ScreenShoot1](https://github.com/Nagarehazh/tastycrunch/blob/master/client/public/assets/screenshot4.png)
 
 ## Project Objectives
