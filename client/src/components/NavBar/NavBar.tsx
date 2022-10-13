@@ -35,7 +35,6 @@ import { useDispatch } from 'react-redux';
 import { setSearch } from '../../redux/searchRedux';
 import { setDiet } from '../../redux/dietRedux';
 import { Modal } from '..'
-import { setTokenSourceMapRange } from 'typescript';
 
 
 interface DietTypes {
@@ -61,20 +60,24 @@ const NavBar = () => {
     const onSubmitForm = (e: any) => {
         e.preventDefault();
         try {
-            createRecipe({
+           createRecipe({
                 name: nameRecipe,
                 description: descriptionRecipe,
                 healthScore: healthScore,
                 stepByStep: stepByStep,
                 diets: type,
             })
+        
         } catch (error) {
-            alert("Recipe Name already exists, please try again with another beautiful name")
+           alert(error)
         }
-       setTimeout(() => {
-        window.location.reload()
-         }, 1000);
+
+        setTimeout(() => {
+            window.location.reload()
+        }, 1000);
+      
     }
+
 
 
     const handleAddRecipe = () => {
