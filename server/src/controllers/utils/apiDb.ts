@@ -55,7 +55,6 @@ const getApiRecipes = async () => {
     }
 }
 
-
 const getApiRecipeByName = async (name: any) => {
 
     try {
@@ -78,7 +77,6 @@ const getApiRecipeByName = async (name: any) => {
     }
 }
 
-
 const getAllDbApiRecipes = async () => {
     try {
         const apiRecipes = await getApiRecipes();
@@ -90,12 +88,10 @@ const getAllDbApiRecipes = async () => {
     }
 }
 
-
-
 const RecipeById = async (id: string) => {
     try {
         if (id.length === 36) {
-            const recipe = await Recipe.findByPk(id, {
+            const dbRecipe = await Recipe.findByPk(id, {
                 include: {
                     model: Diet,
                     attributes: ['name'],
@@ -104,27 +100,65 @@ const RecipeById = async (id: string) => {
                     }
                 }
             });
-            return recipe;
+            if (dbRecipe) {
+                return dbRecipe;
+            } else {
+                return { error: 'Recipe not found' };
+            }
         } else {
-
-            const recipeApi = await axios.get(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${process.env.SPOONACULAR_API_KEY}&includeNutrition=false`)
-                .then((response) => {
-                    return ({
+            const apiRecipe = await axios.get(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${process
+                .env.SPOONACULAR_API_KEY}&includeNutrition=false`)
+                .then((response: any) => {
+                    return {
                         name: response.data.title,
                         description: response.data.summary,
                         healthScore: response.data.healthScore,
                         stepByStep: response.data.instructions,
                         image: response.data.image,
                         diets: response.data.diets
-                    })
+                    }
                 })
-            return recipeApi;
+            return apiRecipe;
         }
     } catch (error: any) {
         return error.message;
     }
 }
 
+// const recipe = await Recipe.findByPk(id, {
+//     include: {
+//         model: Diet,
+//         attributes: ['name'],
+//         through: {
+//             attributes: []
+//         }
+//     }
+// });
+// return recipe;
+// } 
+// if (id.length !== 36){
+
+// const recipeApi = await axios.get(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${process.env.SPOONACULAR_API_KEY}&includeNutrition=false`)
+//     .then((response) => {
+//         return ({
+//             name: response.data.title,
+//             description: response.data.summary,
+//             healthScore: response.data.healthScore,
+//             stepByStep: response.data.instructions,
+//             image: response.data.image,
+//             diets: response.data.diets
+//         })
+//     })
+// return recipeApi;
+// }
+
+// return { error: 'Recipe not found' };
+
+// } catch (error: any) {
+// return error.message;
+// }
+// }
+            
 
 const postRecipe = async (name: any, description: any, healthScore: any, stepByStep: any, image: any, diets: any) => {
 
@@ -167,11 +201,9 @@ const putRecipe = async (id: any, name: any, description: any, healthScore: any,
                     name: diets
                 }
             })
-            
 
-            
             await recipe.addDiet(diet);
-            
+
             return recipe;
         }
 

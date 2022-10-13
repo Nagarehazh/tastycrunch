@@ -9,7 +9,7 @@ const myTheme: DefaultTheme = {
     colors: {
         primary1: 'black',
         background1: '#f5f5f5',
-        accent1: 'red',
+        accent1: 'white',
         button: 'black',
         background2: '#0F1624',
     },

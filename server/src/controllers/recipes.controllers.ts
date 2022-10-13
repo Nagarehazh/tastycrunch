@@ -51,8 +51,6 @@ const getRecipeById = async (req: Request, res: Response) => {
     }
 }
 
-
-
 const createRecipe = async (req: Request, res: Response) => {
     const { name, description, healthScore, stepByStep, image, diets } = req.body;
     try {

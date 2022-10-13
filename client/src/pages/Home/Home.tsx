@@ -1,3 +1,4 @@
+import React from 'react';
 import {
     NavBar,
     Recipes,
@@ -12,15 +13,16 @@ import { setDiet } from '../../redux/dietRedux'
 
 const Home = () => {
   let { payload: payloadSearch } = useSelector(setSearch)
-  const {data, isLoading, error} = getAll(payloadSearch.search.search)
+  const [searchPayload, setSearchPayload] = React.useState(payloadSearch)
+  const {data, isLoading, error} = getAll(searchPayload.search.search)
   let { payload } = useSelector(setDiet)
+  const [dataGetAll, setDataGetAll] = React.useState(data)
   
+ 
   if (isLoading) return <Loading/>
 
   if (error) return <div>{(error as any).message}</div>
   
-      
-
   return (
     <div>
         <NavBar/>

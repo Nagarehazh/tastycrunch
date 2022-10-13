@@ -1,6 +1,7 @@
 import React from 'react'
 import { RECIPES_ARRAY, RECIPES_ARRAY_SIN_STEPS } from '../../constants/dietTypes'
 import images from '../../assets/diets'
+import defaultImg from '../../assets/images/defaultImage.jpg'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import {
     useGetRecipeByIdQuery,
@@ -9,7 +10,8 @@ import {
     useGetDietsTypesQuery,
     useDeleteRecipeMutation
 } from '../../redux/serverCall'
-
+import { useDispatch } from 'react-redux'
+import { setSearch } from '../../redux/searchRedux'
 import {
     MainContainer,
     RecipeContainer,
@@ -53,25 +55,29 @@ interface DietTypes {
 
 const RecipeDetail = () => {
     const { id }: any = useParams()
+    const dispatch = useDispatch()
     const [deleteRecipe] = useDeleteRecipeMutation()
-    const { data: dataDiet } : any = useGetDietsTypesQuery();
-    const { data, isLoading, error }: any = useGetRecipeByIdQuery(id, )
+    const { data: dataDiet }: any = useGetDietsTypesQuery();
+    const { data, isLoading, error }: any = useGetRecipeByIdQuery(id,)
     const { data: dataAll } = getAll("",)
     const [updateRecipe] = useUpdateRecipeMutation()
     const [nameRecipe, setNameRecipe] = React.useState('');
     const [descriptionRecipe, setDescriptionRecipe] = React.useState('');
-    const [healthScore, setHealthScore] = React.useState(0);
+    const [healthScore, setHealthScore] = React.useState("");
     const [type, setType] = React.useState<string[]>([])
     const [stepByStep, setStepByStep] = React.useState('')
     const [modal, setModal] = React.useState(false);
     const [messageDelete, setMessageDelete] = React.useState("");
+    const [searching, setSearching] = React.useState('')
+    const [timeToGoBack, setTimeToGoBack] = React.useState(false)
 
     const navigate = useNavigate()
 
+    
     const goBackHandler = () => {
+        dispatch(setSearch(searching))
         navigate('/home')
     }
-
 
     const onSubmitForm = (e: any) => {
         e.preventDefault();
@@ -112,8 +118,9 @@ const RecipeDetail = () => {
         deleteRecipe(data.id)
         setMessageDelete("Recipe deleted successfully")
         setTimeout(() => {
-            navigate('/home')
-        }, 3000)
+            //navigate to home and reload
+            window.location.reload()
+        }, 1200)
     }
 
 
@@ -132,41 +139,62 @@ const RecipeDetail = () => {
         );
     }
 
+    if (data.error) {
+        setTimeout(() => {
+            //navigate to home and reload
+            navigate('/home')
+        }, 3000)
+    }
+
+
+
     return (
         <div>
-            <HorizontalNav>
-                <GoBackButton onClick={goBackHandler}>Go Back</GoBackButton>
-                <EditButton onClick={handleAddRecipe}>Edit Recipe</EditButton>
-                {messageDelete ? <p style={{color:"green"}}>{messageDelete}</p> : <GoBackButton onClick={handleDeleteRecipe}>Delete Recipe</GoBackButton>}
-                <TitleApp>TastyCrunch.</TitleApp>
-            </HorizontalNav>
-            <Modal
-                    modal={modal}
-                    setModal={setModal}
+            {data.error ? <Loading /> :
+                <>
 
-                >
-                    <ContainerModal>
-                        <Form onSubmit={onSubmitForm}>
-                            <Input
-                                type="text"
-                                placeholder="Recipe Name"
-                                value={nameRecipe}
-                                onChange={(e) => setNameRecipe(e.target.value)}
-                            />
-                            {nameRecipe.match(/^[a-zA-Z ]*$/) ? null : <p style={{ color: 'red' }}>Only letters</p>}
-                            <Input
-                                type="text"
-                                placeholder="Description"
-                                value={descriptionRecipe}
-                                onChange={(e) => setDescriptionRecipe(e.target.value)}
-                            />
-                            <Input
+                    <HorizontalNav>
+                        <GoBackButton onClick={goBackHandler}>Go Back</GoBackButton>
+                        {id.length === 36 && (
+                            <>
+                                {messageDelete ? <p style={{ color: "green" }}>{messageDelete}</p> :
+                                    <>
+                                        <EditButton onClick={handleAddRecipe}>Edit Recipe</EditButton>
+                                        <GoBackButton onClick={handleDeleteRecipe}>Delete Recipe</GoBackButton>
+                                    </>
+                                }
+                            </>
+                        )}
+
+                        <TitleApp>TastyCrunch.</TitleApp>
+                    </HorizontalNav>
+                    <Modal
+                        modal={modal}
+                        setModal={setModal}
+
+                    >
+                        <ContainerModal>
+                            <Form onSubmit={onSubmitForm}>
+                                <Input
+                                    type="text"
+                                    placeholder="Recipe Name"
+                                    value={nameRecipe}
+                                    onChange={(e) => setNameRecipe(e.target.value)}
+                                />
+                                {nameRecipe.match(/^[a-zA-Z ]*$/) ? null : <p style={{ color: 'red' }}>Only letters</p>}
+                                <Input
+                                    type="text"
+                                    placeholder="Description"
+                                    value={descriptionRecipe}
+                                    onChange={(e) => setDescriptionRecipe(e.target.value)}
+                                />
+                                <Input
                                 type="number"
                                 placeholder="Health Score"
                                 value={healthScore}
-                                onChange={(e) => (e.target.value !== "" && setHealthScore(0)) || setHealthScore(parseInt(e.target.value))}
+                                onChange={(e) => setHealthScore(e.target.value)}
                             />
-                            {(healthScore < 0 || healthScore > 100) && <p style={{ color: "red" }}>Health Score must be between 0 and 100</p>}
+                            {(parseInt(healthScore) < 0 || parseInt(healthScore) > 100) && <p style={{ color: "red" }}>Health Score must be between 0 and 100</p>}
 
                             <label
                                 htmlFor='dietselect'
@@ -179,7 +207,8 @@ const RecipeDetail = () => {
                                 name="dietselect"
                             >
                                 <>
-                                    {dataDiet !== undefined && ((dataDiet as any)).map((diet: DietTypes, index: any) => (
+                                    {/* <OptionType value="">Diet Type</OptionType> */}
+                                    {dataDiet && ((dataDiet as any)).map((diet: DietTypes, index: any) => (
                                         <OptionType key={index} value={diet.name}>{diet.name}</OptionType>
                                     ))}
                                 </>
@@ -189,50 +218,64 @@ const RecipeDetail = () => {
                                 value={stepByStep}
                                 onChange={(e) => setStepByStep(e.target.value)}
                             />
-                            {healthScore < 0 || healthScore > 100 || !nameRecipe.match(/^[a-zA-Z ]*$/) || nameRecipe === "" || descriptionRecipe === "" || type.length === 0 || stepByStep === '' ? <ButtonDisabled disabled>Complete all the fields to Update</ButtonDisabled> : <ButtonModal>Update</ButtonModal>}
+                            {parseInt(healthScore) < 0 || parseInt(healthScore) > 100 || !nameRecipe.match(/^[a-zA-Z ]*$/) || nameRecipe === "" || descriptionRecipe === "" || type.length === 0 || stepByStep === '' ? <ButtonDisabled disabled>Complete all the fields</ButtonDisabled> : <ButtonModal>Create</ButtonModal>}
                         </Form>
-                    </ContainerModal>
-                </Modal>
-            <MainContainer>
-                {data !== undefined &&
-                    (
-                        <RecipeContainer >
-                            <RecipeDetailImage src={(data as any).image} />
-                            <RecipeDetailContainer>
-                                <RecipeDetailTitle>{(data as any).name}</RecipeDetailTitle>
-                                <RecipeDetailDescription dangerouslySetInnerHTML={{ __html: (data as any).description }}></RecipeDetailDescription>
-                                <ContainerScoreDiet>
-                                    <RecipeDetailHealthScore>Health Score: {(data as any).healthScore}</RecipeDetailHealthScore>
-                                    <DietContainer>
-                                        {data !== undefined && (data as any).diets.map((diet: any, index: number) => {
-                                            return (
-                                                <IconWithName key={index}>
-                                                    <DietIcon src={(images as any)[diet.name]} />
-                                                    <h3>{diet.name}</h3>
-                                                </IconWithName>
-                                            )
-                                        })}
-                                    </DietContainer>
-                                </ContainerScoreDiet>
-                                <RecipeDetailStepByStep dangerouslySetInnerHTML={{ __html: (data as any).stepByStep }}></RecipeDetailStepByStep>
-                            </RecipeDetailContainer>
-                        </RecipeContainer>
-                    )
-                }
-
-                <RecipesRecomendationContainer>
-                    <h1>You might also like</h1>
-                    <RecipesContainer>
-                        {dataAll !== undefined && dataAll.slice(0, 11).filter((recipe: any) => recipe.diets.includes((data as any).diets[0].name)).map((recipe: any, index: number) => {
-                            return (
-                                <Link to={`/recipe/${recipe.id}`} key={index}>
-                                    <Recipe key={index} recipe={recipe} />
-                                </Link>
+                        </ContainerModal>
+                    </Modal>
+                    <MainContainer>
+                        {data !== undefined && data &&
+                            (
+                                <RecipeContainer >
+                                    <RecipeDetailImage src={(data as any).image || defaultImg} />
+                                    <RecipeDetailContainer>
+                                        <RecipeDetailTitle>{(data as any).name}</RecipeDetailTitle>
+                                        <RecipeDetailDescription dangerouslySetInnerHTML={{ __html: (data as any).description }}></RecipeDetailDescription>
+                                        <ContainerScoreDiet>
+                                            <RecipeDetailHealthScore>Health Score: {(data as any).healthScore}</RecipeDetailHealthScore>
+                                            <DietContainer>
+                                                {data !== undefined && data && (data as any).diets.map((diet: any, index: number) => {
+                                                    return (
+                                                        <IconWithName key={index}>
+                                                            {id.length === 36 ? (
+                                                                <>
+                                                                    <DietIcon src={(images as any)[diet.name]} />
+                                                                    <h3>{diet.name}</h3>
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    <DietIcon src={(images as any)[diet]} />
+                                                                    <h3>{diet}</h3>
+                                                                </>
+                                                            )}
+                                                        </IconWithName>
+                                                    )
+                                                })}
+                                            </DietContainer>
+                                        </ContainerScoreDiet>
+                                        <RecipeDetailStepByStep dangerouslySetInnerHTML={{ __html: (data as any).stepByStep }}></RecipeDetailStepByStep>
+                                    </RecipeDetailContainer>
+                                </RecipeContainer>
                             )
-                        })}
-                    </RecipesContainer>
-                </RecipesRecomendationContainer>
-            </MainContainer>
+                        }
+
+                        <RecipesRecomendationContainer>
+                            <h1>You might also like</h1>
+                            <RecipesContainer>
+                                {dataAll !== undefined && dataAll.slice(0, 11).filter((recipe: any) => id.length === 36
+                                    ? recipe.diets.includes((data as any).diets[0].name)
+                                    : recipe.diets.includes((data as any).diets[0]))
+                                    .map((recipe: any, index: number) => {
+                                        return (
+                                            <Link to={`/recipe/${recipe.id}`} key={index}>
+                                                <Recipe key={index} recipe={recipe} />
+                                            </Link>
+                                        )
+                                    })}
+                            </RecipesContainer>
+                        </RecipesRecomendationContainer>
+                    </MainContainer>
+                </>
+            }
         </div>
     )
 }

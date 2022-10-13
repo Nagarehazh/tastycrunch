@@ -35,6 +35,7 @@ const Recipes = (props: RecipesProps) => {
   const { recipes, dietclasification } = props;
   const dispatch = useDispatch()
   
+  
   const recipesFromRedux = [...recipes]
 
   const [dietType, setDietType] = React.useState(false)
@@ -87,7 +88,7 @@ const Recipes = (props: RecipesProps) => {
       setCurrentPage(1)
 
       if (dietType === true && searchMode === false) {
-        console.log("aquí hay", filtered)
+        
         setActualRecipes(filtered && (filtered as any).filter((recipe: { diets: string[] }) => recipe.diets?.includes(dietclasification.diet.diets)).sort((a: any, b: any) => a.name.localeCompare(b.name)))
 
       } else if (searchMode === true && dietType === false) {

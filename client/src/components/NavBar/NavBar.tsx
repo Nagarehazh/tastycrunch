@@ -49,7 +49,7 @@ const NavBar = () => {
     const [createRecipe] = useCreateRecipeMutation();
     const [nameRecipe, setNameRecipe] = React.useState('');
     const [descriptionRecipe, setDescriptionRecipe] = React.useState('');
-    const [healthScore, setHealthScore] = React.useState(0);
+    const [healthScore, setHealthScore] = React.useState("");
     const [type, setType] = React.useState<string[]>([])
     const [stepByStep, setStepByStep] = React.useState('')
     const [searching, setSearching] = React.useState('')
@@ -179,13 +179,13 @@ const NavBar = () => {
                                 value={descriptionRecipe}
                                 onChange={(e) => setDescriptionRecipe(e.target.value)}
                             />
-                            <Input
+                             <Input
                                 type="number"
                                 placeholder="Health Score"
                                 value={healthScore}
-                                onChange={(e) => setHealthScore(parseInt(e.target.value))}
+                                onChange={(e) => setHealthScore(e.target.value)}
                             />
-                            {(healthScore < 0 || healthScore > 100) && <p style={{ color: "red" }}>Health Score must be between 0 and 100</p>}
+                            {(parseInt(healthScore) < 0 || parseInt(healthScore) > 100) && <p style={{ color: "red" }}>Health Score must be between 0 and 100</p>}
 
                             <label
                                 htmlFor='dietselect'
@@ -209,7 +209,7 @@ const NavBar = () => {
                                 value={stepByStep}
                                 onChange={(e) => setStepByStep(e.target.value)}
                             />
-                            {healthScore < 0 || healthScore > 100 || !nameRecipe.match(/^[a-zA-Z ]*$/) || nameRecipe === "" || descriptionRecipe === "" || type.length === 0 || stepByStep === '' ? <ButtonDisabled disabled>Complete all the fields</ButtonDisabled> : <ButtonModal>Create</ButtonModal>}
+                            {parseInt(healthScore) < 0 || parseInt(healthScore) > 100 || !nameRecipe.match(/^[a-zA-Z ]*$/) || nameRecipe === "" || descriptionRecipe === "" || type.length === 0 || stepByStep === '' ? <ButtonDisabled disabled>Complete all the fields</ButtonDisabled> : <ButtonModal>Create</ButtonModal>}
                         </Form>
                     </ContainerModal>
                     </Modal>
@@ -290,9 +290,9 @@ const NavBar = () => {
                                 type="number"
                                 placeholder="Health Score"
                                 value={healthScore}
-                                onChange={(e) => setHealthScore(parseInt(e.target.value))}
+                                onChange={(e) => setHealthScore(e.target.value)}
                             />
-                            {(healthScore < 0 || healthScore > 100) && <p style={{ color: "red" }}>Health Score must be between 0 and 100</p>}
+                            {(parseInt(healthScore) < 0 || parseInt(healthScore) > 100) && <p style={{ color: "red" }}>Health Score must be between 0 and 100</p>}
 
                             <label
                                 htmlFor='dietselect'
@@ -316,7 +316,7 @@ const NavBar = () => {
                                 value={stepByStep}
                                 onChange={(e) => setStepByStep(e.target.value)}
                             />
-                            {healthScore < 0 || healthScore > 100 || !nameRecipe.match(/^[a-zA-Z ]*$/) || nameRecipe === "" || descriptionRecipe === "" || type.length === 0 || stepByStep === '' ? <ButtonDisabled disabled>Complete all the fields</ButtonDisabled> : <ButtonModal>Create</ButtonModal>}
+                            {parseInt(healthScore) < 0 || parseInt(healthScore) > 100 || !nameRecipe.match(/^[a-zA-Z ]*$/) || nameRecipe === "" || descriptionRecipe === "" || type.length === 0 || stepByStep === '' ? <ButtonDisabled disabled>Complete all the fields</ButtonDisabled> : <ButtonModal>Create</ButtonModal>}
                         </Form>
                     </ContainerModal>
                 </Modal>
