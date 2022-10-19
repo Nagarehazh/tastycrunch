@@ -330,7 +330,7 @@ const NavBar = () => {
                 <SearchForm onSubmit={handleSearch}>
                     <Search
                         type="text"
-                        placeholder="Search a recipe"
+                        placeholder="Search"
                         value={searching}
                         onChange={(e) => setSearching(e.target.value)}
                     />

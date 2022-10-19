@@ -5,25 +5,33 @@ import {
   Loading
 } from '../../components'
 import { setSearch } from '../../redux/searchRedux'
-import { useGetAllRecipesQuery as getAll } from '../../redux/serverCall'
+import { useGetAllRecipesQuery} from '../../redux/serverCall'
 import { useSelector } from 'react-redux'
 import { setDiet } from '../../redux/dietRedux'
 
 
 const Home = () => {
   let { payload: payloadSearch } = useSelector(setSearch)
-  const [searchPayload,] = React.useState(payloadSearch)
-  const { data, isLoading, error } = getAll(searchPayload.search.search)
+  const { data: dataGet, isLoading, error } = useGetAllRecipesQuery(payloadSearch.search.search,)
   let { payload } = useSelector(setDiet)
+  const [data, setData] = React.useState(dataGet)
+  
 
+  
+  React.useEffect(() => {
+    setData(dataGet)
+  }, [dataGet, payloadSearch, setData])
+  
   if (isLoading) return <Loading />
 
   if (error) return <div>{(error as any).message}</div>
 
+
+
   return (
     <div>
       <NavBar />
-      {data && <Recipes recipes={data} dietclasification={payload} />}
+      {data && <Recipes recipes={data} dietclasification={payload}/>}
     </div>
   )
 }

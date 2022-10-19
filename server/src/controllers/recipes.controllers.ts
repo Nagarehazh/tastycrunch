@@ -10,6 +10,7 @@ import {
 const getAllRecipes = async (req: Request, res: Response) => {
 
     const { name } = req.query;
+    console.log(name, "********************************//********")
     try {
         if (name) {
             const recipesByName = await getApiRecipeByName(name);

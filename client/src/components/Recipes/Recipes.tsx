@@ -19,9 +19,8 @@ import {
   Label,
   ContainerLabel,
   ButtonViewAll,
-  
+
 } from './RecipesStyles'
-import { useSelector } from 'react-redux'
 import { setSearch } from '../../redux/searchRedux'
 import { useDispatch } from 'react-redux'
 
@@ -34,25 +33,25 @@ interface RecipesProps {
 const Recipes = (props: RecipesProps) => {
   const { recipes, dietclasification } = props;
   const dispatch = useDispatch()
-  
-  
-  const recipesFromRedux = [...recipes]
+
+
+  let recipesFromRedux = [...recipes]
+
 
   const [dietType, setDietType] = React.useState(false)
-  const [searchMode, setSearchMode] = React.useState(false)
-
-  let { payload } = useSelector(setSearch)
-
+  
   const [dietPayload, setDietPayload] = React.useState([])
 
   const [filtered, setFiltered] = React.useState(recipesFromRedux)
-  const [, setSort] = React.useState('')
-  const [, setHealthScore] = React.useState('')
+  const [sort, setSort] = React.useState('')
+  const [healthScore, setHealthScore] = React.useState('')
   const [currentPage, setCurrentPage] = React.useState(1)
   const [recipesPerPage] = React.useState(9)
   const indexOfLastRecipe = currentPage * recipesPerPage
   const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage
-  const [actualRecipes, setActualRecipes] = React.useState(filtered && (filtered as any).slice(indexOfFirstRecipe, indexOfLastRecipe))
+
+  const [actualRecipes, setActualRecipes] = React.useState(recipesFromRedux && (recipesFromRedux as any).slice(indexOfFirstRecipe, indexOfLastRecipe))
+
 
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
@@ -76,42 +75,28 @@ const Recipes = (props: RecipesProps) => {
 
   const handleViewAll = () => {
     setDietType(false)
-    setSearchMode(false)
     setCurrentPage(1)
     setFiltered(recipesFromRedux)
   }
 
-
   const handleSort = (e: any) => {
     setSort(e)
-    if (e === 'desc') {
-      setCurrentPage(1)
-
-      if (dietType === true && searchMode === false) {
-        
-        setActualRecipes(filtered && (filtered as any).filter((recipe: { diets: string[] }) => recipe.diets?.includes(dietclasification.diet.diets)).sort((a: any, b: any) => a.name.localeCompare(b.name)))
-
-      } else if (searchMode === true && dietType === false) {
-        setActualRecipes(filtered && (filtered as any).filter((recipe: { diets: string[] }) => recipe.diets?.includes(dietclasification.diet.diets)).sort((a: any, b: any) => a.name.localeCompare(b.name)))
-
-      } else {
-
-        setActualRecipes(filtered && (filtered as any).sort((a: any, b: any) => a.name.localeCompare(b.name)).slice(indexOfFirstRecipe, indexOfLastRecipe))
+    setCurrentPage(1)
+    if (dietType === false) {
+      if (e === 'asc') {
+        return setActualRecipes(filtered.sort((a: any, b: any) => b.name.localeCompare(a.name)))
       }
 
-    } else if (e === 'asc') {
+      if (e === 'desc') {
+        return setActualRecipes(filtered.sort((a: any, b: any) => a.name.localeCompare(b.name)))
+      }
+    } else {
+      if (e === 'asc') {
+        return setActualRecipes(actualRecipes.sort((a: any, b: any) => b.name.localeCompare(a.name)))
+      }
 
-      if (dietType === true && searchMode === false) {
-        console.log("aquí hay", filtered)
-        setActualRecipes(filtered && (filtered as any).filter((recipe: { diets: string[] }) => recipe.diets?.includes(dietclasification.diet.diets)).sort((a: any, b: any) => b.name.localeCompare(a.name)))
-
-      } else if (searchMode === true && dietType === false) {
-        setActualRecipes(filtered && (filtered as any).filter((recipe: { diets: string[] }) => recipe.diets?.includes(dietclasification.diet.diets)).sort((a: any, b: any) => b.name.localeCompare(a.name)))
-
-      } else {
-        setCurrentPage(1)
-
-        setActualRecipes(filtered && (filtered as any).sort((a: any, b: any) => b.name.localeCompare(a.name)).slice(indexOfFirstRecipe, indexOfLastRecipe))
+      if (e === 'desc') {
+        return setActualRecipes(actualRecipes.sort((a: any, b: any) => a.name.localeCompare(b.name)))
       }
 
     }
@@ -119,33 +104,24 @@ const Recipes = (props: RecipesProps) => {
 
   const handleHealthScore = (e: any) => {
     setHealthScore(e)
-    if (e === 'highest') {
-      setCurrentPage(1)
-
-      if (dietType === true && searchMode === false) {
-        setActualRecipes(filtered && (filtered as any).filter((recipe: { diets: string[] }) => recipe.diets?.includes(dietclasification.diet.diets)).sort((a: any, b: any) => b.healthScore - a.healthScore))
-
-      } else if (searchMode === true && dietType === false) {
-        setActualRecipes(filtered && (filtered as any).filter((recipe: { diets: string[] }) => recipe.diets?.includes(dietclasification.diet.diets)).sort((a: any, b: any) => b.healthScore - a.healthScore))
-
-      } else {
-
-        setActualRecipes(filtered && (filtered as any).sort((a: any, b: any) => b.healthScore - a.healthScore).slice(indexOfFirstRecipe, indexOfLastRecipe))
+    setCurrentPage(1)
+    if (dietType === false) {
+      if (e === 'highest') {
+        return setActualRecipes(filtered.sort((a: any, b: any) => b.healthScore - a.healthScore))
       }
 
-    } else if (e === 'lowest') {
-      setCurrentPage(1)
-
-      if (dietType === true && searchMode === false) {
-        setActualRecipes(filtered && (filtered as any).filter((recipe: { diets: string[] }) => recipe.diets?.includes(dietclasification.diet.diets)).sort((a: any, b: any) => a.healthScore - b.healthScore))
-
-      } else if (searchMode === true && dietType === false) {
-        setActualRecipes(filtered && (filtered as any).filter((recipe: { diets: string[] }) => recipe.diets?.includes(dietclasification.diet.diets)).sort((a: any, b: any) => a.healthScore - b.healthScore))
-
-      } else {
-        setActualRecipes(filtered && (filtered as any).sort((a: any, b: any) => a.healthScore - b.healthScore).slice(indexOfFirstRecipe, indexOfLastRecipe))
-
+      if (e === 'lowest') {
+        return setActualRecipes(filtered.sort((a: any, b: any) => a.healthScore - b.healthScore))
       }
+    } else {
+      if (e === 'highest') {
+        return setActualRecipes(actualRecipes.sort((a: any, b: any) => b.healthScore - a.healthScore))
+      }
+
+      if (e === 'lowest') {
+        return setActualRecipes(actualRecipes.sort((a: any, b: any) => a.healthScore - b.healthScore))
+      }
+
     }
   }
 
@@ -158,27 +134,27 @@ const Recipes = (props: RecipesProps) => {
 
 
   React.useEffect(() => {
-    if ((payload.search.search !== undefined && payload.search.search !== null) && (payload.search.search !== '')) {
-
-      const filterArray = recipes !== undefined && (recipes as any).filter((recipe: { name: string }) => recipe.name.toLocaleLowerCase().includes(payload.search.search.toLocaleLowerCase()))
-      setSearchMode(true)
-      setCurrentPage(1)
-      setActualRecipes(filterArray)
-      return setFiltered(filterArray)
-    }
-
-  }, [payload])
-
-
-  React.useEffect(() => {
     if (dietclasification.diet.diets !== undefined && dietclasification.diet.diets !== null && dietclasification.diet.diets !== ' ') {
       if (dietPayload.length === 0) {
         setDietPayload(dietclasification)
-        setActualRecipes(filtered && (filtered as any).filter((recipe: { diets: string[] }) => recipe.diets?.includes(dietclasification.diet.diets)))
-        setDietType(true)
-        if(searchMode === false){
-        dispatch(setSearch(""))
+        if (dietType === false) {
+          setActualRecipes(filtered && (filtered as any).filter((recipe: { diets: string[] }) => recipe.diets?.includes(dietclasification.diet.diets)))
+        } else {
+          if (sort === 'asc') {
+            setActualRecipes(filtered && (filtered as any).filter((recipe: { diets: string[] }) => recipe.diets?.includes(dietclasification.diet.diets)).sort((a: any, b: any) => b.name.localeCompare(a.name)))
+          } else if (sort === 'desc') {
+            setActualRecipes(filtered && (filtered as any).filter((recipe: { diets: string[] }) => recipe.diets?.includes(dietclasification.diet.diets)).sort((a: any, b: any) => a.name.localeCompare(b.name)))
+          } else if (healthScore === 'highest') {
+            setActualRecipes(filtered && (filtered as any).filter((recipe: { diets: string[] }) => recipe.diets?.includes(dietclasification.diet.diets)).sort((a: any, b: any) => b.healthScore - a.healthScore))
+          }
+          else if (healthScore === 'lowest') {
+            setActualRecipes(filtered && (filtered as any).filter((recipe: { diets: string[] }) => recipe.diets?.includes(dietclasification.diet.diets)).sort((a: any, b: any) => a.healthScore - b.healthScore))
+          }
         }
+        setDietType(true)
+       
+          // dispatch(setSearch(""))
+       
         setDietPayload([])
       }
 
@@ -187,12 +163,11 @@ const Recipes = (props: RecipesProps) => {
 
 
 
-
   return (
     <Container>
       <MainWrapper>
         <WrapperPagination>
-          {!!dietType || !!searchMode
+          {!!dietType
             ? (
               <PaginationContainer>
                 <h2>{actualRecipes.length} results</h2>
@@ -206,7 +181,7 @@ const Recipes = (props: RecipesProps) => {
                 </PaginationButton>
                 {pageNumbers.map((number, index) => (
                   <ContainerLabel key={index}>
-                    <PaginationButton key={number} onClick={() => paginate(number)}>
+                    <PaginationButton onClick={() => paginate(number)}>
                       <PaginationNumber>{number}</PaginationNumber>
                     </PaginationButton>
                     <Label
@@ -252,5 +227,6 @@ const Recipes = (props: RecipesProps) => {
     </Container>
   )
 }
+
 
 export default Recipes

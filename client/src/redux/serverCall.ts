@@ -9,7 +9,7 @@ export const serverCall = createApi({
             query: () => '/diets',
         }),
         getAllRecipes: builder.query({
-            query: (name) => `/recipes?name=${name}`,
+            query: (name: any) => `/recipes?name=${name}`,
         }),
         getRecipeById: builder.query({
             query: (id: any) => `/recipes/${id}`,
