@@ -35,7 +35,8 @@ const PaginationContainer = styled.div`
     margin: 2rem 0.5rem 0 0;
     gap: 0.5rem;
     @media ${({ theme }) => theme.breakpoints.sm} {
-        gap: 0.1rem;
+        gap: 0.05rem;
+        flex-wrap: wrap;
     }
     
     `;

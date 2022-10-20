@@ -142,6 +142,10 @@ const DietContainer = styled.div`
     width: 100%;
     height: 100%;
     margin: 20px 0;
+    @media ${({ theme }) => theme.breakpoints.sm} {
+        flex-wrap: wrap;
+        width: 50%;
+    }
 `;
 
 
@@ -259,6 +263,10 @@ font-weight: bold;
 letter-spacing: 1px;
 color: #21034F;
 margin-left: 228px;
+@media ${({ theme }) => theme.breakpoints.sm} {
+    margin-left: 0;
+    text-align: center;
+    }
 
 `;
 

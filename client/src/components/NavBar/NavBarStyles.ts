@@ -252,7 +252,7 @@ const SearchForm = styled.form`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 300px;
+    width: 400px;
     height: 80px;
     background-color: white;
     color: white;
@@ -429,6 +429,7 @@ const MenuButton = styled.button`
     
     @media ${({ theme }) => theme.breakpoints.md} {
         display: flex;
+        margin-right: 20px;
 `;
 
 const MenuIcon = styled.img`
