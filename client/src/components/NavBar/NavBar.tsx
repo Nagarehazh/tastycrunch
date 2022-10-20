@@ -177,7 +177,7 @@ const NavBar = () => {
                                     value={nameRecipe}
                                     onChange={(e) => setNameRecipe(e.target.value)}
                                 />
-                                {nameRecipe.match(/^[a-zA-Z ]*$/) ? null : <p style={{ color: 'red' }}>Only letters</p>}
+                                {nameRecipe.match(/^[a-zA-Z ]*$/) ? null : <p style={{ color: 'red' }}>Only letters-Choice a beautiful name </p>}
                                 <Input
                                     type="text"
                                     placeholder="Description"
@@ -280,7 +280,7 @@ const NavBar = () => {
                                 value={nameRecipe}
                                 onChange={(e) => setNameRecipe(e.target.value)}
                             />
-                            {nameRecipe.match(/^[a-zA-Z ]*$/) ? null : <p style={{ color: 'red' }}>Only letters</p>}
+                            {nameRecipe.match(/^[a-zA-Z ]*$/)  ? null : <p style={{ color: 'red' }}>Only letters - Choice a beautiful recipe's name</p>}
                             <Input
                                 type="text"
                                 placeholder="Description"
@@ -316,7 +316,7 @@ const NavBar = () => {
                                 value={stepByStep}
                                 onChange={(e) => setStepByStep(e.target.value)}
                             />
-                            {parseInt(healthScore) < 0 || parseInt(healthScore) > 100 || !nameRecipe.match(/^[a-zA-Z ]*$/) || nameRecipe === "" || descriptionRecipe === "" || type.length === 0 || stepByStep === '' ? <ButtonDisabled disabled>Complete all the fields</ButtonDisabled> : <ButtonModal>Create</ButtonModal>}
+                            {parseInt(healthScore) < 0 || parseInt(healthScore) > 100 || !nameRecipe.match(/^[a-zA-Z ]*$/) || nameRecipe.trim() === "" || descriptionRecipe === "" || type.length === 0 || stepByStep === '' ? <ButtonDisabled disabled>Complete all the fields</ButtonDisabled> : <ButtonModal>Create</ButtonModal>}
                         </Form>
                     </ContainerModal>
                 </Modal>
