@@ -16,7 +16,9 @@ const Home = () => {
   let { payload } = useSelector(setDiet)
   const [data, setData] = React.useState(dataGet)
   
-
+  
+// console.log(payloadSearch.search.search !== '')
+  
   
   React.useEffect(() => {
     setData(dataGet)
@@ -31,7 +33,11 @@ const Home = () => {
   return (
     <div>
       <NavBar />
-      {data && <Recipes recipes={data} dietclasification={payload}/>}
+      {/* {data && <Recipes recipes={data} dietclasification={payload}/>} */}
+      {data && <Recipes 
+                  recipes={data} 
+                  dietclasification={payload} 
+                  />}
     </div>
   )
 }

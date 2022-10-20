@@ -22,7 +22,7 @@ import {
 
 } from './RecipesStyles'
 import { setSearch } from '../../redux/searchRedux'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 interface RecipesProps {
   recipes: any
@@ -32,6 +32,8 @@ interface RecipesProps {
 
 const Recipes = (props: RecipesProps) => {
   const { recipes, dietclasification } = props;
+  let { payload: payloadSearch } = useSelector(setSearch)
+
   const dispatch = useDispatch()
 
 
@@ -39,7 +41,7 @@ const Recipes = (props: RecipesProps) => {
 
 
   const [dietType, setDietType] = React.useState(false)
-  
+
   const [dietPayload, setDietPayload] = React.useState([])
 
   const [filtered, setFiltered] = React.useState(recipesFromRedux)
@@ -49,7 +51,7 @@ const Recipes = (props: RecipesProps) => {
   const [recipesPerPage] = React.useState(9)
   const indexOfLastRecipe = currentPage * recipesPerPage
   const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage
-
+  const [isSameSearch, setIsSameSearch] = React.useState("")
   const [actualRecipes, setActualRecipes] = React.useState(recipesFromRedux && (recipesFromRedux as any).slice(indexOfFirstRecipe, indexOfLastRecipe))
 
 
@@ -113,6 +115,7 @@ const Recipes = (props: RecipesProps) => {
       if (e === 'lowest') {
         return setActualRecipes(filtered.sort((a: any, b: any) => a.healthScore - b.healthScore))
       }
+
     } else {
       if (e === 'highest') {
         return setActualRecipes(actualRecipes.sort((a: any, b: any) => b.healthScore - a.healthScore))
@@ -138,8 +141,13 @@ const Recipes = (props: RecipesProps) => {
       if (dietPayload.length === 0) {
         setDietPayload(dietclasification)
         if (dietType === false) {
+          console.log("diet False, entra aquí")
           setActualRecipes(filtered && (filtered as any).filter((recipe: { diets: string[] }) => recipe.diets?.includes(dietclasification.diet.diets)))
         } else {
+          if (isSameSearch !== '') {
+            console.log("diet True, entra aquí")
+            setActualRecipes(filtered && (filtered as any).filter((recipe: { diets: string[] }) => recipe.diets?.includes(dietclasification.diet.diets)))
+          }
           if (sort === 'asc') {
             setActualRecipes(filtered && (filtered as any).filter((recipe: { diets: string[] }) => recipe.diets?.includes(dietclasification.diet.diets)).sort((a: any, b: any) => b.name.localeCompare(a.name)))
           } else if (sort === 'desc') {
@@ -152,15 +160,28 @@ const Recipes = (props: RecipesProps) => {
           }
         }
         setDietType(true)
-       
-          // dispatch(setSearch(""))
-       
+
+        // dispatch(setSearch(""))
+
         setDietPayload([])
       }
 
     }
   }, [dietclasification])
 
+
+  React.useEffect(() => {
+
+    if (payloadSearch.search.search !== isSameSearch) {
+      if (payloadSearch.search.search !== undefined && payloadSearch.search.search !== null && payloadSearch.search.search !== '') {
+        setFiltered(recipesFromRedux)
+        setIsSameSearch(payloadSearch.search.search)
+      } else {
+        setIsSameSearch(payloadSearch.search.search)
+      }
+    }
+
+  }, [payloadSearch])
 
 
   return (
