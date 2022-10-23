@@ -291,6 +291,7 @@ width: 100%;
 letter-spacing: 1px;
 color: #21034F;
 margin-left: 228px;
+cursor: pointer;
 @media ${({ theme }) => theme.breakpoints.md} {
     margin-left: 0;
   }

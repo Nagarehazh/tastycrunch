@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import {
     getAllDbApiRecipes,
-    getApiRecipeByName,
+    getAllDbApiRecipesbyName,
     RecipeById,
     postRecipe,
     putRecipe
@@ -10,24 +10,20 @@ import {
 const getAllRecipes = async (req: Request, res: Response) => {
 
     const { name } = req.query;
-    console.log(name, "********************************//********")
     try {
         if (name) {
-            const recipesByName = await getApiRecipeByName(name);
+            const recipesByName = await getAllDbApiRecipesbyName(name);
 
+           
             if (recipesByName.length) {
-                res.status(200).json(recipesByName);
+               res.status(200).json(recipesByName);
             } 
-
-
-
 
         } else {
             const recipes = await getAllDbApiRecipes();
             res.status(200).json(recipes);
         }
-
-        
+          
 
 
     } catch (error: any) {
@@ -60,8 +56,7 @@ const createRecipe = async (req: Request, res: Response) => {
         if (recipe) {
           res.status(200).json(recipe);
         }
-
-
+    
     } catch (error: any) {
          res.status(500).json({ message: error.message });
     }

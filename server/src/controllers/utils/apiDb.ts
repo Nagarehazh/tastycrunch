@@ -59,22 +59,68 @@ const getApiRecipes = async () => {
 }
 
 const getApiRecipeByName = async (name: any) => {
-
     try {
-        const apiCall = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${process
-            .env.SPOONACULAR_API_KEY}&query=${name}&addRecipeInformation=true&number=100`)
-            .then((response: any) => {
-                return response.data.results.map((recipe: any) => {
-                    return {
-                        id: recipe.id,
-                        name: recipe.title,
-                        healthScore: recipe.healthScore,
-                        image: recipe.image,
-                        diets: recipe.diets
-                    }
-                })
-            })
-        return apiCall;
+        const apiCall = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${key}&addRecipeInformation=true&number=100&query=${name}`);
+        const response = await apiCall.data.results.map((recipe: any) => {  
+            return {
+                id: recipe.id,
+                name: recipe.title,
+                healthScore: recipe.healthScore,
+                image: recipe.image,
+                diets: recipe.diets
+            }
+        })
+        return response;
+    } catch (error: any) {
+        return error.message;
+    }
+}
+
+const getDbRecipeByName = async (name: any) => {
+    try {
+        const dataBaseIncludeDiet = await Recipe.findAll({
+            where: {
+                name: name
+            },
+            include: {
+                model: Diet,
+                attributes: ['name'],
+                through: {
+                    attributes: []
+                }
+            }
+        });
+        if(dataBaseIncludeDiet.length > 0) {
+        let response = await dataBaseIncludeDiet?.map((recipe: any) => {
+            return {
+                id: recipe.id,
+                name: recipe.name,
+                healthScore: recipe.healthScore,
+                image: recipe.image,
+                diets: recipe.diets.map((diet: any) => diet.name)
+            }
+        });
+        return response;
+    } else {
+        return [];
+    }
+
+        
+    } catch (error: any) {
+        return error.message;
+    }
+}
+
+const getAllDbApiRecipesbyName = async (name: any) => {
+    try {
+        const apiRecipesByName = await getApiRecipeByName(name);
+        const dbRecipesByName = await getDbRecipeByName(name);
+        const allRecipesByName = apiRecipesByName.concat(dbRecipesByName);
+        if(allRecipesByName.length > 0) {
+            return allRecipesByName;
+        } else {
+            throw new Error('Recipe with that name not found');
+        }
     } catch (error: any) {
         return error.message;
     }
@@ -184,7 +230,7 @@ const putRecipe = async (id: any, name: any, description: any, healthScore: any,
 
 export {
     getAllDbApiRecipes,
-    getApiRecipeByName,
+    getAllDbApiRecipesbyName,
     RecipeById,
     postRecipe,
     putRecipe

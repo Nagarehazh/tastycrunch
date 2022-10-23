@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const serverCall = createApi({
     reducerPath: 'serverCall',
     // https://tastycrunch.herokuapp.com
-    baseQuery: fetchBaseQuery({ baseUrl: 'https://tastycrunch.herokuapp.com' }),
+    baseQuery: fetchBaseQuery({ baseUrl: 'https://tastycrunch.herokuapp.com'}),
     endpoints: (builder) => ({
         getDietsTypes: builder.query<void, void>({
             query: () => '/diets',

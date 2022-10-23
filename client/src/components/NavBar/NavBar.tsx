@@ -56,6 +56,10 @@ const NavBar = () => {
     const [modal, setModal] = React.useState(false);
     const [drawer, setDrawer] = React.useState(false);
 
+    const handleViewAll = () => {
+        dispatch(setSearch(""))
+
+    }
 
     const onSubmitForm = (e: any) => {
         e.preventDefault();
@@ -95,7 +99,7 @@ const NavBar = () => {
     }
 
     const handleAddTagDiet = (e: { target: { value: string; }; }) => {
-
+        
         if (type.includes((e as any).target.value)) {
             const index = type.indexOf((e as any).target.value)
             type.splice(index, 1)
@@ -103,6 +107,9 @@ const NavBar = () => {
         } else {
             setType([...type, e.target.value])
         }
+
+        
+        
     }
 
 
@@ -304,6 +311,7 @@ const NavBar = () => {
                                 value={type}
                                 onChange={handleAddTagDiet}
                                 name="dietselect"
+                                
                             >
                                 <>
                                     {dataDiet && ((dataDiet as any)).map((diet: DietTypes, index: any) => (
@@ -326,7 +334,7 @@ const NavBar = () => {
                 <MenuButton onClick={handleGetRecipes}>
                     <MenuIcon src={menuimg} alt="menu" />
                 </MenuButton>
-                <TitleApp>TastyCrunch.</TitleApp>
+                <TitleApp onClick={handleViewAll}>TastyCrunch.</TitleApp>
                 <SearchForm onSubmit={handleSearch}>
                     <Search
                         type="text"

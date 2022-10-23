@@ -34,7 +34,6 @@ interface RecipesProps {
 const Recipes = (props: RecipesProps) => {
   const { recipes, dietclasification } = props;
   let recipesFromRedux = [...recipes]
-
   const dispatch = useDispatch()
   let { payload: payloadSearch } = useSelector(setSearch)
 
