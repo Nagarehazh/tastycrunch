@@ -210,15 +210,17 @@ const putRecipe = async (id: any, name: any, description: any, healthScore: any,
                 stepByStep,
                 image
             });
+            
+            await (recipe as any).setDiets([]);
+            
             const diet = await Diet.findAll({
                 where: {
                     name: diets
                 }
             })
-
-            await recipe.addDiet(diet);
-
+            await (recipe as any).addDiet(diet);
             return recipe;
+            
         }
 
         return { error: 'Recipe not found' };
