@@ -56,6 +56,10 @@ const NavBar = () => {
     const [modal, setModal] = React.useState(false);
     const [drawer, setDrawer] = React.useState(false);
 
+    const handleViewAll = () => {
+        dispatch(setSearch(""))
+
+    }
 
     const onSubmitForm = (e: any) => {
         e.preventDefault();
@@ -95,7 +99,7 @@ const NavBar = () => {
     }
 
     const handleAddTagDiet = (e: { target: { value: string; }; }) => {
-
+        
         if (type.includes((e as any).target.value)) {
             const index = type.indexOf((e as any).target.value)
             type.splice(index, 1)
@@ -103,6 +107,9 @@ const NavBar = () => {
         } else {
             setType([...type, e.target.value])
         }
+
+        
+        
     }
 
 
@@ -177,7 +184,7 @@ const NavBar = () => {
                                     value={nameRecipe}
                                     onChange={(e) => setNameRecipe(e.target.value)}
                                 />
-                                {nameRecipe.match(/^[a-zA-Z ]*$/) ? null : <p style={{ color: 'red' }}>Only letters</p>}
+                                {nameRecipe.match(/^[a-zA-Z ]*$/) ? null : <p style={{ color: 'red' }}>Only letters-Choice a beautiful name </p>}
                                 <Input
                                     type="text"
                                     placeholder="Description"
@@ -213,7 +220,7 @@ const NavBar = () => {
                                     value={stepByStep}
                                     onChange={(e) => setStepByStep(e.target.value)}
                                 />
-                                {parseInt(healthScore) < 0 || parseInt(healthScore) > 100 || !nameRecipe.match(/^[a-zA-Z ]*$/) || nameRecipe === "" || descriptionRecipe === "" || type.length === 0 || stepByStep === '' ? <ButtonDisabled disabled>Complete all the fields</ButtonDisabled> : <ButtonModal>Create</ButtonModal>}
+                                {parseInt(healthScore) < 0 || parseInt(healthScore) > 100 || !nameRecipe.match(/^[a-zA-Z ]*$/) || nameRecipe.trim() === "" || descriptionRecipe === "" || type.length === 0 || stepByStep === '' ? <ButtonDisabled disabled>Complete all the fields</ButtonDisabled> : <ButtonModal>Create</ButtonModal>}
                             </Form>
                         </ContainerModal>
                     </Modal>
@@ -280,7 +287,7 @@ const NavBar = () => {
                                 value={nameRecipe}
                                 onChange={(e) => setNameRecipe(e.target.value)}
                             />
-                            {nameRecipe.match(/^[a-zA-Z ]*$/) ? null : <p style={{ color: 'red' }}>Only letters</p>}
+                            {nameRecipe.match(/^[a-zA-Z ]*$/)  ? null : <p style={{ color: 'red' }}>Only letters - Choice a beautiful recipe's name</p>}
                             <Input
                                 type="text"
                                 placeholder="Description"
@@ -304,6 +311,7 @@ const NavBar = () => {
                                 value={type}
                                 onChange={handleAddTagDiet}
                                 name="dietselect"
+                                
                             >
                                 <>
                                     {dataDiet && ((dataDiet as any)).map((diet: DietTypes, index: any) => (
@@ -316,7 +324,7 @@ const NavBar = () => {
                                 value={stepByStep}
                                 onChange={(e) => setStepByStep(e.target.value)}
                             />
-                            {parseInt(healthScore) < 0 || parseInt(healthScore) > 100 || !nameRecipe.match(/^[a-zA-Z ]*$/) || nameRecipe === "" || descriptionRecipe === "" || type.length === 0 || stepByStep === '' ? <ButtonDisabled disabled>Complete all the fields</ButtonDisabled> : <ButtonModal>Create</ButtonModal>}
+                            {parseInt(healthScore) < 0 || parseInt(healthScore) > 100 || !nameRecipe.match(/^[a-zA-Z ]*$/) || nameRecipe.trim() === "" || descriptionRecipe === "" || type.length === 0 || stepByStep === '' ? <ButtonDisabled disabled>Complete all the fields</ButtonDisabled> : <ButtonModal>Create</ButtonModal>}
                         </Form>
                     </ContainerModal>
                 </Modal>
@@ -326,11 +334,11 @@ const NavBar = () => {
                 <MenuButton onClick={handleGetRecipes}>
                     <MenuIcon src={menuimg} alt="menu" />
                 </MenuButton>
-                <TitleApp>TastyCrunch.</TitleApp>
+                <TitleApp onClick={handleViewAll}>TastyCrunch.</TitleApp>
                 <SearchForm onSubmit={handleSearch}>
                     <Search
                         type="text"
-                        placeholder="Search a recipe"
+                        placeholder="Search"
                         value={searching}
                         onChange={(e) => setSearching(e.target.value)}
                     />

@@ -252,7 +252,7 @@ const SearchForm = styled.form`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 300px;
+    width: 400px;
     height: 80px;
     background-color: white;
     color: white;
@@ -291,6 +291,7 @@ width: 100%;
 letter-spacing: 1px;
 color: #21034F;
 margin-left: 228px;
+cursor: pointer;
 @media ${({ theme }) => theme.breakpoints.md} {
     margin-left: 0;
   }
@@ -429,6 +430,7 @@ const MenuButton = styled.button`
     
     @media ${({ theme }) => theme.breakpoints.md} {
         display: flex;
+        margin-right: 20px;
 `;
 
 const MenuIcon = styled.img`
