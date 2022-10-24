@@ -9,8 +9,6 @@ import {
     useGetDietsTypesQuery,
     useDeleteRecipeMutation
 } from '../../redux/serverCall'
-import { useDispatch } from 'react-redux'
-import { setSearch } from '../../redux/searchRedux'
 import {
     MainContainer,
     RecipeContainer,
@@ -54,7 +52,7 @@ const RecipeDetail = () => {
     const { id }: any = useParams()
     const [deleteRecipe] = useDeleteRecipeMutation()
     const { data: dataDiet }: any = useGetDietsTypesQuery();
-    const { data, isLoading, error }: any = useGetRecipeByIdQuery(id,)
+    const { data, isLoading }: any = useGetRecipeByIdQuery(id,)
     const { data: dataAll } = getAll("",)
     const [updateRecipe] = useUpdateRecipeMutation()
     const [nameRecipe, setNameRecipe] = React.useState('');
