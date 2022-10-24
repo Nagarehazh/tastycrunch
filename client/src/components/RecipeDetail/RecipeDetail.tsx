@@ -52,7 +52,6 @@ interface DietTypes {
 
 const RecipeDetail = () => {
     const { id }: any = useParams()
-    const dispatch = useDispatch()
     const [deleteRecipe] = useDeleteRecipeMutation()
     const { data: dataDiet }: any = useGetDietsTypesQuery();
     const { data, isLoading, error }: any = useGetRecipeByIdQuery(id,)
@@ -65,9 +64,8 @@ const RecipeDetail = () => {
     const [stepByStep, setStepByStep] = React.useState('')
     const [modal, setModal] = React.useState(false);
     const [messageDelete, setMessageDelete] = React.useState("");
-    
-    const navigate = useNavigate()
 
+    const navigate = useNavigate()
 
     const goBackHandler = () => {
         navigate('/recipes')
@@ -124,21 +122,19 @@ const RecipeDetail = () => {
 
     if (isLoading) { return <Loading /> }
 
-    if (error) {
+    if (data === "Request failed with status code 404") {
         return (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <Link to="/home">Something has gone wrong - Go back</Link>
-            </div>
+            <>
+                <HorizontalNav>
+                    <GoBackButton onClick={goBackHandler}>Go Back</GoBackButton>
+                    <TitleApp>TastyCrunch.</TitleApp>
+                </HorizontalNav>
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <Link style={{marginTop:"20px"}} to="/recipes">Something has gone wrong, Recipe not found - Go back</Link>
+                </div>
+            </>
         );
     }
-
-    if (data.error) {
-        setTimeout(() => {
-            navigate('/recipes')
-        }, 3000)
-    }
-
-
 
     return (
         <div>
@@ -198,7 +194,7 @@ const RecipeDetail = () => {
                                     name="dietselect"
                                 >
                                     <>
-                                        {dataDiet && ((dataDiet as any)).map((diet: DietTypes, index: any) => (
+                                        {dataDiet !== undefined && ((dataDiet as any)).map((diet: DietTypes, index: any) => (
                                             <OptionType key={index} value={diet.name}>{diet.name}</OptionType>
                                         ))}
                                     </>
@@ -223,7 +219,7 @@ const RecipeDetail = () => {
                                         <ContainerScoreDiet>
                                             <RecipeDetailHealthScore>Health Score: {(data as any).healthScore}</RecipeDetailHealthScore>
                                             <DietContainer>
-                                                {data !== undefined && data && (data as any).diets.map((diet: any, index: number) => {
+                                                {data !== undefined && data && (data as any).diets?.map((diet: any, index: number) => {
                                                     return (
                                                         <IconWithName key={index}>
                                                             {id.length === 36 ? (
