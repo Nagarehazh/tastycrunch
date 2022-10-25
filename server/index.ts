@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 5000;
     try{
         app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
     } catch (e) {
-        console.log('Unable to connect to the database:', e);
+        console.log('Unable to initiate', e);
     }
 }
 )();

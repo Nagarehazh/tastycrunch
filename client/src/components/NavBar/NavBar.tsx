@@ -297,7 +297,7 @@ const NavBar = () => {
                             <Input
                                 type="number"
                                 placeholder="Health Score"
-                                value={healthScore}
+                                value={parseInt(healthScore)}
                                 onChange={(e) => setHealthScore(e.target.value)}
                             />
                             {(parseInt(healthScore) < 0 || parseInt(healthScore) > 100) && <p style={{ color: "red" }}>Health Score must be between 0 and 100</p>}

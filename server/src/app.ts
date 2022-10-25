@@ -26,6 +26,7 @@ app.use((_req, res, next) => {
 app.use(recipeRoutes);
 app.use(dietRoutes);
 
+
 (async function sequelizeSync(){
   try {
     sequelize

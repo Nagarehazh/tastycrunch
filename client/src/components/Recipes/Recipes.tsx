@@ -166,6 +166,7 @@ const Recipes = (props: RecipesProps) => {
         setDietType(false)
         setFiltered(recipesFromRedux)
         setIsSameSearch(payloadSearch.search.search)
+        setCurrentPage(1);
       } else {
         setIsSameSearch(payloadSearch.search.search)
       }

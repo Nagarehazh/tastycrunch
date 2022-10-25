@@ -20,6 +20,7 @@ function App() {
             <Route path="/" element={<Landing />} />
             <Route path="/recipes" element={<Home />} />
             <Route path="/recipes/:id" element={<RecipeDetail />} />
+            <Route path="*" element={<Landing />} />
           </Routes>
         </main>
       </ThemeProvider>
