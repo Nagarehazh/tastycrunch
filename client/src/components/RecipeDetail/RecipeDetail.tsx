@@ -42,6 +42,8 @@ import {
     Loading,
     Modal
 } from '..'
+import { useDispatch } from 'react-redux'
+import { setDiet } from '../../redux/dietRedux'
 
 interface DietTypes {
     img: string;
@@ -49,6 +51,8 @@ interface DietTypes {
 }
 
 const RecipeDetail = () => {
+    const dispatch = useDispatch()
+
     const { id }: any = useParams()
     const [deleteRecipe] = useDeleteRecipeMutation()
     const { data: dataDiet }: any = useGetDietsTypesQuery();
@@ -66,24 +70,24 @@ const RecipeDetail = () => {
     const navigate = useNavigate()
 
     const goBackHandler = () => {
+        dispatch(setDiet(" "))
         navigate('/recipes')
     }
 
     const onSubmitForm = (e: any) => {
         e.preventDefault();
-        try {
-            updateRecipe({
-                id: id,
-                name: nameRecipe,
-                description: descriptionRecipe,
-                healthScore: healthScore,
-                diets: type,
-                steps: stepByStep
-            })
-        } catch (error) {
-            alert("Recipe Name already exists, please try again with another beautiful name")
-        }
-        window.location.reload()
+        updateRecipe({
+            id: id,
+            name: nameRecipe,
+            description: descriptionRecipe,
+            healthScore: healthScore,
+            diets: type,
+            steps: stepByStep
+        })
+
+        setTimeout(() => {
+            window.location.reload()
+        }, 1000);
     }
 
 
@@ -118,6 +122,8 @@ const RecipeDetail = () => {
         window.scrollTo(0, 0)
     }, [id])
 
+
+
     if (isLoading) { return <Loading /> }
 
     if (data === "Request failed with status code 404") {
@@ -128,138 +134,145 @@ const RecipeDetail = () => {
                     <TitleApp>TastyCrunch.</TitleApp>
                 </HorizontalNav>
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <Link style={{marginTop:"20px"}} to="/recipes">Something has gone wrong, Recipe not found - Go back</Link>
+                    <Link style={{ marginTop: "20px" }} to="/recipes">Something has gone wrong, Recipe not found - Go back</Link>
                 </div>
             </>
         );
     }
 
+    if (data.error) {
+        setTimeout(() => {
+            navigate('/recipes')
+        }, 500)
+        return (
+            <Loading />
+        )
+    }
+
     return (
         <div>
-            {data.error ? <Loading /> :
-                <>
-                    <HorizontalNav>
-                        <GoBackButton onClick={goBackHandler}>Go Back</GoBackButton>
-                        {id.length === 36 && (
-                            <>
-                                {messageDelete ? <p style={{ color: "green" }}>{messageDelete}</p> :
-                                    <>
-                                        <EditButton onClick={handleAddRecipe}>Edit Recipe</EditButton>
-                                        <GoBackButton onClick={handleDeleteRecipe}>Delete Recipe</GoBackButton>
-                                    </>
-                                }
-                            </>
-                        )}
+            <>
+                <HorizontalNav>
+                    <GoBackButton onClick={goBackHandler}>Go Back</GoBackButton>
+                    {id.length === 36 && (
+                        <>
+                            {messageDelete ? <p style={{ color: "green" }}>{messageDelete}</p> :
+                                <>
+                                    <EditButton onClick={handleAddRecipe}>Edit Recipe</EditButton>
+                                    <GoBackButton onClick={handleDeleteRecipe}>Delete Recipe</GoBackButton>
+                                </>
+                            }
+                        </>
+                    )}
 
-                        <TitleApp>TastyCrunch.</TitleApp>
-                    </HorizontalNav>
-                    <Modal
-                        modal={modal}
-                        setModal={setModal}
+                    <TitleApp>TastyCrunch.</TitleApp>
+                </HorizontalNav>
+                <Modal
+                    modal={modal}
+                    setModal={setModal}
 
-                    >
-                        <ContainerModal>
-                            <Form onSubmit={onSubmitForm}>
-                                <Input
-                                    type="text"
-                                    placeholder="Recipe Name"
-                                    value={nameRecipe}
-                                    onChange={(e) => setNameRecipe(e.target.value)}
-                                />
-                                {nameRecipe.match(/^[a-zA-Z ]*$/) ? null : <p style={{ color: 'red' }}>Only letters</p>}
-                                <Input
-                                    type="text"
-                                    placeholder="Description"
-                                    value={descriptionRecipe}
-                                    onChange={(e) => setDescriptionRecipe(e.target.value)}
-                                />
-                                <Input
-                                    type="number"
-                                    placeholder="Health Score"
-                                    value={healthScore}
-                                    onChange={(e) => setHealthScore(e.target.value)}
-                                />
-                                {(parseInt(healthScore) < 0 || parseInt(healthScore) > 100) && <p style={{ color: "red" }}>Health Score must be between 0 and 100</p>}
+                >
+                    <ContainerModal>
+                        <Form onSubmit={onSubmitForm}>
+                            <Input
+                                type="text"
+                                placeholder="Recipe Name"
+                                value={nameRecipe}
+                                onChange={(e) => setNameRecipe(e.target.value)}
+                            />
+                            {nameRecipe.match(/^[a-zA-Z ]*$/) ? null : <p style={{ color: 'red' }}>Only letters</p>}
+                            <Input
+                                type="text"
+                                placeholder="Description"
+                                value={descriptionRecipe}
+                                onChange={(e) => setDescriptionRecipe(e.target.value)}
+                            />
+                            <Input
+                                type="number"
+                                placeholder="Health Score"
+                                value={healthScore === "" ? healthScore : parseInt(healthScore)}
+                                onChange={(e) => setHealthScore(e.target.value)}
+                            />
+                            {(parseInt(healthScore) < 0 || parseInt(healthScore) > 100) && <p style={{ color: "red" }}>Health Score must be between 0 and 100</p>}
 
-                                <label
-                                    htmlFor='dietselect'
-                                    style={{ color: 'white', marginBottom: "20px", width: "100%", textAlign: "center" }}
-                                >Select all the Diet type that match:</label>
-                                <SelectType
-                                    multiple
-                                    value={type}
-                                    onChange={handleAddTagDiet}
-                                    name="dietselect"
-                                >
-                                    <>
-                                        {dataDiet !== undefined && ((dataDiet as any)).map((diet: DietTypes, index: any) => (
-                                            <OptionType key={index} value={diet.name}>{diet.name}</OptionType>
-                                        ))}
-                                    </>
-                                </SelectType>
-                                <TextArea
-                                    placeholder="Instructions"
-                                    value={stepByStep}
-                                    onChange={(e) => setStepByStep(e.target.value)}
-                                />
-                                {parseInt(healthScore) < 0 || parseInt(healthScore) > 100 || !nameRecipe.match(/^[a-zA-Z ]*$/) || nameRecipe.trim() === "" || descriptionRecipe === "" || type.length === 0 || stepByStep === '' ? <ButtonDisabled disabled>Complete all the fields</ButtonDisabled> : <ButtonModal>Create</ButtonModal>}
-                            </Form>
-                        </ContainerModal>
-                    </Modal>
-                    <MainContainer>
-                        {data !== undefined && data &&
-                            (
-                                <RecipeContainer >
-                                    <RecipeDetailImage src={(data as any).image || defaultImg} />
-                                    <RecipeDetailContainer>
-                                        <RecipeDetailTitle>{(data as any).name}</RecipeDetailTitle>
-                                        <RecipeDetailDescription dangerouslySetInnerHTML={{ __html: (data as any).description }}></RecipeDetailDescription>
-                                        <ContainerScoreDiet>
-                                            <RecipeDetailHealthScore>Health Score: {(data as any).healthScore}</RecipeDetailHealthScore>
-                                            <DietContainer>
-                                                {data !== undefined && data && (data as any).diets?.map((diet: any, index: number) => {
-                                                    return (
-                                                        <IconWithName key={index}>
-                                                            {id.length === 36 ? (
-                                                                <>
-                                                                    <DietIcon src={(images as any)[diet.name]} />
-                                                                    <h3>{diet.name}</h3>
-                                                                </>
-                                                            ) : (
-                                                                <>
-                                                                    <DietIcon src={(images as any)[diet]} />
-                                                                    <h3>{diet}</h3>
-                                                                </>
-                                                            )}
-                                                        </IconWithName>
-                                                    )
-                                                })}
-                                            </DietContainer>
-                                        </ContainerScoreDiet>
-                                        <RecipeDetailStepByStep dangerouslySetInnerHTML={{ __html: (data as any).stepByStep }}></RecipeDetailStepByStep>
-                                    </RecipeDetailContainer>
-                                </RecipeContainer>
-                            )
-                        }
+                            <label
+                                htmlFor='dietselect'
+                                style={{ color: 'white', marginBottom: "20px", width: "100%", textAlign: "center" }}
+                            >Select all the Diet type that match:</label>
+                            <SelectType
+                                multiple
+                                value={type}
+                                onChange={handleAddTagDiet}
+                                name="dietselect"
+                            >
+                                <>
+                                    {dataDiet !== undefined && ((dataDiet as any)).map((diet: DietTypes, index: any) => (
+                                        <OptionType key={index} value={diet.name}>{diet.name}</OptionType>
+                                    ))}
+                                </>
+                            </SelectType>
+                            <TextArea
+                                placeholder="Instructions"
+                                value={stepByStep}
+                                onChange={(e) => setStepByStep(e.target.value)}
+                            />
+                            {parseInt(healthScore) < 0 || healthScore === "" || parseInt(healthScore) > 100 || !nameRecipe.match(/^[a-zA-Z ]*$/) || nameRecipe.trim() === "" || descriptionRecipe === "" || type.length === 0 || stepByStep === '' ? <ButtonDisabled disabled>Complete all the fields</ButtonDisabled> : <ButtonModal>Upload</ButtonModal>}
+                        </Form>
+                    </ContainerModal>
+                </Modal>
+                <MainContainer>
+                    {data !== undefined && data &&
+                        (
+                            <RecipeContainer >
+                                <RecipeDetailImage src={(data as any).image || defaultImg} />
+                                <RecipeDetailContainer>
+                                    <RecipeDetailTitle>{(data as any).name}</RecipeDetailTitle>
+                                    <RecipeDetailDescription dangerouslySetInnerHTML={{ __html: (data as any).description }}></RecipeDetailDescription>
+                                    <ContainerScoreDiet>
+                                        <RecipeDetailHealthScore>Health Score: {(data as any).healthScore}</RecipeDetailHealthScore>
+                                        <DietContainer>
+                                            {data !== undefined && data && (data as any).diets?.map((diet: any, index: number) => {
+                                                return (
+                                                    <IconWithName key={index}>
+                                                        {id.length === 36 ? (
+                                                            <>
+                                                                <DietIcon src={(images as any)[diet.name]} />
+                                                                <h3>{diet.name}</h3>
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                <DietIcon src={(images as any)[diet]} />
+                                                                <h3>{diet}</h3>
+                                                            </>
+                                                        )}
+                                                    </IconWithName>
+                                                )
+                                            })}
+                                        </DietContainer>
+                                    </ContainerScoreDiet>
+                                    <RecipeDetailStepByStep dangerouslySetInnerHTML={{ __html: (data as any).stepByStep }}></RecipeDetailStepByStep>
+                                </RecipeDetailContainer>
+                            </RecipeContainer>
+                        )
+                    }
 
-                        <RecipesRecomendationContainer>
-                            <h1>You might also like</h1>
-                            <RecipesContainer>
-                                {dataAll !== undefined && dataAll.slice(0, 11).filter((recipe: any) => id.length === 36
-                                    ? recipe.diets.includes((data as any).diets[0].name)
-                                    : recipe.diets.includes((data as any).diets[0]))
-                                    .map((recipe: any, index: number) => {
-                                        return (
-                                            <Link to={`/recipes/${recipe.id}`} key={index}>
-                                                <Recipe key={index} recipe={recipe} />
-                                            </Link>
-                                        )
-                                    })}
-                            </RecipesContainer>
-                        </RecipesRecomendationContainer>
-                    </MainContainer>
-                </>
-            }
+                    <RecipesRecomendationContainer>
+                        <h1>You might also like</h1>
+                        <RecipesContainer>
+                            {dataAll !== undefined && dataAll.slice(0, 11).filter((recipe: any) => id.length === 36
+                                ? recipe.diets.includes((data as any).diets[0].name)
+                                : recipe.diets.includes((data as any).diets[0]))
+                                .map((recipe: any, index: number) => {
+                                    return (
+                                        <Link to={`/recipes/${recipe.id}`} key={index}>
+                                            <Recipe key={index} recipe={recipe} />
+                                        </Link>
+                                    )
+                                })}
+                        </RecipesContainer>
+                    </RecipesRecomendationContainer>
+                </MainContainer>
+            </>
         </div>
     )
 }

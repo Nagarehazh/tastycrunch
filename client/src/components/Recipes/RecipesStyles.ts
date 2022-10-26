@@ -192,7 +192,7 @@ const ButtonViewAll = styled.button`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 10rem;
+    width: 12rem;
     height: 3rem;
     border: none;
     border-radius: 5px;
@@ -201,6 +201,7 @@ const ButtonViewAll = styled.button`
     font-size: 1.5rem;
     font-weight: bold;
     cursor: pointer;
+    margin-top: 2rem;
     transition: all 0.2s ease-in-out;
     &:hover {
         background-color: #21034F;

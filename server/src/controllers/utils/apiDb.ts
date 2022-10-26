@@ -3,6 +3,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 import axios from 'axios';
 import { Diet } from '../../models/diet';
+import { Op } from 'sequelize';
 
 const key = process.env.SPOONACULAR_API_KEY;
 
@@ -61,7 +62,7 @@ const getApiRecipes = async () => {
 const getApiRecipeByName = async (name: any) => {
     try {
         const apiCall = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${key}&addRecipeInformation=true&number=100&query=${name}`);
-        const response = await apiCall.data.results.map((recipe: any) => {  
+        const response = await apiCall.data.results.map((recipe: any) => {
             return {
                 id: recipe.id,
                 name: recipe.title,
@@ -80,7 +81,9 @@ const getDbRecipeByName = async (name: any) => {
     try {
         const dataBaseIncludeDiet = await Recipe.findAll({
             where: {
-                name: name
+                name: {
+                    [Op.iLike]: `%${name}%`
+                }
             },
             include: {
                 model: Diet,
@@ -90,22 +93,22 @@ const getDbRecipeByName = async (name: any) => {
                 }
             }
         });
-        if(dataBaseIncludeDiet.length > 0) {
-        let response = await dataBaseIncludeDiet?.map((recipe: any) => {
-            return {
-                id: recipe.id,
-                name: recipe.name,
-                healthScore: recipe.healthScore,
-                image: recipe.image,
-                diets: recipe.diets.map((diet: any) => diet.name)
-            }
-        });
-        return response;
-    } else {
-        return [];
-    }
+        if (dataBaseIncludeDiet.length > 0) {
+            let response = await dataBaseIncludeDiet?.map((recipe: any) => {
+                return {
+                    id: recipe.id,
+                    name: recipe.name,
+                    healthScore: recipe.healthScore,
+                    image: recipe.image,
+                    diets: recipe.diets.map((diet: any) => diet.name)
+                }
+            });
+            return response;
+        } else {
+            return [];
+        }
 
-        
+
     } catch (error: any) {
         return error.message;
     }
@@ -116,7 +119,7 @@ const getAllDbApiRecipesbyName = async (name: any) => {
         const apiRecipesByName = await getApiRecipeByName(name);
         const dbRecipesByName = await getDbRecipeByName(name);
         const allRecipesByName = apiRecipesByName.concat(dbRecipesByName);
-        if(allRecipesByName.length > 0) {
+        if (allRecipesByName.length > 0) {
             return allRecipesByName;
         } else {
             throw new Error('Recipe with that name not found');
@@ -174,7 +177,7 @@ const RecipeById = async (id: string) => {
     }
 }
 
-const postRecipe = async (name: any, description: any, healthScore: any, stepByStep: any, image: any, diets: any) => {
+const postRecipe = async (name: string, description: string, healthScore: number, stepByStep: string, image: string, diets: string[]) => {
 
     try {
         const recipe = await Recipe.create({
@@ -193,13 +196,15 @@ const postRecipe = async (name: any, description: any, healthScore: any, stepByS
 
         await (recipe as any).addDiet(diet);
 
+
         return recipe;
+
     } catch (error: any) {
         return { error: error.message };
     }
 }
 
-const putRecipe = async (id: any, name: any, description: any, healthScore: any, stepByStep: any, image: any, diets: any) => {
+const putRecipe = async (id: any, name: string, description: string, healthScore: number, stepByStep: string, image: string, diets: string[]) => {
     try {
         const recipe: any = await Recipe.findByPk(id);
         if (recipe) {
@@ -210,9 +215,9 @@ const putRecipe = async (id: any, name: any, description: any, healthScore: any,
                 stepByStep,
                 image
             });
-            
+
             await (recipe as any).setDiets([]);
-            
+
             const diet = await Diet.findAll({
                 where: {
                     name: diets
@@ -220,7 +225,7 @@ const putRecipe = async (id: any, name: any, description: any, healthScore: any,
             })
             await (recipe as any).addDiet(diet);
             return recipe;
-            
+
         }
 
         return { error: 'Recipe not found' };

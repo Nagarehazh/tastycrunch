@@ -114,9 +114,7 @@ const NavBar = () => {
 
 
     const handleGetRecipes = () => {
-        console.log('drawer')
         setDrawer(!drawer)
-        console.log(drawer)
     }
 
     return (
@@ -194,7 +192,7 @@ const NavBar = () => {
                                 <Input
                                     type="number"
                                     placeholder="Health Score"
-                                    value={healthScore}
+                                    value={healthScore === "" ? healthScore : parseInt(healthScore)}
                                     onChange={(e) => setHealthScore(e.target.value)}
                                 />
                                 {(parseInt(healthScore) < 0 || parseInt(healthScore) > 100) && <p style={{ color: "red" }}>Health Score must be between 0 and 100</p>}
@@ -220,7 +218,7 @@ const NavBar = () => {
                                     value={stepByStep}
                                     onChange={(e) => setStepByStep(e.target.value)}
                                 />
-                                {parseInt(healthScore) < 0 || parseInt(healthScore) > 100 || !nameRecipe.match(/^[a-zA-Z ]*$/) || nameRecipe.trim() === "" || descriptionRecipe === "" || type.length === 0 || stepByStep === '' ? <ButtonDisabled disabled>Complete all the fields</ButtonDisabled> : <ButtonModal>Create</ButtonModal>}
+                                {parseInt(healthScore) < 0 || healthScore === "" ||  parseInt(healthScore) > 100 || !nameRecipe.match(/^[a-zA-Z ]*$/) || nameRecipe.trim() === "" || descriptionRecipe === "" || type.length === 0 || stepByStep === '' ? <ButtonDisabled disabled>Complete all the fields</ButtonDisabled> : <ButtonModal>Create</ButtonModal>}
                             </Form>
                         </ContainerModal>
                     </Modal>
@@ -297,7 +295,7 @@ const NavBar = () => {
                             <Input
                                 type="number"
                                 placeholder="Health Score"
-                                value={parseInt(healthScore)}
+                                value={healthScore === "" ? healthScore : parseInt(healthScore)}
                                 onChange={(e) => setHealthScore(e.target.value)}
                             />
                             {(parseInt(healthScore) < 0 || parseInt(healthScore) > 100) && <p style={{ color: "red" }}>Health Score must be between 0 and 100</p>}
@@ -324,7 +322,7 @@ const NavBar = () => {
                                 value={stepByStep}
                                 onChange={(e) => setStepByStep(e.target.value)}
                             />
-                            {parseInt(healthScore) < 0 || parseInt(healthScore) > 100 || !nameRecipe.match(/^[a-zA-Z ]*$/) || nameRecipe.trim() === "" || descriptionRecipe === "" || type.length === 0 || stepByStep === '' ? <ButtonDisabled disabled>Complete all the fields</ButtonDisabled> : <ButtonModal>Create</ButtonModal>}
+                            {parseInt(healthScore) < 0 || healthScore === "" || parseInt(healthScore) > 100 || !nameRecipe.match(/^[a-zA-Z ]*$/) || nameRecipe.trim() === "" || descriptionRecipe === "" || type.length === 0 || stepByStep === '' ? <ButtonDisabled disabled>Complete all the fields</ButtonDisabled> : <ButtonModal>Create</ButtonModal>}
                         </Form>
                     </ContainerModal>
                 </Modal>

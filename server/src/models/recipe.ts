@@ -9,7 +9,6 @@ export const Recipe = sequelize.define('recipe', {
     },
     name: {
         type: DataType.STRING,
-        unique: true,
         allowNull: false,
     },
     description: {
